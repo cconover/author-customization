@@ -3,7 +3,7 @@
 Plugin Name: Custom Author Complete
 Plugin URI: https://christiaanconover.com/code/wp-custom-author-complete
 Description: Full-featured author management. Adds support for multiple post authors and custom authors outside WordPress' user account structure. No theme editing required.
-Version: 0.1.0
+Version: 0.1.0-alpha
 Author: Christiaan Conover
 Author URI: https://christiaanconover.com
 License: GPLv2
@@ -27,12 +27,12 @@ function cc_cac_activate() {
 		deactivate_plugins( basename(__FILE__) ); // Deactivate the plugin
 	}
 	
-	/* Set the default options for the plugin */
-	$options = array(
-		
+	/* Set default options for plugin */
+	$options = array (
+		'perpost'		=>	'Post',		// Save author info to each individual post, rather than pulling from global author data
+		'multiple'		=>	'Multiple'	// Allow multiple authors for a post
 	);
-	
-	add_option( 'cc_relogo_options', $options ); // Create the options entry in the database with the specified settings
+	add_option( 'cc_relogo_options', $options );
 } // End cc_cac_activate()
 register_activation_hook( __FILE__, 'cc_cac_activate' ); // Register activation function with WordPress' activation hook
 ?>

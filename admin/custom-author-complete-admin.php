@@ -1,6 +1,5 @@
 <?php
-/*
-includes/admin.php
-Functions for managing the plugin inside wp-admin
+/**
+ * Functions for managing the plugin inside wp-admin
 */
 ?>

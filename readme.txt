@@ -29,4 +29,4 @@ NEED TEXT HERE
 == Changelog ==
 
 = 0.1.0 =
-NEED TEXT HERE
+Initial release.
