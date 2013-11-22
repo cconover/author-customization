@@ -24,7 +24,7 @@ NEED TEXT HERE
 
 == Screenshots ==
 
-1. NEED SCREENSHOT
+1. Main plugin options
 
 == Changelog ==
 
