@@ -4,7 +4,7 @@ Functions for managing the plugin inside wp-admin
 */
 
 
-// $screen = get_current_screen(); // Get details about the current screen being shown to the user
+$screen = get_current_screen(); // Get details about the current screen being shown to the user
 
 /**
  * Create entry in Settings menu
@@ -113,10 +113,7 @@ function cc_author_options_page() {
 /**
  * If editing post, include 'edit-post.php'
  */
-/*
 if ( $screen['parent_base'] == 'edit' && $screen['base'] == 'post' ) {
 	require_once( dirname( __FILE__ ) . '/includes/edit-post.php' ); // Retrieve file containing edit post functions
 }
-*/
-require_once( dirname( __FILE__ ) . '/includes/edit-post.php' ); // Retrieve file containing edit post functions
 ?>
