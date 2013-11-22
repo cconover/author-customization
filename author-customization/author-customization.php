@@ -14,7 +14,7 @@ License: GPLv2
  * If in wp-admin, load plugin's admin functions
  */
 if ( is_admin() ) {
-	require_once( dirname( __FILE__ ) . '/admin/custom-author-complete-admin.php' ); // Retrieve file containing admin functions
+	require_once( dirname( __FILE__ ) . '/admin/author-customization-admin.php' ); // Retrieve file containing admin functions
 }
 
 
