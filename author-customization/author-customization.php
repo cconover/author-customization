@@ -1,7 +1,7 @@
 <?php
 /*
-Plugin Name: Custom Author Complete
-Plugin URI: https://christiaanconover.com/code/wp-custom-author-complete
+Plugin Name: Author Customization
+Plugin URI: https://christiaanconover.com/code/wp-author-customization
 Description: Full-featured author management. Adds support for multiple post authors and custom authors outside WordPress' user account structure. No theme editing required.
 Version: 0.1.0-alpha
 Author: Christiaan Conover
@@ -21,7 +21,7 @@ if ( is_admin() ) {
 /**
  * Plugin Activation
  */
-function cc_cac_activate() {
+function cc_author_activate() {
 	/* Check for WordPress version compatibility, and if it fails deactivate the plugin.
 	   Current WordPress version compatibility: 3.5.2 and greater */
 	if ( version_compare( get_bloginfo( 'version' ), '3.5.2', '<' ) ) {
@@ -32,7 +32,7 @@ function cc_cac_activate() {
 	$features = array (
 		'perpost'		=>	'Post',		// Save author info to each individual post, rather than pulling from global author data
 	);
-	add_option( 'cc_cac_features', $features );
-} // End cc_cac_activate()
-register_activation_hook( __FILE__, 'cc_cac_activate' ); // Register activation function with WordPress' activation hook
+	add_option( 'cc_author_features', $features );
+} // End cc_author_activate()
+register_activation_hook( __FILE__, 'cc_author_activate' ); // Register activation function with WordPress' activation hook
 ?>

@@ -1,4 +1,4 @@
-=== Custom Author Complete ===
+=== Author Customization ===
 Contributors: cconover
 Tags: NEED TAGS
 Requires at least: 3.5.2
@@ -7,7 +7,7 @@ Stable tag: 0.1.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Custom Author Complete adds additional author management capabilities beyond the native user account structure.
+Author Customization adds additional author management capabilities beyond the native user account structure.
 
 == Description ==
 

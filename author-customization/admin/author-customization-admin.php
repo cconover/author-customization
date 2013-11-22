@@ -10,50 +10,50 @@ Functions for managing the plugin inside wp-admin
  * Create entry in Settings menu
  * A submenu entry titled 'Custom Authors' is shown under Settings
  */
-function cc_cac_create_menu() {
+function cc_author_create_menu() {
 	add_options_page(
-		'Custom Author Complete',			// Page title. This is displayed in the browser title bar.
-		'Custom Authors',					// Menu title. This is displayed in the Settings submenu.
+		'Author Customization',				// Page title. This is displayed in the browser title bar.
+		'Author Custom',					// Menu title. This is displayed in the Settings submenu.
 		'manage_options',					// Capability required to access the options page for this plugin
-		'cc-cac',							// Menu slug
-		'cc_cac_options_page'				// Function to render the options page
+		'cc-author',						// Menu slug
+		'cc_author_options_page'			// Function to render the options page
 	);
 }
-add_action( 'admin_menu', 'cc_cac_create_menu' );
+add_action( 'admin_menu', 'cc_author_create_menu' );
 
 /**
  * Options page configuration
  * Sections, fields, callbacks and validations
  */
-add_action( 'admin_init', 'cc_cac_features_init' ); // Hook admin initialization for plugin features
+add_action( 'admin_init', 'cc_author_features_init' ); // Hook admin initialization for plugin features
 
-function cc_cac_features_init() {
-	register_setting( 'cc_cac_options_features', 'cc_cac_features', 'cc_cac_features_validate' ); // Register the settings group and specify validation and database locations
+function cc_author_features_init() {
+	register_setting( 'cc_author_options_features', 'cc_author_features', 'cc_author_features_validate' ); // Register the settings group and specify validation and database locations
 	
 	add_settings_section(
 		'features',							// Name of the section
 		'Features',							// Title of the section, displayed on the options page
-		'cc_cac_features_callback',			// Callback function for displaying information
-		'cc-cac'							// Page ID for the options page
+		'cc_author_features_callback',		// Callback function for displaying information
+		'cc-author'							// Page ID for the options page
 	);
 	
 	add_settings_field(						// Set whether author info is pulled from post meta or global user data
 		'perpost',							// Field ID
-		'Get author data from post',		// Field title, displayed to the left of the field on the options page
-		'cc_cac_perpost_callback',			// Callback function to display the field
-		'cc-cac',							// Page ID for the options page
+		'Use author data from post',		// Field title, displayed to the left of the field on the options page
+		'cc_author_perpost_callback',		// Callback function to display the field
+		'cc-author',						// Page ID for the options page
 		'features'							// Settings section in which to display the field
 	);
 }
 
 /* Settings section callback */
-function cc_cac_features_callback() {
+function cc_author_features_callback() {
 	echo '<p>Please select the features you would like to enable.</p>';
-} // End cc_cac_features_callback()
+} // End cc_author_features_callback()
 
 /* Call back for 'perpost' option */
-function cc_cac_perpost_callback() {
-	$features = get_option( 'cc_cac_features' ); // Retrieve plugin options from the database
+function cc_author_perpost_callback() {
+	$features = get_option( 'cc_author_features' ); // Retrieve plugin options from the database
 	
 	/* Determine whether the box should be checked based on setting in database */
 	if ( isset( $features['perpost'] ) ) {
@@ -63,19 +63,19 @@ function cc_cac_perpost_callback() {
 		$checked = '';
 	}
 	
-	echo '<input id="perpost" name="cc_cac_features[perpost]" type="checkbox" value="Post" ' . $checked . '>'; // Print the input field to the screen
+	echo '<input id="perpost" name="cc_author_features[perpost]" type="checkbox" value="Post" ' . $checked . '>'; // Print the input field to the screen
 	echo '<p class="description">If checked, the plugin will retrieve author information from the post metadata instead of the user database. Useful for keeping author information specific to the time a post was published.</p>'; // Description of option
-} // End cc_cac_perpost_callback()
+} // End cc_author_perpost_callback()
 
 /* Validate submitted options */
-function cc_cac_features_validate( $input ) {
-	$features = get_option( 'cc_cac_features' ); // Retrieve existing options values from the database
+function cc_author_features_validate( $input ) {
+	$features = get_option( 'cc_author_features' ); // Retrieve existing options values from the database
 	
 	/* Directly set values that don't require validation */
 	$features['perpost']		=	$input['perpost'];
 	
 	return $features; // Send values to database
-} // End cc_cac_features_validate()
+} // End cc_author_features_validate()
 /**
  * End Options page configuration
  */
@@ -83,7 +83,7 @@ function cc_cac_features_validate( $input ) {
 /**
  * Options Page
  */
-function cc_cac_options_page() {
+function cc_author_options_page() {
 	/* Prevent users with insufficient permissions from accessing settings */
 	if ( ! current_user_can( 'manage_options' ) ) {
 		wp_die( '<p>You do not have sufficient permissions to access this page.</p>' );
@@ -92,13 +92,13 @@ function cc_cac_options_page() {
 	
 	<div class="wrap">
 		<?php screen_icon(); ?>
-		<h2>Custom Author Complete</h2>
+		<h2>Author Customization</h2>
 
 		<form action="options.php" method="post">
 			<?php
-			settings_fields( 'cc_cac_options_features' ); 	// Retrieve the fields created for the options page
-			do_settings_sections( 'cc-cac' ); 				// Display the section(s) for the options page
-			submit_button();								// Form submit button generated by WordPress
+			settings_fields( 'cc_author_options_features' ); 	// Retrieve the fields created for the options page
+			do_settings_sections( 'cc-author' ); 				// Display the section(s) for the options page
+			submit_button();									// Form submit button generated by WordPress
 			?>
 		</form>
 	</div>
