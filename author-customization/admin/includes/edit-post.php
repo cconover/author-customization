@@ -13,10 +13,7 @@ function cc_author_add_metabox() {
 } // cc_author_add_metabox()
 add_action( 'add_meta_boxes', 'cc_author_add_metabox' ); // Hook meta box into WordPress
 
-/*
-Meta box code
-$post is the object for the current post
-*/
+/* Meta box code: $post is the object for the current post */
 function cc_author_metabox( $post ) {
 	
 }
