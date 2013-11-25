@@ -16,8 +16,8 @@ function cc_author_create_menu() {
 		'cc-author',						// Menu slug
 		'cc_author_options_page'			// Function to render the options page
 	);
-}
-add_action( 'admin_menu', 'cc_author_create_menu' );
+} // cc_author_create_menu()
+add_action( 'admin_menu', 'cc_author_create_menu' ); // Hook menu entry into API
 /**
  * End create entry in Settings menu
  */
@@ -45,12 +45,12 @@ function cc_author_features_init() {
 		'cc-author',						// Page ID for the options page
 		'features'							// Settings section in which to display the field
 	);
-}
+} // cc_author_features_list()
 
 /* Settings section callback */
 function cc_author_features_callback() {
 	echo '<p>Please select the features you would like to enable.</p>';
-} // End cc_author_features_callback()
+} // cc_author_features_callback()
 
 /* Call back for 'perpost' option */
 function cc_author_perpost_callback() {
@@ -66,7 +66,7 @@ function cc_author_perpost_callback() {
 	
 	echo '<input id="perpost" name="cc_author_features[perpost]" type="checkbox" value="Post" ' . $checked . '>'; // Print the input field to the screen
 	echo '<p class="description">If checked, the plugin will retrieve author information from the post metadata instead of the user database. Useful for keeping author information specific to the time a post was published.</p>'; // Description of option
-} // End cc_author_perpost_callback()
+} // cc_author_perpost_callback()
 
 /* Validate submitted options */
 function cc_author_features_validate( $input ) {
@@ -76,7 +76,7 @@ function cc_author_features_validate( $input ) {
 	$features['perpost']		=	$input['perpost'];
 	
 	return $features; // Send values to database
-} // End cc_author_features_validate()
+} // cc_author_features_validate()
 /**
  * End Options page configuration
  */
@@ -105,7 +105,7 @@ function cc_author_options_page() {
 	</div>
 	
 	<?php	
-}
+} // cc_author_options_page()
 /**
  * End Options Page
  */
