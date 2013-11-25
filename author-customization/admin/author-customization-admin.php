@@ -18,6 +18,9 @@ function cc_author_create_menu() {
 	);
 }
 add_action( 'admin_menu', 'cc_author_create_menu' );
+/**
+ * End create entry in Settings menu
+ */
 
 /**
  * Options page configuration

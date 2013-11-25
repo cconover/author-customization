@@ -10,9 +10,7 @@ License: GPLv2
 */
 
 
-/**
- * If in wp-admin, load plugin's admin functions
- */
+/* If in wp-admin, load plugin's admin functions */
 if ( is_admin() ) {
 	require_once( dirname( __FILE__ ) . '/admin/author-customization-admin.php' ); // Retrieve file containing admin functions
 }
@@ -35,4 +33,7 @@ function cc_author_activate() {
 	add_option( 'cc_author_features', $features );
 } // End cc_author_activate()
 register_activation_hook( __FILE__, 'cc_author_activate' ); // Register activation function with WordPress' activation hook
+/**
+ * End Plugin Activation
+ */
 ?>
