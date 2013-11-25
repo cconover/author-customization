@@ -4,8 +4,6 @@ Functions for managing the plugin inside wp-admin
 */
 
 
-$screen = get_current_screen(); // Get details about the current screen being shown to the user
-
 /**
  * Create entry in Settings menu
  * A submenu entry titled 'Custom Authors' is shown under Settings
