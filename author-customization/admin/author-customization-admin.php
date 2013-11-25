@@ -108,10 +108,8 @@ function cc_author_options_page() {
  */
 
 
-/**
- * If editing post, include 'edit-post.php'
- */
-if ( $screen['parent_base'] == 'edit' && $screen['base'] == 'post' ) {
+/* If editing post, include the functions for use while editing a post */
+if ( strstr( $_SERVER['REQUEST_URI'], 'wp-admin/post-new.php' ) || strstr( $_SERVER['REQUEST_URI'], 'wp-admin/post.php' ) || strstr( $_SERVER['REQUEST_URI'], 'wp-admin/edit.php' ) ) {
 	require_once( dirname( __FILE__ ) . '/includes/edit-post.php' ); // Retrieve file containing edit post functions
 }
 ?>
