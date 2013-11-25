@@ -31,7 +31,7 @@ function cc_author_activate() {
 		'perpost'		=>	'Post',		// Save author info to each individual post, rather than pulling from global author data
 	);
 	add_option( 'cc_author_features', $features );
-} // End cc_author_activate()
+} // cc_author_activate()
 register_activation_hook( __FILE__, 'cc_author_activate' ); // Register activation function with WordPress' activation hook
 /**
  * End Plugin Activation
