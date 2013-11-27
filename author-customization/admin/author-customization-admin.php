@@ -22,6 +22,7 @@ add_action( 'admin_menu', 'cc_author_create_menu' ); // Hook menu entry into API
  * End create entry in Settings menu
  */
 
+
 /**
  * Options page configuration
  * Sections, fields, callbacks and validations
@@ -80,6 +81,7 @@ function cc_author_features_validate( $input ) {
 /**
  * End Options page configuration
  */
+
 
 /**
  * Options Page
