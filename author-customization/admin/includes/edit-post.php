@@ -5,15 +5,6 @@ Functions to include when editing a post
 
 
 /**
- * Author Info Add/Update
- * Functions to save & retrieve author info while editing a post
- */
-
-/**
- * End Author Info Add/Update
- */
-
-/**
  * Post Meta Box
  */
 /* Add meta box to Edit Post */
