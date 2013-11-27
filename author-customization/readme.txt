@@ -1,5 +1,6 @@
 === Author Customization ===
 Contributors: cconover
+Donate link: https://christiaanconover.com/code/wp-author-customization#donate
 Tags: NEED TAGS
 Requires at least: 3.5.2
 Tested up to: 3.7.1
