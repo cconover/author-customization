@@ -20,7 +20,7 @@ add_action( 'add_meta_boxes', 'cc_author_add_metabox' ); // Hook meta box into W
 
 /* Meta box code: $post is the data for the current post */
 function cc_author_metabox( $post ) {
-	
+	echo 'This is the Author meta box.';
 }
 /**
  * End Author Meta Box
