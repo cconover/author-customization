@@ -5,7 +5,7 @@ Functions to include when editing a post
 
 
 /**
- * Post Meta Box
+ * Author Meta Box
  */
 /* Add meta box to Edit Post */
 function cc_author_add_metabox() {
@@ -23,6 +23,6 @@ function cc_author_metabox( $post ) {
 	
 }
 /**
- * End Post Meta Box
+ * End Author Meta Box
  */
 ?>
