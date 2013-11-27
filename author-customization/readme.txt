@@ -22,8 +22,11 @@ NEED TEXT HERE
 
 == Frequently Asked Questions ==
 
-= FAQ 1 =
-NEED TEXT HERE
+= What data about an author gets saved to post metadata? =
+User data is copied from the selected author's profile at the time the post is first started. This includes:
+* Display name
+* Email address
+* Biographical info
 
 == Screenshots ==
 
