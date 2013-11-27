@@ -16,7 +16,9 @@ NEED TEXT HERE
 
 == Installation ==
 
-1. NEED TEXT HERE
+1. Upload the `author-customization` directory to the `wp-content/plugins` directory
+2. Activate the plugin through the `Plugins` menu in WordPress
+3. Adjust the settings on the `Author Customization` Settings page
 
 == Frequently Asked Questions ==
 
