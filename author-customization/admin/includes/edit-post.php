@@ -13,7 +13,7 @@ function cc_author_add_metabox() {
 	
 	/* Iterate through locations */
 	foreach( $screens as $screen ) {
-		add_meta_box( 'cc-author-metabox', 'Author', 'cc_author_metabox', $screen, 'normal', 'high' ); // Parameters for adding meta box
+		add_meta_box( 'cc-author-metabox', 'Author Information', 'cc_author_metabox', $screen, 'normal', 'high' ); // Parameters for adding meta box
 	}
 } // cc_author_add_metabox()
 add_action( 'add_meta_boxes', 'cc_author_add_metabox' ); // Hook meta box into WordPress
