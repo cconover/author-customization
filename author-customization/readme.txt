@@ -28,6 +28,9 @@ User data is copied from the selected author's profile at the time the post is f
 * Email address
 * Biographical info
 
+= Can I turn on per-post author info down the line? =
+Yes. The plugin saves author info to each post whether or not you've enabled retrieving author data from the post meta.
+
 == Screenshots ==
 
 1. Main plugin options
