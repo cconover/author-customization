@@ -25,7 +25,7 @@ function cc_author_metabox( $post ) {
 	$cc_author_bio = get_post_meta( $post->ID, 'cc_author_bio', true ); // Author bio
 	
 	/* If any of the values are missing from the post, retrieve them from the author's global profile */
-	if ( !isset( $cc_author_displayname ) ) {
+	if ( !isset( $cc_author_displayname ) || !isset( $cc_author_bio ) ) {
 		
 	}
 	
