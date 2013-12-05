@@ -36,24 +36,19 @@ function cc_author_metabox( $post ) {
 	
 	/* Display the meta box contents */
 	?>
-	<div id="wrap">
-		<table class="form-table">
-			<tbody>
-				<tr valign="top">
-					<th scope="row">Name</th>
-					<td>
-						<input type="text" name="cc_author_displayname" value="<?php echo esc_attr( $cc_author_displayname ); ?>" size="<?php strlen( $cc_author_displayname ); ?>" />
-					</td>
-				</tr>
-				<tr valign="top">
-					<th scope="row">Bio</th>
-					<td>
-						<textarea name="cc_author_bio" rows="5" cols="50" required><?php echo esc_attr( $cc_author_bio ); ?></textarea>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+	<p>
+		<label for="cc_author_displayname" class="selectit">
+			Name
+			<input type="text" name="cc_author_displayname" value="<?php echo esc_attr( $cc_author_displayname ); ?>" size="<?php echo strlen( $cc_author_displayname ); ?>" />
+		</label>
+	</p>
+	<p>
+		<label for="cc_author_bio" class="selectit">
+			Bio
+			<br />
+			<textarea name="cc_author_bio" rows="5" cols="50" required><?php echo esc_attr( $cc_author_bio ); ?></textarea>
+		</label>
+	</p>
 	<?php
 }
 /**
