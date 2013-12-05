@@ -11,7 +11,12 @@ Functions to include when editing a post
 function cc_author_add_metabox() {
 	$screens = array( 'post', 'page' ); // Locations where the metabox should show
 	
-	/* Iterate through locations */
+	/* Remove WordPress default Author meta box */
+	foreach ( $screens as $screen ) {
+		remove_meta_box( 'authordiv', $screen, 'normal' ); // Parameters for removing Author meta box from Post and Page edit screens
+	}
+	
+	/* Iterate through locations to add meta box */
 	foreach( $screens as $screen ) {
 		add_meta_box( 'cc-author-metabox', 'Author Information', 'cc_author_metabox', $screen, 'normal', 'default' ); // Parameters for adding meta box
 	}
