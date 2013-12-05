@@ -15,6 +15,10 @@ function cc_author_add_metabox() {
 	foreach( $screens as $screen ) {
 		add_meta_box( 'cc-author-metabox', 'Author Information', 'cc_author_metabox', $screen, 'normal', 'high' ); // Parameters for adding meta box
 	}
+	
+	/* Add custom style for meta box */
+	$styleurl = plugins_url( 'assets/css/edit-post.css', dirname( __FILE__ ) ); // Set URL to CSS file
+	wp_enqueue_style( 'cc-author-metabox', $styleurl ); // Add style call to <head>
 } // cc_author_add_metabox()
 add_action( 'add_meta_boxes', 'cc_author_add_metabox' ); // Hook meta box into WordPress
 
