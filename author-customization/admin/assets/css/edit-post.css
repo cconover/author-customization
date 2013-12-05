@@ -1,2 +1,10 @@
 /* Custom styling for meta box */
+.cc_author_metabox label {
+	display: block;
+}
+
+.cc_author_metabox input[type='text'],
+.cc_author_metabox textarea {
+	width: 98%;
+	margin-bottom: 1em;
 }
