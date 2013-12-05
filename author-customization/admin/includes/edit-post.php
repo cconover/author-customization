@@ -25,7 +25,7 @@ function cc_author_add_metabox() {
 	$styleurl = plugins_url( 'assets/css/edit-post.css', dirname( __FILE__ ) ); // Set URL to CSS file
 	wp_enqueue_style( 'cc-author-metabox', $styleurl ); // Add style call to <head>
 } // cc_author_add_metabox()
-add_action( 'add_meta_boxes', 'cc_author_add_metabox' ); // Hook meta box into WordPress
+add_action( 'add_meta_boxes', 'cc_author_add_metabox' ); // Hook meta box updates into WordPress
 
 /* Meta box code: $post is the data for the current post */
 function cc_author_metabox( $post ) {
