@@ -25,11 +25,12 @@ function cc_author_metabox( $post ) {
 	$cc_author_bio = get_post_meta( $post->ID, 'cc_author_bio', true ); // Author bio
 	
 	/* If any of the values are missing from the post, retrieve them from the author's global profile */
-		$currentuser = wp_get_current_user(); // Retrieve the details of the current user
 		$cc_author_displayname = $currentuser->display_name; // Set display name from current user's data
 	if ( !$cc_author_displayname || !$cc_author_bio ) {
+		$currentuserid = get_current_user_id(); // Get the user ID of the current user
 		
-		$currentuser = get_user_meta(); // Get current user metadata
+		$currentuser = get_userdata( $currentuserid ); // Retrieve the details of the current user
+		
 		$cc_author_bio = $currentuser['description']; // Set bio from the current user's data
 	}
 	
