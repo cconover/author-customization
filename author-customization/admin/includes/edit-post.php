@@ -26,7 +26,11 @@ function cc_author_metabox( $post ) {
 	
 	/* If any of the values are missing from the post, retrieve them from the author's global profile */
 	if ( !isset( $cc_author_displayname ) || !isset( $cc_author_bio ) ) {
+		$currentuser = wp_get_current_user(); // Retrieve the details of the current user
+		$cc_author_displayname = $currentuser->display_name; // Set display name from current user's data
 		
+		$currentuser = get_user_meta(); // Get current user metadata
+		$cc_author_bio = $currentuser['description']; // Set bio from the current user's data
 	}
 	
 	/* Display the meta box contents */
