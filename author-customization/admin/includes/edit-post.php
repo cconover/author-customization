@@ -7,7 +7,7 @@ Functions to include when editing a post
 /**
  * Author Meta Box
  */
-/* Add meta box to Edit Post */
+/* Add meta box to Edit Post and Edit Page, and remove WordPress default Author meta box */
 function cc_author_add_metabox() {
 	$screens = array( 'post', 'page' ); // Locations where the metabox should show
 	
