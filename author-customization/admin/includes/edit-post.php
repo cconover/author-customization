@@ -58,8 +58,13 @@ function cc_author_metabox( $post ) {
 /* Save the meta box data to post meta */
 function cc_author_save_meta( $post_id ) {
 	if ( isset( $_POST['cc_author_meta'] ) ) { // Verify that values have been provided
-		/* Save the metadata to the post */
-		update_post_meta( $post_id, '_cc_author_displayname', strip_tags( $_POST['cc_author_displayname'] ) );
+		$authormeta = $_POST['cc_author_meta']; // Assign POST data to local variable
+		
+		/* Sanitize array values */
+		foreach ( $authormeta as $key => $meta ) {
+			$authormeta[$key] = strip_tags( $meta );
+		}
+		update_post_meta( $post_id, '_cc_author_meta', $authormeta ); // Save author meta data to post meta
 	}
 } // cc_author_save_meta( $post_id )
 add_action( 'save_post', 'cc_author_save_meta' ); // Hook WordPress to save meta data when saving post/page
