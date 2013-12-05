@@ -35,7 +35,6 @@ function cc_author_metabox( $post ) {
 	}
 	
 	/* Display the meta box contents */
-	echo 'The following author information will be saved for this post.';
 	?>
 	<div id="wrap">
 		<table class="form-table">
