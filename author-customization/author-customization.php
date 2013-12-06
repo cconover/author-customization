@@ -29,6 +29,7 @@ function cc_author_activate() {
 	/* Set default features for plugin */
 	$features = array (
 		'perpost'		=>	'Post',		// Save author info to each individual post, rather than pulling from global author data
+		'wysiwyg'		=>	'WYSIWYG'	// Enable the WYSIWYG editor for author bio fields
 	);
 	add_option( 'cc_author_features', $features );
 } // cc_author_activate()
