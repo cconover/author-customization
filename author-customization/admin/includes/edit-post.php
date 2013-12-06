@@ -61,7 +61,19 @@ function cc_author_metabox( $post ) {
 		<input type="text" name="cc_author_meta[0][display_name]" value="<?php echo esc_attr( $cc_author_meta[0]['display_name'] ); ?>" />
 
 		<label for="cc_author_meta[0][description]" class="selectit">Bio</label>
-		<textarea name="cc_author_meta[0][description]" rows="5" cols="50" required><?php echo esc_attr( $cc_author_meta[0]['description'] ); ?></textarea>
+		<?
+		/* Show WYSIWYG editor if enabled in plugin options */
+		$features = get_option( 'cc_author_features' ); // Retrieve the plugin options
+		if ( isset( $features['wysiwyg'] ) ) {
+			$settings = array( 'media_buttons' => false, 'textarea_name' => 'cc_author_meta[0][description]' ); // Settings for WYSIWYG
+			wp_editor( $cc_author_meta[0]['description'], 'cc-author-meta-description', $settings ); // Display WYSIWYG
+		}
+		else {
+			?>
+			<textarea name="cc_author_meta[0][description]" rows="5" cols="50" required><?php echo esc_attr( $cc_author_meta[0]['description'] ); ?></textarea>
+			<?php
+		}
+		?>
 	</div>
 	<?php
 } // cc_author_metabox( $post )
