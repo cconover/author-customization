@@ -9,6 +9,7 @@ admin/author-customization-admin.php
 
 /**
  * Author Meta Box
+ * Functions for creating the meta box, displaying it, and saving data entered through it
  */
 /* Add meta box to Edit Post and Edit Page, and remove WordPress default Author meta box */
 function cc_author_add_metabox() {
