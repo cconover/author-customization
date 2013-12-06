@@ -52,6 +52,11 @@ function cc_author_metabox( $post ) {
 	/* Display the meta box contents */
 	?>
 	<div class="cc_author_metabox">
+		<?php
+		if ( current_user_can( 'edit_others_posts' ) || current_user_can( 'edit_others_pages' ) ) { // Check the capabilities of the current user for sufficient privileges
+			echo 'This is where the author select menu will appear for editors and admins.'; // Display author select menu
+		}
+		?>
 		<label for="cc_author_meta[0][display_name]" class="selectit">Name</label>
 		<input type="text" name="cc_author_meta[0][display_name]" value="<?php echo esc_attr( $cc_author_meta[0]['display_name'] ); ?>" />
 
