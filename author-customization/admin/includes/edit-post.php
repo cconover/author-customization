@@ -68,7 +68,7 @@ function cc_author_save_meta( $post_id ) {
 		foreach ( $authormeta as $key => $meta ) {
 			$authormeta[$key] = strip_tags( $meta );
 		}
-		update_post_meta( $post_id, '_cc_author_meta', $authormeta ); // Save author meta data to post meta
+		update_post_meta( $post_id, '_cc_author_meta', $authormeta ); // Save author metadata to post meta
 	}
 } // cc_author_save_meta( $post_id )
 add_action( 'save_post', 'cc_author_save_meta' ); // Hook WordPress to save meta data when saving post/page
