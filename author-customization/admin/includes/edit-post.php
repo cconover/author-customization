@@ -22,7 +22,7 @@ function cc_author_add_metabox() {
 	
 	/* Iterate through locations to add meta box */
 	foreach( $screens as $screen ) {
-		add_meta_box( 'cc-author-metabox', 'Author', 'cc_author_metabox', $screen, 'normal', 'default' ); // Parameters for adding meta box
+		add_meta_box( 'cc-author-metabox', 'Author', 'cc_author_metabox', $screen, 'normal', 'high' ); // Parameters for adding meta box
 	}
 	
 	/* Add custom style for meta box */
