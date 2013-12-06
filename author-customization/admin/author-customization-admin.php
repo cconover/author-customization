@@ -49,6 +49,13 @@ function cc_author_features_init() {
 		'cc-author',						// Page ID for the options page
 		'features'							// Settings section in which to display the field
 	);
+	add_settings_field(						// Set whether author info is pulled from post meta or global user data
+		'wysiwyg',							// Field ID
+		'WYSIWYG editor for author bio',	// Field title, displayed to the left of the field on the options page
+		'cc_author_wysiwyg_callback',		// Callback function to display the field
+		'cc-author',						// Page ID for the options page
+		'features'							// Settings section in which to display the field
+	);
 } // cc_author_features_list()
 
 /* Settings section callback */
@@ -72,12 +79,29 @@ function cc_author_perpost_callback() {
 	echo '<p class="description">If checked, the plugin will retrieve author information from the post metadata instead of the user database. Useful for keeping author information specific to the time a post was published.</p><p class="description"><strong>Note:</strong> You can toggle this at any time, as this plugin always saves author information to post metadata regardless of this setting.</p>'; // Description of option
 } // cc_author_perpost_callback()
 
+/* Call back for 'wysiwyg' option */
+function cc_author_wysiwyg_callback() {
+	$features = get_option( 'cc_author_features' ); // Retrieve plugin options from the database
+	
+	/* Determine whether the box should be checked based on setting in database */
+	if ( isset( $features['wysiwyg'] ) ) {
+		$checked = 'checked';
+	}
+	else {
+		$checked = '';
+	}
+	
+	echo '<input id="wysiwyg" name="cc_author_features[wysiwyg]" type="checkbox" value="WYSIWYG" ' . $checked . '>'; // Print the input field to the screen
+	echo '<p class="description">Enable a WYSIWYG editor for the author bio field, both in the user profile area and in the post/page meta box.</p>'; // Description of option
+} // cc_author_wysiwyg_callback()
+
 /* Validate submitted options */
 function cc_author_features_validate( $input ) {
 	$features = get_option( 'cc_author_features' ); // Retrieve existing options values from the database
 	
 	/* Directly set values that don't require validation */
 	$features['perpost']		=	$input['perpost'];
+	$features['wysiwyg']		=	$input['wysiwyg'];
 	
 	return $features; // Send values to database
 } // cc_author_features_validate()
