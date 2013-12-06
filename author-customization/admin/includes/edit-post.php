@@ -42,19 +42,21 @@ function cc_author_metabox( $post ) {
 		
 		$currentuser = get_userdata( $currentuserid ); // Retrieve the details of the current user
 		
-		$cc_author_meta = array(); // Initialize array
-		$cc_author_meta['display_name'] = $currentuser->display_name; // Set display name from current user's data
-		$cc_author_meta['description'] = $currentuser->description; // Set bio from the current user's data
+		$cc_author_meta = array(); // Initialize main array
+		$cc_author_meta[0] = array( // Nested array for author data
+			'display_name'	=> $currentuser->display_name, // Set display name from current user's data
+			'description'	=> $currentuser->description // Set bio from the current user's data
+		);
 	}
 	
 	/* Display the meta box contents */
 	?>
 	<div class="cc_author_metabox">
-		<label for="cc_author_meta[display_name]" class="selectit">Name</label>
-		<input type="text" name="cc_author_meta[display_name]" value="<?php echo esc_attr( $cc_author_meta['display_name'] ); ?>" />
+		<label for="cc_author_meta[0][display_name]" class="selectit">Name</label>
+		<input type="text" name="cc_author_meta[0][display_name]" value="<?php echo esc_attr( $cc_author_meta[0]['display_name'] ); ?>" />
 
-		<label for="cc_author_meta[description]" class="selectit">Bio</label>
-		<textarea name="cc_author_meta[description]" rows="5" cols="50" required><?php echo esc_attr( $cc_author_meta['description'] ); ?></textarea>
+		<label for="cc_author_meta[0][description]" class="selectit">Bio</label>
+		<textarea name="cc_author_meta[0][description]" rows="5" cols="50" required><?php echo esc_attr( $cc_author_meta[0]['description'] ); ?></textarea>
 	</div>
 	<?php
 } // cc_author_metabox( $post )
@@ -62,13 +64,15 @@ function cc_author_metabox( $post ) {
 /* Save the meta box data to post meta */
 function cc_author_save_meta( $post_id ) {
 	if ( isset( $_POST['cc_author_meta'] ) ) { // Verify that values have been provided
-		$authormeta = $_POST['cc_author_meta']; // Assign POST data to local variable
+		$author = $_POST['cc_author_meta']; // Assign POST data to local variable
 		
 		/* Sanitize array values */
-		foreach ( $authormeta as $key => $meta ) {
-			$authormeta[$key] = strip_tags( $meta );
+		foreach ( $author as $authormeta ) {
+			foreach ( $authormeta as $key => $meta ) {
+				$authormeta[$key] = strip_tags( $meta );
+			}
 		}
-		update_post_meta( $post_id, '_cc_author_meta', $authormeta ); // Save author metadata to post meta
+		update_post_meta( $post_id, '_cc_author_meta', $author ); // Save author metadata to post meta
 	}
 } // cc_author_save_meta( $post_id )
 add_action( 'save_post', 'cc_author_save_meta' ); // Hook WordPress to save meta data when saving post/page
