@@ -1,7 +1,7 @@
 Author Customization
 =========================
 
-Author Customization is a WordPress plugin that extends the ability to customize post & page authors beyond the native abilities of WordPress. It gives greater flexibility for use cases where the traditional “blog post author” model may not be exactly what’s needed.
+[Author Customization](https://christiaanconover.com/code/wp-author-customization) is a WordPress plugin that extends the ability to customize post & page authors beyond the native abilities of WordPress. It gives greater flexibility for use cases where the traditional “blog post author” model may not be exactly what’s needed.
 
 Features
 --------
