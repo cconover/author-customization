@@ -52,6 +52,7 @@ function cc_author_metabox( $post ) {
 	/* Display the meta box contents */
 	?>
 	<div class="cc_author_metabox">
+		<p>Changes made to this information will only apply to this post, and will not be saved to the user's profile.</p>
 		<?php
 		if ( current_user_can( 'edit_others_posts' ) || current_user_can( 'edit_others_pages' ) ) { // Check the capabilities of the current user for sufficient privileges
 			echo 'This is where the author select menu will appear for editors and admins.'; // Display author select menu
