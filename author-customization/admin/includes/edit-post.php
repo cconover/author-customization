@@ -43,12 +43,12 @@ function cc_author_metabox( $post ) {
 	
 	/* If any of the values are missing from the post, retrieve them from the author's global profile */
 	if ( !$cc_author_meta ) {		
-		$postauthor = get_userdata( $postauthorid ); // Retrieve the details of the current user
+		$postauthor = get_userdata( $postauthorid ); // Retrieve the details of the post author
 		
 		$cc_author_meta = array(); // Initialize main array
 		$cc_author_meta[0] = array( // Nested array for author data
-			'display_name'	=> $postauthor->display_name, // Set display name from current user's data
-			'description'	=> $postauthor->description // Set bio from the current user's data
+			'display_name'	=> $postauthor->display_name, // Set display name from post author's data
+			'description'	=> $postauthor->description // Set bio from the post author's data
 		);
 	}
 	
