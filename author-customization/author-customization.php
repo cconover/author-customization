@@ -17,7 +17,7 @@ License: GPLv2
 /* Get the post author display name from post and apply to the post on display */
 function cc_author_author_displayname() {
 	
-}
+} // cc_author_author_displayname()
 /**
  * End Author Info
  */
