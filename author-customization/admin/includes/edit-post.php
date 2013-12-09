@@ -54,7 +54,10 @@ function cc_author_metabox( $post ) {
 		<p>Changes made to this information will only apply to this post, and will not be saved to the user's profile.</p>
 		<?php
 		if ( current_user_can( 'edit_others_posts' ) || current_user_can( 'edit_others_pages' ) ) { // Check the capabilities of the current user for sufficient privileges
-			echo 'This is where the author select menu will appear for editors and admins.'; // Display author select menu
+			wp_dropdown_users( array(
+				'name'			=> 'cc_author_dropdown', // Name for the form item
+				'selected'		=> $postauthorid // Select the post's author to be displayed by default
+			) );
 		}
 		?>
 		<label for="cc_author_meta[0][display_name]" class="selectit">Name</label>
