@@ -9,7 +9,7 @@ admin/author-customization-admin.php
 
 /**
  * Author Meta Box
- * Functions for creating the meta box, displaying it, and saving data entered through it
+ * Functions for creating and displaying the meta box
  */
 /* Add meta box to Edit Post and Edit Page, and remove WordPress default Author meta box */
 function cc_author_add_metabox() {
@@ -88,6 +88,15 @@ function cc_author_metabox( $post ) {
 	</div>
 	<?php
 } // cc_author_metabox( $post )
+/**
+ * End Author Meta Box
+ */
+ 
+ 
+ /**
+  * Update Author Metadata
+  * Functions for saving and updating author metadata
+  */
 
 /* Save the meta box data to post meta */
 function cc_author_save_meta( $post_id ) {
@@ -116,5 +125,6 @@ function cc_author_save_meta( $post_id ) {
 add_action( 'save_post', 'cc_author_save_meta' ); // Hook WordPress to save meta data when saving post/page
 /**
  * End Author Meta Box
+ * End Update Author Metadata
  */
 ?>
