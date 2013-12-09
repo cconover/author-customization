@@ -32,7 +32,7 @@ function cc_author_activate() {
 	/* Check for WordPress version compatibility, and if it fails deactivate the plugin.
 	   Current WordPress version compatibility: 3.5.2 and greater */
 	if ( version_compare( get_bloginfo( 'version' ), '3.5.2', '<' ) ) {
-		deactivate_plugins( basename(__FILE__) ); // Deactivate the plugin
+		deactivate_plugins( basename(__FILE__) ); // Deactivate the plugin if the version of WordPress is too old
 	}
 	
 	/* Set default features for plugin */
