@@ -103,7 +103,14 @@ function cc_author_save_meta( $post_id ) {
 		update_post_meta( $post_id, '_cc_author_meta', $author ); // Save author metadata to post meta
 		
 		/* Save the post/page author */
+		remove_action( 'save_post', 'cc_author_save_meta' ); // Remove the 'save_post' hook before updating the post author to prevent an infinite loop
 		
+		wp_update_post( array(
+			'ID'			=> $post_id,
+			'post_author'	=> $_POST['cc_author_postauthor'] // Use the post author ID from the dropdown
+		) );
+		
+		add_action( 'save_post', 'cc_author_save_meta' ); // Re-add the 'save_post' hook after the post author is updated
 	}
 } // cc_author_save_meta( $post_id )
 add_action( 'save_post', 'cc_author_save_meta' ); // Hook WordPress to save meta data when saving post/page
