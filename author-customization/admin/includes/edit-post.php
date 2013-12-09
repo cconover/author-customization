@@ -167,7 +167,6 @@ function cc_author_save_meta( $post_id ) {
 } // cc_author_save_meta( $post_id )
 add_action( 'save_post', 'cc_author_save_meta' ); // Hook WordPress to save meta data when saving post/page
 /**
- * End Author Meta Box
  * End Update Author Metadata
  */
 ?>
