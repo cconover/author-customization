@@ -107,6 +107,24 @@ function cc_author_metabox( $post ) {
   * Update Author Metadata
   * Functions for saving and updating author metadata
   */
+/* Callback for change author JavaScript */
+function cc_author_change_postauthor_callback() {
+	global $wpdb; // Get access to the database
+	
+	$author = $_POST['cc_author_postauthor']; // Assign local variable for submitted post author
+	
+	$authordata = get_userdata( $author ); // Retrieve the selected user's data from their profile
+	
+	$authormeta = array(
+		'display_name'	=> $authordata['display_name'], // Display name from profile
+		'description'	=> $authordata['description'] // Biographical info from profile
+	);
+	
+	echo $authormeta;
+	
+	die(); // End response. Required for callback to return a proper result.
+} // cc_author_change_postauthor_callback()
+add_action( 'wp_ajax_cc_author_change_postauthor', 'cc_author_change_postauthor_callback' ); // Add action hook for the callback
 
 /* Save the meta box data to post meta */
 function cc_author_save_meta( $post_id ) {
