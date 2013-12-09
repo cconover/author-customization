@@ -65,7 +65,7 @@ function cc_author_metabox( $post ) {
 		/* Show WYSIWYG editor if enabled in plugin options */
 		$features = get_option( 'cc_author_features' ); // Retrieve the plugin options
 		if ( isset( $features['wysiwyg'] ) ) {
-			$settings = array( 'media_buttons' => false, 'textarea_name' => 'cc_author_meta[0][description]' ); // Settings for WYSIWYG
+			$settings = array( 'media_buttons' => false, 'textarea_name' => 'cc_author_meta[0][description]', 'teeny' => true ); // Settings for WYSIWYG
 			wp_editor( $cc_author_meta[0]['description'], 'cc-author-meta-description', $settings ); // Display WYSIWYG
 		}
 		else {
