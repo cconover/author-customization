@@ -28,6 +28,10 @@ function cc_author_add_metabox() {
 	/* Add custom style for meta box */
 	$styleurl = plugins_url( 'assets/css/edit-post.css', dirname( __FILE__ ) ); // Set URL to CSS file
 	wp_enqueue_style( 'cc-author-metabox', $styleurl ); // Add style call to <head>
+	
+	/* Add script for changing the post author */
+	$changeauthorurl = plugins_url( 'assets/js/change-post-author.js', dirname( __FILE__ ) ); // Set URL to JavaScript file
+	wp_enqueue_script( 'cc-author-change-post-author', $changeauthorurl, 'jquery' ); // Add JS to <head>
 } // cc_author_add_metabox()
 add_action( 'add_meta_boxes', 'cc_author_add_metabox' ); // Hook meta box updates into WordPress
 
