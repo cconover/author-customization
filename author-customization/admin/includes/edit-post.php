@@ -38,10 +38,8 @@ function cc_author_metabox( $post ) {
 	$postauthorid = $post->post_author; // Get the user ID of the post author
 	
 	/* If any of the values are missing from the post, retrieve them from the author's global profile */
-	if ( !$cc_author_meta ) {
-		$currentuserid = get_current_user_id(); // Get the user ID of the current user
-		
-		$currentuser = get_userdata( $currentuserid ); // Retrieve the details of the current user
+	if ( !$cc_author_meta ) {		
+		$postauthor = get_userdata( $postauthorid ); // Retrieve the details of the current user
 		
 		$cc_author_meta = array(); // Initialize main array
 		$cc_author_meta[0] = array( // Nested array for author data
