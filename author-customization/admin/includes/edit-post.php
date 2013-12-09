@@ -43,8 +43,8 @@ function cc_author_metabox( $post ) {
 		
 		$cc_author_meta = array(); // Initialize main array
 		$cc_author_meta[0] = array( // Nested array for author data
-			'display_name'	=> $currentuser->display_name, // Set display name from current user's data
-			'description'	=> $currentuser->description // Set bio from the current user's data
+			'display_name'	=> $postauthor->display_name, // Set display name from current user's data
+			'description'	=> $postauthor->description // Set bio from the current user's data
 		);
 	}
 	
