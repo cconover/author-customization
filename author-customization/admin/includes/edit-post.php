@@ -62,6 +62,12 @@ function cc_author_metabox( $post ) {
 				'name'			=> 'cc_author_postauthor', // Name for the form item
 				'selected'		=> $postauthorid // Select the post's author to be displayed by default
 			) );
+			?>
+			<noscript>
+				You have JavaScript disabled. If you change the post author in the dropdown, you will need to save the post for the fields below to update. Please enable JavaScript for a better experience.
+			</noscript>
+			<input type="hidden" name="cc_author_currentpostauthor" value="<?php echo $postauthorid; ?>">
+			<?php
 		}
 		?>
 		<label for="cc_author_meta[0][display_name]" class="selectit">Name</label>
