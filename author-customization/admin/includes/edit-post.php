@@ -35,6 +35,7 @@ add_action( 'add_meta_boxes', 'cc_author_add_metabox' ); // Hook meta box update
 function cc_author_metabox( $post ) {
 	/* Retrieve current values if they exist */
 	$cc_author_meta = get_post_meta( $post->ID, '_cc_author_meta', true ); // Author meta data (stored as an array)
+	$postauthorid = $post->post_author; // Get the user ID of the post author
 	
 	/* If any of the values are missing from the post, retrieve them from the author's global profile */
 	if ( !$cc_author_meta ) {
