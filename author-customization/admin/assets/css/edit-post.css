@@ -3,8 +3,13 @@
 	display: block;
 }
 
+.cc_author_metabox select,
+.cc_author_metabox input[type='text'],
+.cc_author_metabox textarea {
+	margin-bottom: 1em;
+}
+
 .cc_author_metabox input[type='text'],
 .cc_author_metabox textarea {
 	width: 98%;
-	margin-bottom: 1em;
 }
