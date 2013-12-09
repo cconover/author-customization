@@ -14,7 +14,10 @@ License: GPLv2
  * Author Info
  * Filter WordPress author functions to replace global profile data with plugin-generated data
  */
-
+/* Get the post author display name from post and apply to the post on display */
+function cc_author_author_displayname() {
+	
+}
 /**
  * End Author Info
  */
