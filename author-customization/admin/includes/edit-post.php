@@ -68,7 +68,15 @@ function cc_author_metabox( $post ) {
 		/* Show WYSIWYG editor if enabled in plugin options */
 		$features = get_option( 'cc_author_features' ); // Retrieve the plugin options
 		if ( isset( $features['wysiwyg'] ) ) {
-			$settings = array( 'media_buttons' => false, 'textarea_name' => 'cc_author_meta[0][description]', 'teeny' => true ); // Settings for WYSIWYG
+			$settings = array( // Settings for WYSIWYG
+				'media_buttons'		=> false, // Don't display media upload options
+				'quicktags'			=> false, // Disable quicktags
+				'textarea_name'		=> 'cc_author_meta[0][description]', // Form item name
+				'teeny'				=> true, // Keep editor to minimal button options, instead of full editor
+				'tinymce'			=> array(
+					'theme_advanced_buttons1'	=> 'bold,italic,underline,strikethrough,link,unlink' // Only show the listed buttons in the editor
+				),
+			);
 			wp_editor( $cc_author_meta[0]['description'], 'cc-author-meta-description', $settings ); // Display WYSIWYG
 		}
 		else {
