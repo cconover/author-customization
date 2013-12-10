@@ -27,18 +27,19 @@ add_action( 'admin_menu', 'cc_author_create_menu' ); // Hook menu entry into API
 
 
 /**
- * Options page configuration
+ * Post/Page options configuration
+ * Settings specific to posts and pages
  * Sections, fields, callbacks and validations
  */
-add_action( 'admin_init', 'cc_author_features_init' ); // Hook admin initialization for plugin features
+add_action( 'admin_init', 'cc_author_postpage_init' ); // Hook admin initialization for plugin postpage
 
-function cc_author_features_init() {
-	register_setting( 'cc_author_options_features', 'cc_author_features', 'cc_author_features_validate' ); // Register the settings group and specify validation and database locations
+function cc_author_postpage_init() {
+	register_setting( 'cc_author_options_postpage', 'cc_author_postpage', 'cc_author_postpage_validate' ); // Register the settings group and specify validation and database locations
 	
 	add_settings_section(
-		'features',							// Name of the section
-		'Features',							// Title of the section, displayed on the options page
-		'cc_author_features_callback',		// Callback function for displaying information
+		'postpage',							// Name of the section
+		'Post/Page Settings',				// Title of the section, displayed on the options page
+		'cc_author_postpage_callback',		// Callback function for displaying information
 		'cc-author'							// Page ID for the options page
 	);
 	
@@ -47,66 +48,126 @@ function cc_author_features_init() {
 		'Use author data from post',		// Field title, displayed to the left of the field on the options page
 		'cc_author_perpost_callback',		// Callback function to display the field
 		'cc-author',						// Page ID for the options page
-		'features'							// Settings section in which to display the field
+		'postpage'							// Settings section in which to display the field
 	);
+	add_settings_field(						// Set whether author info is pulled from post meta or global user data
+		'relnofollow',						// Field ID
+		'Add rel="nofollow" to bio links',	// Field title, displayed to the left of the field on the options page
+		'cc_author_relnofollow_callback',	// Callback function to display the field
+		'cc-author',						// Page ID for the options page
+		'postpage'							// Settings section in which to display the field
+	);
+} // cc_author_postpage_list()
+
+/* Settings section callback */
+function cc_author_postpage_callback() {
+	echo '<p>These options are specific to posts and pages.</p>';
+} // cc_author_postpage_callback()
+
+/* Callback for 'perpost' option */
+function cc_author_perpost_callback() {
+	$postpage = get_option( 'cc_author_postpage' ); // Retrieve plugin options from the database
+	
+	/* Determine whether the box should be checked based on setting in database */
+	if ( $postpage['perpost'] ) {
+		$checked = 'checked';
+	}
+	else {
+		$checked = '';
+	}
+	
+	echo '<input id="perpost" name="cc_author_postpage[perpost]" type="checkbox" value="Post" ' . $checked . '>'; // Print the input field to the screen
+	echo '<p class="description">If checked, the plugin will retrieve author information from the post metadata instead of the user database. Useful for keeping author information specific to the time a post was published.</p><p class="description"><strong>Note:</strong> You can toggle this at any time, as this plugin always saves author information to post metadata regardless of this setting.</p>'; // Description of option
+} // cc_author_perpost_callback()
+
+/* Callback for 'relnofollow' option */
+function cc_author_relnofollow_callback() {
+	$postpage = get_option( 'cc_author_postpage' ); // Retrieve plugin options from the database
+	
+	/* Determine whether the box should be checked based on setting in database */
+	if ( $postpage['relnofollow'] ) {
+		$checked = 'checked';
+	}
+	else {
+		$checked = '';
+	}
+	
+	echo '<input id="relnofollow" name="cc_author_postpage[relnofollow]" type="checkbox" value="Nofollow" ' . $checked . '>'; // Print the input field to the screen
+	echo '<p class="description">Add a <a href="https://support.google.com/webmasters/answer/96569?hl=en">rel="nofollow"</a> attribute to any links in an author\'s biographical info when displayed. This prevents search engines from counting those links as part of your rank score.</p>'; // Description of option
+} // cc_author_relnofollow_callback()
+
+/* Validate submitted options */
+function cc_author_postpage_validate( $input ) {
+	$postpage = get_option( 'cc_author_postpage' ); // Retrieve existing options values from the database
+	
+	/* Directly set values that don't require validation */
+	$postpage['perpost']		=	$input['perpost'];
+	$postpage['relnofollow']	=	$input['relnofollow'];
+	
+	return $postpage; // Send values to database
+} // cc_author_postpage_validate()
+/**
+ * End Post/Page options configuration
+ */
+
+
+/**
+ * Admin Options
+ * Options for things that happen inside WordPress admin
+ */
+add_action( 'admin_init', 'cc_author_admin_options_init' ); // Hook admin initialization for plugin admin
+
+function cc_author_admin_options_init() {
+	register_setting( 'cc_author_options_admin', 'cc_author_admin_options', 'cc_author_admin_options_validate' ); // Register the settings group and specify validation and database locations
+	
+	add_settings_section(
+		'admin_options',					// Name of the section
+		'Admin Settings',					// Title of the section, displayed on the options page
+		'cc_author_admin_options_callback',	// Callback function for displaying information
+		'cc-author'							// Page ID for the options page
+	);
+	
 	add_settings_field(						// Set whether author info is pulled from post meta or global user data
 		'wysiwyg',							// Field ID
 		'WYSIWYG editor for author bio',	// Field title, displayed to the left of the field on the options page
 		'cc_author_wysiwyg_callback',		// Callback function to display the field
 		'cc-author',						// Page ID for the options page
-		'features'							// Settings section in which to display the field
+		'admin_options'						// Settings section in which to display the field
 	);
-} // cc_author_features_list()
+} // cc_author_admin_options_list()
 
 /* Settings section callback */
-function cc_author_features_callback() {
-	echo '<p>Please select the features you would like to enable.</p>';
-} // cc_author_features_callback()
-
-/* Call back for 'perpost' option */
-function cc_author_perpost_callback() {
-	$features = get_option( 'cc_author_features' ); // Retrieve plugin options from the database
-	
-	/* Determine whether the box should be checked based on setting in database */
-	if ( isset( $features['perpost'] ) ) {
-		$checked = 'checked';
-	}
-	else {
-		$checked = '';
-	}
-	
-	echo '<input id="perpost" name="cc_author_features[perpost]" type="checkbox" value="Post" ' . $checked . '>'; // Print the input field to the screen
-	echo '<p class="description">If checked, the plugin will retrieve author information from the post metadata instead of the user database. Useful for keeping author information specific to the time a post was published.</p><p class="description"><strong>Note:</strong> You can toggle this at any time, as this plugin always saves author information to post metadata regardless of this setting.</p>'; // Description of option
-} // cc_author_perpost_callback()
+function cc_author_admin_options_callback() {
+	echo '<p>These options are for things that happen inside WordPress admin.</p>';
+} // cc_author_admin_options_callback()
 
 /* Call back for 'wysiwyg' option */
 function cc_author_wysiwyg_callback() {
-	$features = get_option( 'cc_author_features' ); // Retrieve plugin options from the database
+	$admin_options = get_option( 'cc_author_admin_options' ); // Retrieve plugin options from the database
 	
 	/* Determine whether the box should be checked based on setting in database */
-	if ( isset( $features['wysiwyg'] ) ) {
+	if ( $admin_options['wysiwyg'] ) {
 		$checked = 'checked';
 	}
 	else {
 		$checked = '';
 	}
 	
-	echo '<input id="wysiwyg" name="cc_author_features[wysiwyg]" type="checkbox" value="WYSIWYG" ' . $checked . '>'; // Print the input field to the screen
+	echo '<input id="wysiwyg" name="cc_author_admin_options[wysiwyg]" type="checkbox" value="WYSIWYG" ' . $checked . '>'; // Print the input field to the screen
 	echo '<p class="description">Enable a WYSIWYG editor for the author bio field, both in the user profile area and in the post/page meta box.</p>'; // Description of option
-} // cc_author_wysiwyg_callback()
+} // cc_author_wysiwyg_callback()/* Call back fo
 
 /* Validate submitted options */
-function cc_author_features_validate( $input ) {
-	$features = get_option( 'cc_author_features' ); // Retrieve existing options values from the database
+function cc_author_admin_options_validate( $input ) {
+	$admin_options = get_option( 'cc_author_admin_options' ); // Retrieve existing options values from the database
 	
 	/* Directly set values that don't require validation */
-	$features['perpost']		=	$input['perpost'];
-	$features['wysiwyg']		=	$input['wysiwyg'];
+	$admin_options['wysiwyg']		=	$input['wysiwyg'];
 	
-	return $features; // Send values to database
-} // cc_author_features_validate()
+	return $admin_options; // Send values to database
+} // cc_author_admin_options_validate()
 /**
- * End Options page configuration
+ * End Admin Options
  */
 
 
@@ -126,7 +187,8 @@ function cc_author_options_page() {
 
 		<form action="options.php" method="post">
 			<?php
-			settings_fields( 'cc_author_options_features' ); 	// Retrieve the fields created for the options page
+			settings_fields( 'cc_author_options_postpage' ); 	// Retrieve the fields created for post/page options
+			settings_fields( 'cc_author_options_admin' );		// Retrieve the fields created for admin options
 			do_settings_sections( 'cc-author' ); 				// Display the section(s) for the options page
 			submit_button();									// Form submit button generated by WordPress
 			?>
