@@ -131,7 +131,7 @@ function cc_author_save_meta( $post_id ) {
 	if ( isset( $_POST['cc_author_meta'] ) ) { // Verify that values have been provided
 		if ( isset( $_POST['cc_author_postauthor'] ) ) { // Check whether a value for 'cc_author_postauthor' was sent
 			/* If the post author has been changed, use the new post author's profile values for post-specific data. Otherwise, use data submitted */
-			if ( $_POST['cc_author_postauthor'] != $_POST['cc_author_currentpostauthor'] ) {
+			if ( ($_POST['cc_author_postauthor'] != $_POST['cc_author_currentpostauthor']) && !isset( $_POST['cc_author_javascript'] ) ) {
 				$postauthor = get_userdata( $_POST['cc_author_postauthor'] ); // Retrieve the details of the post author
 		
 				$author = array(); // Initialize main array
