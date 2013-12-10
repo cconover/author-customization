@@ -92,11 +92,16 @@ function cc_author_activate() {
 	}
 	
 	/* Set default features for plugin */
-	$features = array (
+	$postpage = array (
 		'perpost'		=>	'Post',		// Save author info to each individual post, rather than pulling from global author data
+		'relnofollow'	=>	'Nofollow'	// Add rel="nofollow" to links in bio entries
+	);
+	add_option( 'cc_author_postpage', $postpage ); // Save options to database
+	
+	$admin_options = array(
 		'wysiwyg'		=>	'WYSIWYG'	// Enable the WYSIWYG editor for author bio fields
 	);
-	add_option( 'cc_author_features', $features );
+	add_option( 'cc_author_admin_options', $admin_options ); // Save options to database
 } // cc_author_activate()
 register_activation_hook( __FILE__, 'cc_author_activate' ); // Register activation function with WordPress' activation hook
 /**
