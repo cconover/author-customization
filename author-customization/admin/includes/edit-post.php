@@ -3,7 +3,7 @@
 Functions to include when editing a post
 
 Included/Required by:
-admin/author-customization-admin.php
+/admin/author-customization-admin.php
 */
 
 
