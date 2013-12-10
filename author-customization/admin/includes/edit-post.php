@@ -145,7 +145,7 @@ function cc_author_save_meta( $post_id ) {
 		/* Sanitize array values */
 		foreach ( $author as $authormeta ) {
 			foreach ( $authormeta as $key => $meta ) {
-				$authormeta[$key] = strip_tags( $meta );
+				$authormeta['display_name'] = strip_tags( $meta );
 			}
 		}
 		update_post_meta( $post_id, '_cc_author_meta', $author ); // Save author metadata to post meta
