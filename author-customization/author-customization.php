@@ -42,11 +42,11 @@ function cc_author_description( $description ) {
 	
 	/* If there's post-specific metadata stored and a post, page, or attachment is being displayed, show the post-specific bio. Otherwise use the profile bio. */
 	if ( $author && is_singular() ) {
-		$description = $author[0]['description']; // Set the description to the one saved in the post metadata
+		$description = apply_filters( 'the_content', $author[0]['description'] ); // Set the description to the one saved in the post metadata
 	}
 	else {
 		$author = get_userdata( $post->ID ); // Get the profile data for the post author
-		$description = $author->description; // Set the description to the value stored in the author's profile
+		$description = apply_filters( 'the_content', $author->description ); // Set the description to the value stored in the author's profile
 	}
 	
 	return $description; // Send back the description for WordPress to display
