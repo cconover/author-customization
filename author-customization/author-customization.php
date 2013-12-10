@@ -31,8 +31,10 @@ function cc_author_displayname( $name ) {
 	
 	return $name; // Send the name back to WordPress for displaying on the post
 } // cc_author_displayname()
-add_filter( 'the_author', 'cc_author_displayname' ); // Hook display name function into 'the_author' filter
-add_filter( 'get_the_author_display_name', 'cc_author_displayname' ); // Hook display name function into 'get_the_author_display_name' filter
+if ( !is_admin() ) { // Only add filters if not in admin
+	add_filter( 'the_author', 'cc_author_displayname' ); // Hook display name function into 'the_author' filter
+	add_filter( 'get_the_author_display_name', 'cc_author_displayname' ); // Hook display name function into 'get_the_author_display_name' filter
+}
 
 /* Get the post author description from post and apply it to the displayed post/page */
 function cc_author_description( $description ) {
@@ -51,7 +53,9 @@ function cc_author_description( $description ) {
 	
 	return $description; // Send back the description for WordPress to display
 } // cc_author_description()
-add_filter( 'get_the_author_description', 'cc_author_description' ); // Hook description into 'get_the_author_description' filter
+if ( !is_admin() ) { // Only add filters if not in admin
+	add_filter( 'get_the_author_description', 'cc_author_description' ); // Hook description into 'get_the_author_description' filter
+}
 /**
  * End Author Info
  */
