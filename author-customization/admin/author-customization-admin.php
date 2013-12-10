@@ -204,4 +204,9 @@ function cc_author_options_page() {
 if ( strstr( $_SERVER['REQUEST_URI'], 'wp-admin/post-new.php' ) || strstr( $_SERVER['REQUEST_URI'], 'wp-admin/post.php' ) || strstr( $_SERVER['REQUEST_URI'], 'wp-admin/edit.php' ) ) {
 	require_once( dirname( __FILE__ ) . '/includes/edit-post.php' ); // Retrieve file containing edit post functions
 }
+
+/* If editing user profile, include the functions for use while editing a user */
+if ( strstr( $_SERVER['REQUEST_URI'], 'wp-admin/profile.php' ) || strstr( $_SERVER['REQUEST_URI'], 'wp-admin/user-edit.php' ) ) {
+	require_once( dirname( __FILE__ ) . '/includes/edit-user.php' ); // Retrieve file containing edit user functions
+}
 ?>
