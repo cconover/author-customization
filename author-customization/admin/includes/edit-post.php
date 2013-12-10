@@ -89,26 +89,10 @@ function cc_author_metabox( $post ) {
 		<input type="text" name="cc_author_meta[0][display_name]" id="cc_author_meta[0][display_name]" value="<?php echo esc_attr( $cc_author_meta[0]['display_name'] ); ?>" />
 
 		<label for="cc_author_meta[0][description]" class="selectit">Bio</label>
+		
 		<?
-		/* Show WYSIWYG editor if enabled in plugin options */
-		$admin_options = get_option( 'cc_author_admin_options' ); // Retrieve the plugin options
-		if ( isset( $admin_options['wysiwyg'] ) ) {
-			$settings = array( // Settings for WYSIWYG
-				'media_buttons'		=> false, // Don't display media upload options
-				'quicktags'			=> false, // Disable quicktags
-				'textarea_name'		=> 'cc_author_meta[0][description]', // Form item name
-				'teeny'				=> true, // Keep editor to minimal button options, instead of full editor
-				'tinymce'			=> array(
-					'theme_advanced_buttons1'	=> 'bold,italic,underline,strikethrough,link,unlink' // Only show the listed buttons in the editor
-				),
-			);
-			wp_editor( $cc_author_meta[0]['description'], 'cc-author-meta-description', $settings ); // Display WYSIWYG
-		}
-		else {
-			?>
-			<textarea name="cc_author_meta[0][description]" rows="5" cols="50" required><?php echo esc_attr( $cc_author_meta[0]['description'] ); ?></textarea>
-			<?php
-		}
+		$descEditor = new ccAuthorDescEditor( $cc_author_meta[0]['description'], 'cc_author_meta[0][description]' ); // Create the bio editor object
+		echo $descEditor->editor(); // Display the editor
 		?>
 	</div>
 	<?php
