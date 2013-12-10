@@ -41,8 +41,11 @@ function cc_author_add_metabox() {
 	);
 	
 	/* Add script for changing the post author */
-	$changeauthorurl = plugins_url( 'assets/js/change-post-author.js', dirname( __FILE__ ) ); // Set URL to JavaScript file
-	wp_enqueue_script( 'cc-author-change-post-author', $changeauthorurl, 'jquery' ); // Add JS to <head>
+	wp_enqueue_script( // Add JS to <head>
+		'cc-author-change-post-author',
+		plugins_url( 'assets/js/change-post-author.js', dirname( __FILE__ ) ),
+		'jquery'
+	);
 } // cc_author_add_metabox()
 add_action( 'add_meta_boxes', 'cc_author_add_metabox' ); // Hook meta box updates into WordPress
 
