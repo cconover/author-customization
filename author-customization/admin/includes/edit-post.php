@@ -76,8 +76,8 @@ function cc_author_metabox( $post ) {
 		<label for="cc_author_meta[0][description]" class="selectit">Bio</label>
 		<?
 		/* Show WYSIWYG editor if enabled in plugin options */
-		$features = get_option( 'cc_author_features' ); // Retrieve the plugin options
-		if ( isset( $features['wysiwyg'] ) ) {
+		$admin_options = get_option( 'cc_author_admin_options' ); // Retrieve the plugin options
+		if ( isset( $admin_options['wysiwyg'] ) ) {
 			$settings = array( // Settings for WYSIWYG
 				'media_buttons'		=> false, // Don't display media upload options
 				'quicktags'			=> false, // Disable quicktags
