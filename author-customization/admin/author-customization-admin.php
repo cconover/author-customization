@@ -22,7 +22,7 @@ function cc_author_create_menu() {
 } // cc_author_create_menu()
 add_action( 'admin_menu', 'cc_author_create_menu' ); // Hook menu entry into API
 /**
- * End create entry in Settings menu
+ * End Create entry in Settings menu
  */
 
 
