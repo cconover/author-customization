@@ -86,7 +86,7 @@ function cc_author_metabox( $post ) {
 		}
 		?>
 		<label for="cc_author_meta[0][display_name]" class="selectit">Name</label>
-		<input type="text" name="cc_author_meta[0][display_name]" value="<?php echo esc_attr( $cc_author_meta[0]['display_name'] ); ?>" />
+		<input type="text" name="cc_author_meta[0][display_name]" id="cc_author_meta[0][display_name]" value="<?php echo esc_attr( $cc_author_meta[0]['display_name'] ); ?>" />
 
 		<label for="cc_author_meta[0][description]" class="selectit">Bio</label>
 		<?
