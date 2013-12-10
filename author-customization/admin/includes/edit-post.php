@@ -8,6 +8,15 @@ Included/Required by:
 
 
 /**
+ * Includes
+ */
+require_once( dirname( __FILE__ ) . '/class.ccAuthorDescEditor.php' ); // File containing bio editor class
+/**
+ * End Includes
+ */
+
+
+/**
  * Author Meta Box
  * Functions for creating and displaying the meta box
  */
