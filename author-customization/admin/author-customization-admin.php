@@ -29,7 +29,6 @@ add_action( 'admin_menu', 'cc_author_create_menu' ); // Hook menu entry into API
 /**
  * Post/Page options configuration
  * Settings specific to posts and pages
- * Sections, fields, callbacks and validations
  */
 add_action( 'admin_init', 'cc_author_postpage_init' ); // Hook admin initialization for plugin postpage
 
