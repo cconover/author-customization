@@ -15,9 +15,43 @@ License: GPLv2
  * Filter WordPress author functions to replace global profile data with plugin-generated data
  */
 /* Get the post author display name from post and apply to the post on display */
-function cc_author_author_displayname() {
+function cc_author_displayname( $name ) {
+	global $post; // Access post data
 	
-} // cc_author_author_displayname()
+	$author = get_post_meta( $post->ID, '_cc_author_meta', true ); // Get the post-specific author metadata
+	
+	/* If there's post-specific metadata stored and a post, page, or attachment is being displayed, show the post-specific display name. Otherwise use the profile display name. */
+	if ( $author && is_singular() ) {
+		$name = $author[0]['display_name']; // Set the name to the display name stored for the post
+	}
+	else {
+		$author = get_userdata( $post->ID ); // Get the profile data for the post author
+		$name = $author->display_name; // Set the display name to the value stored in the author's profile
+	}
+	
+	return $name; // Send the name back to WordPress for displaying on the post
+} // cc_author_displayname()
+add_filter( 'the_author', 'cc_author_displayname' ); // Hook display name function into 'the_author' filter
+add_filter( 'get_the_author_display_name', 'cc_author_displayname' ); // Hook display name function into 'get_the_author_display_name' filter
+
+/* Get the post author description from post and apply it to the displayed post/page */
+function cc_author_description( $description ) {
+	global $post; // Access post data
+	
+	$author = get_post_meta( $post->ID, '_cc_author_meta', true ); // Get the post-specific author metadata
+	
+	/* If there's post-specific metadata stored and a post, page, or attachment is being displayed, show the post-specific bio. Otherwise use the profile bio. */
+	if ( $author && is_singular() ) {
+		$description = $author[0]['description']; // Set the description to the one saved in the post metadata
+	}
+	else {
+		$author = get_userdata( $post->ID ); // Get the profile data for the post author
+		$description = $author->description; // Set the description to the value stored in the author's profile
+	}
+	
+	return $description; // Send back the description for WordPress to display
+} // cc_author_description()
+add_filter( 'get_the_author_description', 'cc_author_description' ); // Hook description into 'get_the_author_description' filter
 /**
  * End Author Info
  */
