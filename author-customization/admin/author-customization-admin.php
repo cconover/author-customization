@@ -76,7 +76,7 @@ function cc_author_perpost_callback() {
 	}
 	
 	echo '<input id="perpost" name="cc_author_postpage[perpost]" type="checkbox" value="Post" ' . $checked . '>'; // Print the input field to the screen
-	echo '<p class="description">If checked, the plugin will retrieve author information from the post metadata instead of the user database. Useful for keeping author information specific to the time a post was published.</p><p class="description"><strong>Note:</strong> You can toggle this at any time, as this plugin always saves author information to post metadata regardless of this setting.</p>'; // Description of option
+	echo '<p class="description">If checked, the plugin will display author information from the post metadata instead of the user database. Useful for keeping author information specific to the time a post was published.</p><p class="description"><strong>Note:</strong> You can toggle this at any time, as this plugin always saves author information to post metadata regardless of this setting.</p>'; // Description of option
 } // cc_author_perpost_callback()
 
 /* Callback for 'relnofollow' option */
