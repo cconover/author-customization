@@ -27,7 +27,7 @@ function cc_author_displayname() {
 		$name = $author[0]['display_name']; // Set the name to the display name stored for the post
 	}
 	else {
-		$author = get_userdata( $post->ID ); // Get the profile data for the post author
+		$author = get_userdata( $post->post_author ); // Get the profile data for the post author
 		$name = $author->display_name; // Set the display name to the value stored in the author's profile
 	}
 	
@@ -50,7 +50,7 @@ function cc_author_description() {
 		$description = $author[0]['description']; // Set the description to the one saved in the post metadata
 	}
 	else {
-		$author = get_userdata( $post->ID ); // Get the profile data for the post author
+		$author = get_userdata( $post->post_author ); // Get the profile data for the post author
 		$description = $author->description; // Set the description to the value stored in the author's profile
 	}
 	

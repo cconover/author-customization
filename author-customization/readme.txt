@@ -1,7 +1,7 @@
 === Author Customization ===
 Contributors: cconover
 Donate link: https://christiaanconover.com/code/wp-author-customization#donate
-Tags: NEED TAGS
+Tags: author, user, profile, tinymce, wysiwyg
 Requires at least: 3.5.2
 Tested up to: 3.7.1
 Stable tag: 0.1.0-alpha
