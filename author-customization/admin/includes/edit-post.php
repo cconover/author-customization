@@ -123,13 +123,13 @@ function cc_author_change_postauthor_callback() {
 		exit( 'Your request could not be authenticated' ); // Error message for unauthenticated request
 	}
 	
-	$authordata = get_userdata( $author ); // Retrieve the selected user's data from their profile
 		$author = $_POST['authorID']; // Assign local variable for submitted post author
 	
 	$authormeta = array(
 		'display_name'	=> $authordata['display_name'], // Display name from profile
 		'description'	=> $authordata['description'] // Biographical info from profile
 	);
+		$authordata = get_userdata( $author ); // Retrieve the selected user's data from their profile
 	
 	echo $authormeta;
 	
