@@ -128,7 +128,13 @@ function cc_author_change_postauthor_callback() {
 	
 		$authordata = get_userdata( $author ); // Retrieve the selected user's data from their profile
 	
-	echo $authormeta;
+		$authormeta = json_encode( array(
+			'display_name'	=> $authordata['display_name'], // Display name from profile
+			'description'	=> $authordata['description'] // Biographical info from profile
+		) );
+		
+		echo $authormeta; // Return the values located in the database
+	}
 	
 	die(); // End response. Required for callback to return a proper result.
 } // cc_author_change_postauthor_callback()
