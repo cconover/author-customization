@@ -27,7 +27,8 @@ jQuery( document ).ready( function( $ ) { // Don't execute anything until the pa
 				
 				/* Handle description update differently depending on whether 'wysiwyg' is enabled in plugin options */
 				if ( authormeta.wysiwyg == 'yes' ) {
-					tinyMCE.get( "cc_author_meta\\[0\\]\\[description\\]" ).setContent( authormeta.description );
+					tinyMCE.get( 'cc_author_meta\\[0\\]\\[description\\]' ).setContent( authormeta.description );
+					console.log( "WYSIWYG is enabled and update attempted" );
 				}
 				else {
 					$( "#cc_author_meta\\[0\\]\\[description\\]" ).val( authormeta.description );	// Change the value of the author bio to the value received from the server
