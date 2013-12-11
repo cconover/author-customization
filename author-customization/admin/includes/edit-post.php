@@ -136,7 +136,7 @@ function cc_author_change_postauthor_callback() {
 		echo $authormeta; // Return the values located in the database
 	}
 	
-	die(); // End response. Required for callback to return a proper result.
+	exit; // End response. Required for callback to return a proper result.
 } // cc_author_change_postauthor_callback()
 add_action( 'wp_ajax_cc_author_change_postauthor', 'cc_author_change_postauthor_callback' ); // Add action hook for the callback
 
