@@ -3,7 +3,7 @@
 Functions for managing the plugin inside wp-admin
 
 Included/Required by:
-/author-customization.php
+author-customization.php
 */
 
 
