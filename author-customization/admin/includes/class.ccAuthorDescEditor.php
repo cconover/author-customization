@@ -29,6 +29,7 @@ class ccAuthorDescEditor {
 			$settings = $this->editorsettings(); // Editor settings
 
 			$editor = wp_editor( $this->content, $this->editorid, $settings ); // Call the WordPress WYSIWYG
+			$editor .= '<span style="color: #FF0000; font-weight: bold;"><noscript>You have JavaScript disabled. The WYSIWYG can\'t run without JavaScript. Please enable JavaScript.</noscript></span>'; // Message to display to users with JavaScript disabled
 		}
 		else {
 			$editor = '<textarea id="' . $this->editorid . '" name="' . $this->editorid . '" rows="5" cols="50" required>' . esc_attr( $this->content ) . '</textarea>'; // Set the editor as a simple textarea
@@ -77,9 +78,9 @@ class ccAuthorDescEditorUser {
 		$settings = ccAuthorDescEditor::editorsettings(); // Editor settings
 			
 		?>
-		<noscript>
+		<div style="color: #FF0000; font-weight: bold;"><noscript>
 			You currently have JavaScript disabled, which is why you're seeing duplicate Biographical Info fields and no WYSIWYG. Please enable JavaScript.
-		</noscript>
+		</noscript></div>
 		<table class="form-table">
 			<tr>
 				<th><label for="description">Biographical Info</label></th>
