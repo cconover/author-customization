@@ -101,7 +101,6 @@ function cc_author_metabox( $post ) {
 		<input type="text" name="cc_author_meta[0][display_name]" id="cc_author_meta[0][display_name]" value="<?php echo esc_attr( $cc_author_meta[0]['display_name'] ); ?>" />
 
 		<label for="cc_author_meta[0][description]" class="selectit">Bio</label>
-		
 		<?
 		$descEditor = new ccAuthorDescEditor( $cc_author_meta[0]['description'], 'cc_author_meta[0][description]' ); // Create the bio editor object
 		echo $descEditor->editor(); // Display the editor
