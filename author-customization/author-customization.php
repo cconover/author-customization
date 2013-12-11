@@ -15,7 +15,7 @@ License: GPLv2
  * Filter WordPress author functions to replace global profile data with plugin-generated data
  */
 /* Get the post author display name from post and apply to the post on display */
-function cc_author_displayname( $name ) {
+function cc_author_displayname() {
 	global $post; // Access post data
 	
 	$postpage = get_option( 'cc_author_postpage' ); // Retrive plugin's post/page options
@@ -39,7 +39,7 @@ if ( !is_admin() ) { // Only add filters if not in admin
 }
 
 /* Get the post author description from post and apply it to the displayed post/page */
-function cc_author_description( $description ) {
+function cc_author_description() {
 	global $post; // Access post data
 	
 	$author = get_post_meta( $post->ID, '_cc_author_meta', true ); // Get the post-specific author metadata
