@@ -35,6 +35,8 @@ jQuery( document ).ready( function( $ ) { // Don't execute anything until the pa
 				else {
 					$( "#cc_author_meta\\[0\\]\\[description\\]" ).val( authormeta.description );	// Change the value of the author bio to the value received from the server
 				}
+				
+				$( "#cc_author_postauthor_loading_img" ).hide(); // Hide the 'loading' spinner
 			} // function( jsonString )
 		); // $.post
 	}); // $( "#cc_author_postauthor" ).change()
