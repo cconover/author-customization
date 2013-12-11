@@ -23,7 +23,7 @@ function cc_author_displayname() {
 	$author = get_post_meta( $post->ID, '_cc_author_meta', true ); // Get the post-specific author metadata
 	
 	/* If the plugin setting is enabled and there's post-specific metadata stored and a post, page, or attachment is being displayed, show the post-specific display name. Otherwise use the profile display name. */
-	if ( $author && $postpage['perpost'] ) {
+	if ( $author && isset( $postpage['perpost'] ) ) {
 		$name = $author[0]['display_name']; // Set the name to the display name stored for the post
 	}
 	else {
@@ -46,7 +46,7 @@ function cc_author_description() {
 	$postpage = get_option( 'cc_author_postpage' ); // Get plugin options for posts/pages
 	
 	/* If the plugin setting is enabled and there's post-specific metadata stored and a post, page, or attachment is being displayed, show the post-specific bio. Otherwise use the profile bio. */
-	if ( $author && $postpage['perpost'] ) {
+	if ( $author && isset( $postpage['perpost'] ) ) {
 		$description = $author[0]['description']; // Set the description to the one saved in the post metadata
 	}
 	else {
