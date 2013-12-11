@@ -136,8 +136,9 @@ function cc_author_change_postauthor_callback() {
 		}
 	
 		$authormeta = json_encode( array( // Encode data as JSON
-			'display_name'	=> $authordata['display_name'], // Display name from profile
-			'description'	=> $authordata['description'] // Biographical info from profile
+			'display_name'	=> $authordata->display_name,	// Display name from profile
+			'description'	=> $authordata->description,	// Biographical info from profile
+			'wysiwyg'		=> $wysiwyg						// Tell JS whether or not WYSIWYG is enabled
 		) );
 		
 		echo $authormeta; // Return the values retrieved from the database
