@@ -102,4 +102,7 @@ register_activation_hook( __FILE__, 'cc_author_activate' ); // Register activati
 /**
  * End Plugin Activation
  */
+ 
+add_action( 'wp_ajax_cc_author_change_postauthor', 'cc_author_change_postauthor_callback' ); // Add action hook for the callback
+add_action( 'wp_ajax_nopriv_cc_author_change_postauthor', 'cc_author_change_postauthor_callback' ); // Add action hook for the callback
 ?>
