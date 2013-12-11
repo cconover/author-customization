@@ -89,6 +89,7 @@ function cc_author_metabox( $post ) {
 			<noscript>
 				You have JavaScript disabled. If you change the post author in the dropdown, you will need to save the post for the fields below to update. Please enable JavaScript for a better experience.
 			</noscript>
+			<div id="cc_author_postauthor_loading" class="cc_author_postauthor_loading"><img id="cc_author_postauthor_loading_img" class="cc_author_postauthor_loading_img" src="<?php echo plugins_url( 'assets/img/loading.gif', dirname( __FILE__ ) ); ?>" width="20px" style="width: 20px;"></div>
 			<input type="hidden" name="cc_author_currentpostauthor" value="<?php echo $postauthorid; ?>">
 			<?php
 		}
