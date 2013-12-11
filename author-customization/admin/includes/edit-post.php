@@ -117,6 +117,7 @@ function cc_author_metabox( $post ) {
   */
 /* Callback for change author JavaScript */
 function cc_author_change_postauthor_callback() {
+	$nonce = $_POST['nonce']; // Assign a local variable for nonce
 	
 	$author = $_POST['cc_author_postauthor']; // Assign local variable for submitted post author
 	
