@@ -133,7 +133,7 @@ function cc_author_change_postauthor_callback() {
 			'description'	=> $authordata['description'] // Biographical info from profile
 		) );
 		
-		echo $authormeta; // Return the values located in the database
+		echo $authormeta; // Return the values retrieved from the database
 	}
 	
 	exit; // End response. Required for callback to return a proper result.
