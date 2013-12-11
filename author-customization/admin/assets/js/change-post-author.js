@@ -9,7 +9,7 @@ jQuery( document ).ready( function( $ ) { // Don't execute anything until the pa
 	$( "#cc_author_postauthor" ).change( function() { // If the author dropdown value is changed, execute the script
 		/* Data to pass to the server. Called below during $.post() */
 		var data = {
-			action : 'cc-author-change-postauthor',				// Action hook for the server-side callback
+			action : 'cc_author_change_postauthor',				// Action hook for the server-side callback
 			nonce : authorchange.nonce,							// Nonce received from server to authenticate request
 			authorID : $( "#cc_author_postauthor" ).val()		// author ID for retrieving profile data
 		};
