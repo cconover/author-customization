@@ -2,7 +2,7 @@
 Dynamically update post author meta box fields when post author is changed
 
 Called by:
-/admin/includes/edit-post.php
+admin/includes/edit-post.php
 */
 
 $( document ).ready( function() { // Don't execute anything until the page is loaded
