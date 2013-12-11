@@ -123,6 +123,7 @@ function cc_author_change_postauthor_callback() {
 		exit( 'Your request could not be authenticated' ); // Error message for unauthenticated request
 	}
 	
+	if ( current_user_can( 'edit_others_posts' ) || current_user_can( 'edit_others_pages' ) ) { // Check for proper permissions before handling request
 		$author = $_POST['authorID']; // Assign local variable for submitted post author
 	
 	$authormeta = array(
