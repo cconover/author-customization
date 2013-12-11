@@ -138,7 +138,7 @@ function cc_author_change_postauthor_callback() {
 	
 	exit; // End response. Required for callback to return a proper result.
 } // cc_author_change_postauthor_callback()
-add_action( 'wp_ajax_cc_author_change_postauthor', 'cc_author_change_postauthor_callback' ); // Add action hook for the callback
+add_action( 'wp_ajax_cc-author-change-postauthor', 'cc_author_change_postauthor_callback' ); // Add action hook for the callback
 
 /* Save the meta box data to post meta */
 function cc_author_save_meta( $post_id ) {
