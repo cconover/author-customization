@@ -127,8 +127,13 @@ function cc_author_change_postauthor_callback() {
 	
 	if ( current_user_can( 'edit_others_posts' ) || current_user_can( 'edit_others_pages' ) ) { // Check for proper permissions before handling request
 		$author = $_POST['authorID']; // Assign local variable for submitted post author
-	
 		$authordata = get_userdata( $author ); // Retrieve the selected user's data from their profile
+		
+		$admin_options = get_option( 'cc_author_admin_options' ); // Get plugin's admin options
+		/* Determine whether 'wysiwyg' is enabled and set the value of $wysiwyg accordingly */
+		if ( isset( $admin_options['wysiwyg'] ) ) {
+			$wysiwyg = 'yes';
+		}
 	
 		$authormeta = json_encode( array( // Encode data as JSON
 			'display_name'	=> $authordata['display_name'], // Display name from profile
