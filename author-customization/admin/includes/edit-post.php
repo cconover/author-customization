@@ -46,6 +46,14 @@ function cc_author_add_metabox() {
 		plugins_url( 'assets/js/change-post-author.js', dirname( __FILE__ ) ),
 		'jquery'
 	);
+	wp_localize_script( // Localize script for AJAX calls
+		'cc-author-change-post-author', // Name of script call being localized
+		'authorchange', // AJAX object namespace, used to call values in the JS file
+		array(
+			'ajaxurl'	=> admin_url( 'admin-ajax.php' ), // URL for admin AJAX calls
+			'nonce'		=> wp_create_nonce( 'cc-author-change-author-nonce' ) // Nonce to authenticate request
+		)
+	);
 } // cc_author_add_metabox()
 add_action( 'add_meta_boxes', 'cc_author_add_metabox' ); // Hook meta box updates into WordPress
 
