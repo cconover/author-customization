@@ -48,25 +48,18 @@ function cc_author_description() {
 	/* If the plugin setting is enabled and there's post-specific metadata stored and a post, page, or attachment is being displayed, show the post-specific bio. Otherwise use the profile bio. */
 	if ( $author && isset( $postpage['perpost'] ) ) {
 		$description = $author[0]['description']; // Set the description to the one saved in the post metadata
-		
-		/* If 'relnofollow' is set, add rel="nofollow" to links in bio */
-		if ( $postpage['relnofollow'] ) {
-			$description = str_replace( 'href', 'rel="nofollow" href', $description );
-		}
-		
-		$description = apply_filters( 'the_content', $description ); // Enable formatting for bio
 	}
 	else {
 		$author = get_userdata( $post->ID ); // Get the profile data for the post author
 		$description = $author->description; // Set the description to the value stored in the author's profile
-		
-		/* If 'relnofollow' is set, add rel="nofollow" to links in bio */
-		if ( $postpage['relnofollow'] ) {
-			$description = str_replace( 'href', 'rel="nofollow" href', $description );
-		}
-		
-		$description = apply_filters( 'the_content', $description ); // Enable formatting for bio
 	}
+	
+	/* If 'relnofollow' is set, add rel="nofollow" to links in bio */
+	if ( $postpage['relnofollow'] ) {
+		$description = str_replace( 'href', 'rel="nofollow" href', $description );
+	}
+	
+	$description = apply_filters( 'the_content', $description ); // Enable formatting for bio
 	
 	return $description; // Send back the description for WordPress to display
 } // cc_author_description()
