@@ -77,6 +77,9 @@ class ccAuthorDescEditorUser {
 		$settings = ccAuthorDescEditor::editorsettings(); // Editor settings
 			
 		?>
+		<noscript>
+			You currently have JavaScript disabled, which is why you're seeing duplicate Biographical Info fields and no WYSIWYG. Please enable JavaScript.
+		</noscript>
 		<table class="form-table">
 			<tr>
 				<th><label for="description">Biographical Info</label></th>
