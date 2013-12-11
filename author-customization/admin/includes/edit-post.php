@@ -119,9 +119,9 @@ function cc_author_metabox( $post ) {
 function cc_author_change_postauthor_callback() {
 	$nonce = $_POST['nonce']; // Assign a local variable for nonce
 	
-	$author = $_POST['cc_author_postauthor']; // Assign local variable for submitted post author
 	
 	$authordata = get_userdata( $author ); // Retrieve the selected user's data from their profile
+		$author = $_POST['authorID']; // Assign local variable for submitted post author
 	
 	$authormeta = array(
 		'display_name'	=> $authordata['display_name'], // Display name from profile
