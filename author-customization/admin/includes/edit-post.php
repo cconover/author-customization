@@ -117,6 +117,8 @@ function cc_author_metabox( $post ) {
   */
 /* Callback for change author JavaScript */
 function cc_author_change_postauthor_callback() {
+	global $wpdb; // Allow access to database
+	
 	$nonce = $_POST['nonce']; // Assign a local variable for nonce
 	
 	if ( ! wp_verify_nonce( $nonce, 'cc-author-change-author-nonce' ) ) { // If the nonce doesn't check out, fail the request
