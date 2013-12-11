@@ -31,27 +31,39 @@ function cc_author_add_metabox() {
 	
 	/* Iterate through locations to add meta box */
 	foreach( $screens as $screen ) {
-		add_meta_box( 'cc-author-metabox', 'Author', 'cc_author_metabox', $screen, 'normal', 'high' ); // Parameters for adding meta box
+		add_meta_box(
+			'cc-author-metabox',
+			'Author',
+			'cc_author_metabox',
+			$screen,
+			'normal',
+			'high'
+		);
 	}
 	
 	/* Add custom style for meta box */
 	wp_enqueue_style( // Add style call to <head>
 		'cc-author-metabox',
-		plugins_url( 'assets/css/edit-post.css', dirname( __FILE__ ) )
+		plugins_url(
+			'assets/css/edit-post.css',
+			dirname( __FILE__ )
+		)
 	);
 	
 	/* Add script for changing the post author */
-	wp_enqueue_script( // Add JS to <head>
-		'cc-author-change-post-author',
-		plugins_url( 'assets/js/change-post-author.js', dirname( __FILE__ ) ),
-		'jquery'
+	wp_enqueue_script(																// Add JS to <head>
+		'cc-author-change-post-author',												// Registered script handle
+		plugins_url( 'assets/js/change-post-author.js', dirname( __FILE__ ) ),		// URL to script
+		array(																		// Script dependencies
+			'jquery'
+		)
 	);
-	wp_localize_script(						// Localize script for AJAX calls
-		'cc-author-change-post-author',		// Name of script call being localized
-		'authorchange',						// AJAX object namespace, used to call values in the JS file
+	wp_localize_script(																// Localize script for AJAX calls
+		'cc-author-change-post-author',												// Name of script call being localized
+		'authorchange',																// AJAX object namespace, used to call values in the JS file
 		array(
-			'ajaxurl'	=> admin_url( 'admin-ajax.php' ),									// URL for admin AJAX calls
-			'nonce'		=> wp_create_nonce( 'cc-author-change-author-nonce' )				// Nonce to authenticate request
+			'ajaxurl'	=> admin_url( 'admin-ajax.php' ),							// URL for admin AJAX calls
+			'nonce'		=> wp_create_nonce( 'cc-author-change-author-nonce' )		// Nonce to authenticate request
 		)
 	);
 } // cc_author_add_metabox()
