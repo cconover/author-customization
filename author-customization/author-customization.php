@@ -43,7 +43,7 @@ function cc_author_description() {
 	global $post; // Access post data
 	
 	$author = get_post_meta( $post->ID, '_cc_author_meta', true ); // Get the post-specific author metadata
-	$postpage = get_option( 'cc_author_options_postpage' ); // Get plugin options for posts/pages
+	$postpage = get_option( 'cc_author_postpage' ); // Get plugin options for posts/pages
 	
 	/* If the plugin setting is enabled and there's post-specific metadata stored and a post, page, or attachment is being displayed, show the post-specific bio. Otherwise use the profile bio. */
 	if ( $author && isset( $postpage['perpost'] ) ) {
