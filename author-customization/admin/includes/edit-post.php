@@ -128,7 +128,7 @@ function cc_author_change_postauthor_callback() {
 	
 		$authordata = get_userdata( $author ); // Retrieve the selected user's data from their profile
 	
-		$authormeta = json_encode( array(
+		$authormeta = json_encode( array( // Encode data as JSON
 			'display_name'	=> $authordata['display_name'], // Display name from profile
 			'description'	=> $authordata['description'] // Biographical info from profile
 		) );
