@@ -35,7 +35,11 @@ Not yet, but that's in the works. I plan to add support for this in a future upd
 
 == Screenshots ==
 
-1. Main plugin options
+1. Author meta box, displayed when editing a post or page. The author dropdown menu is only shown to editors and higher.
+
+2. Plugin options page.
+
+3. TinyMCE editor on user profile page. This is optional, but enabled by default.
 
 == Changelog ==
 
