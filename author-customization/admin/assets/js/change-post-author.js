@@ -24,7 +24,14 @@ jQuery( document ).ready( function( $ ) { // Don't execute anything until the pa
 				console.log( "This is the JSON response from the server: " + jsonString );
 				
 				$( "#cc_author_meta\\[0\\]\\[display_name\\]" ).val( authormeta.display_name );	// Change the value of the author display name to the value received from the server
-				$( "#cc_author_meta\\[0\\]\\[description\\]" ).val( authormeta.description );	// Change the value of the author bio to the value received from the server
+				
+				/* Handle description update differently depending on whether 'wysiwyg' is enabled in plugin options */
+				if ( authormeta.wysiwyg == 'yes' ) {
+					tinyMCE.get( "cc_author_meta\\[0\\]\\[description\\]" ).setContent( authormeta.description );
+				}
+				else {
+					$( "#cc_author_meta\\[0\\]\\[description\\]" ).val( authormeta.description );	// Change the value of the author bio to the value received from the server
+				}
 			} // function( jsonString )
 		); // $.post
 	}); // $( "#cc_author_postauthor" ).change()
