@@ -21,6 +21,8 @@ jQuery( document ).ready( function( $ ) { // Don't execute anything until the pa
 			function( jsonString ) {							// Script to execute upon successful response from server
 				var authormeta = $.parseJSON( jsonString );		// Parse the JSON received from the server response
 				
+				console.log( "This is the JSON response from the server: " + jsonString );
+				
 				$( "#cc_author_meta\\[0\\]\\[display_name\\]" ).val( authormeta.display_name );	// Change the value of the author display name to the value received from the server
 				$( "#cc_author_meta\\[0\\]\\[description\\]" ).val( authormeta.description );	// Change the value of the author bio to the value received from the server
 			} // function( jsonString )
