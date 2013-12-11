@@ -30,6 +30,9 @@ User data is copied from the selected author's profile at the time the post is f
 = Can I turn on per-post author info down the line? =
 Yes. The plugin saves author info to each post you edit whether or not you've enabled displaying author data from the post metadata.
 
+= Can I assign multiple authors to a post =
+Not yet, but that's in the works. I plan to add support for this in a future update.
+
 == Screenshots ==
 
 1. Main plugin options
