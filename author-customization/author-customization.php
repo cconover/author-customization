@@ -55,7 +55,7 @@ function cc_author_description() {
 	}
 	
 	/* If 'relnofollow' is set, add rel="nofollow" to links in bio */
-	if ( $postpage['relnofollow'] ) {
+	if ( isset( $postpage['relnofollow'] ) ) {
 		$description = str_replace( 'href', 'rel="nofollow" href', $description );
 	}
 	
