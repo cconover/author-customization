@@ -7,7 +7,7 @@ Included/Required by:
 /admin/includes/edit-user.php
 */
 
-/* Main editor class */
+/* Edit post/page author editor */
 class ccAuthorDescEditor {
 	/* Properties */
 	public $cc_author_bio_content;
