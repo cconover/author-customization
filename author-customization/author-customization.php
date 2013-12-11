@@ -46,7 +46,7 @@ function cc_author_description() {
 	$postpage = get_option( 'cc_author_postpage' ); // Get plugin options for posts/pages
 	
 	/* If the plugin setting is enabled and there's post-specific metadata stored and a post, page, or attachment is being displayed, show the post-specific bio. Otherwise use the profile bio. */
-	if ( $author && isset( $postpage['perpost'] ) ) {
+	if ( $author && $postpage['perpost'] ) {
 		$description = $author[0]['description']; // Set the description to the one saved in the post metadata
 	}
 	else {
