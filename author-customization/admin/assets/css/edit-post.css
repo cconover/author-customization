@@ -13,3 +13,12 @@
 .cc_author_metabox textarea {
 	width: 98%;
 }
+
+.cc_author_postauthor_loading {
+	margin-left: 0.5em;
+	vertical-align: middle;
+	display: inline;
+}
+.cc_author_postauthor_loading_img {
+	display: none;
+}
