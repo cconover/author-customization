@@ -78,6 +78,9 @@ function cc_author_metabox( $post ) {
 	?>
 	<div class="cc_author_metabox">
 		<p>Changes made to this information will only apply to this post, and will not be saved to the user's profile.</p>
+		<div style="color: #FF0000; font-weight: bold;"><noscript>
+				You have JavaScript disabled. If you change the post author in the dropdown, you will need to save the post for the fields below to update. Please enable JavaScript for a better experience.
+		</noscript></div>
 		<?php
 		if ( current_user_can( 'edit_others_posts' ) || current_user_can( 'edit_others_pages' ) ) { // Check the capabilities of the current user for sufficient privileges
 			wp_dropdown_users( array(
