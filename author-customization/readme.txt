@@ -35,6 +35,9 @@ Yes. The plugin saves author info to each post you edit whether or not you've en
 = Can I assign multiple authors to a post? =
 Not yet, but that's in the works. I plan to add support for this in a future update.
 
+= I'm not seeing any author information on my posts! What's gone wrong? =
+In order for author information to appear on your posts and pages, the theme you're using must have support for this. If it does, you should see your author info changes without issue. If you know it shows author information but you're not seeing the changes you made using this plugin, pop over to the Support area. If your theme does not have support for author info, contact the theme developer.
+
 == Screenshots ==
 
 1. Author meta box, displayed when editing a post or page. The author dropdown menu is only shown to editors and higher.
