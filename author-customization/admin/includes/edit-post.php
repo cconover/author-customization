@@ -163,7 +163,7 @@ add_action( 'wp_ajax_cc_author_change_postauthor', 'cc_author_change_postauthor_
 /* Save the meta box data to post meta */
 function cc_author_save_meta( $post_id ) {
 	if ( isset( $_POST['cc_author_meta'] ) ) { // Verify that values have been provided
-		if ( isset( $_POST['cc_author_postauthor'] ) && ($_POST['cc_author_postauthor'] != $_POST['cc_author_currentpostauthor']) && !isset( $_POST['cc_author_javascript'] ) ) { // If the post author has been changed and JavaScript is not enabled, use the new post author's profile values for post-specific data. Otherwise, use data submitted from the meta box.
+		if ( isset( $_POST['cc_author_postauthor'] ) && ( $_POST['cc_author_postauthor'] != $_POST['cc_author_currentpostauthor'] ) && !isset( $_POST['cc_author_javascript'] ) ) { // If the post author has been changed and JavaScript is not enabled, use the new post author's profile values for post-specific data. Otherwise, use data submitted from the meta box.
 			$postauthor = get_userdata( $_POST['cc_author_postauthor'] ); // Retrieve the details of the post author
 	
 			$author = array(); // Initialize main array
