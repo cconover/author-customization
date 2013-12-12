@@ -8,7 +8,7 @@ Stable tag: 0.1.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Author Customization adds additional author management capabilities beyond the native user account structure. Save author data to each post, enable WYSIWYG editing of biographical info, and more.
+Author Customization adds additional author management capabilities beyond the native user account structure.
 
 == Description ==
 
