@@ -54,3 +54,8 @@ In order for author information to appear on your posts and pages, the theme you
 
 = 0.1.0 =
 Initial release.
+
+== Upgrade Notice ==
+
+= 0.1.1 =
+Major bug in saving customized author info when selecting a new post author has been corrected.
