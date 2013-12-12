@@ -48,5 +48,9 @@ In order for author information to appear on your posts and pages, the theme you
 
 == Changelog ==
 
+= 0.1.1 =
+* Bug fix: changes made to author info after a new post author was selected were not being saved because the server was not being told whether JavaScript was active.
+* Bug fix: "loading" spinner image displayed when a new post author is selected was being shown out of proportion.
+
 = 0.1.0 =
 Initial release.
