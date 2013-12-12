@@ -26,8 +26,8 @@ jQuery( document ).ready( function( $ ) { // Don't execute anything until the pa
 				$( "#cc_author_meta\\[0\\]\\[display_name\\]" ).val( authormeta.display_name );	// Change the value of the author display name to the value received from the server
 				
 				/* Handle description update differently depending on whether 'wysiwyg' is enabled in plugin options */
-				if ( authormeta.wysiwyg == 'yes' ) {
-					tinymce.get( 'cc_author_meta\\[0\\]\\[description\\]' ).setContent( authormeta.description );
+				if ( authormeta.wysiwyg == 'yes' && typeof tinymce == 'object' ) {
+					tinymce.get( 'cc_author_meta[0][description]' ).setContent( authormeta.description );
 					console.log( "WYSIWYG is enabled and update attempted" );
 				}
 				else {
