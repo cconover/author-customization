@@ -37,4 +37,5 @@ jQuery( document ).ready( function( $ ) { // Don't execute anything until the pa
 			} // function( jsonString )
 		); // $.post
 	}); // $( "#cc_author_postauthor" ).change()
+	$( "#cc_author_javascript" ).val( "yes" ); // Set JavaScript field to 'yes' so the server can know whether JavaScript is working
 }); // jQuery ready check
