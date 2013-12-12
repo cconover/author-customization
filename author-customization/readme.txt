@@ -14,10 +14,7 @@ Author Customization adds additional author management capabilities beyond the n
 
 Author Customization gives you much more flexibility in managing post and page author data. Your author data will no longer be tied to the WordPress user system, and can now be managed on a per-post basis.
 
-Features:
-* Per-post author display name and biographical info
-* TinyMCE (WYSIWYG) editor for user profile and per-post biographical info
-* rel="nofollow" link inside biographical info entries
+Features: per-post author display name and biographical info, TinyMCE (WYSIWYG) editor for user profile and per-post biographical info, rel="nofollow" link inside biographical info entries
 
 == Installation ==
 
