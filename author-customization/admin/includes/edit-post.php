@@ -95,15 +95,20 @@ function cc_author_metabox( $post ) {
 		</noscript></div>
 		<?php
 		if ( current_user_can( 'edit_others_posts' ) || current_user_can( 'edit_others_pages' ) ) { // Check the capabilities of the current user for sufficient privileges
-			wp_dropdown_users( array(
-				'name'			=> 'cc_author_postauthor', // Name for the form item
-				'id'			=> 'cc_author_postauthor', // Class for the form item
-				'selected'		=> $postauthorid // Select the post's author to be displayed by default
-			) );
 			?>
-			<div id="cc_author_postauthor_loading" class="cc_author_postauthor_loading"><img id="cc_author_postauthor_loading_img" class="cc_author_postauthor_loading_img" src="<?php echo admin_url( 'images/wpspin_light-2x.gif' ); ?>" width="20px" height="20px"></div>
-			<input type="hidden" name="cc_author_currentpostauthor" value="<?php echo $postauthorid; ?>">
-			<input type="hidden" name="cc_author_javascript" id="cc_author_javascript" value="">
+			<div id="cc_author_metabox_postauthor" class="cc_author_metabox_postauthor">
+			<?php
+				wp_dropdown_users( array(
+					'name'			=> 'cc_author_postauthor', // Name for the form item
+					'id'			=> 'cc_author_postauthor', // ID for the form item
+					'class'			=> 'cc_author_postauthor', // Class for the form item
+					'selected'		=> $postauthorid // Select the post's author to be displayed by default
+				) );
+				?>
+				<span class="spinner"></span>
+				<input type="hidden" name="cc_author_currentpostauthor" value="<?php echo $postauthorid; ?>">
+				<input type="hidden" name="cc_author_javascript" id="cc_author_javascript" value="">
+				</div><!-- #cc_author_metabox_postauthor -->
 			<?php
 		}
 		?>
