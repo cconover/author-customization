@@ -46,7 +46,7 @@ function cc_author_add_metabox() {
 		'cc-author-metabox',														// Stylesheet hook name
 		plugins_url( 'assets/css/edit-post.css', dirname( __FILE__ ) ),				// URL for stylesheet
 		array(),																	// Style dependencies
-		$_ENV['cc_author_version']													// Stylesheet version, equal to plugin version
+		$_ENV['cc_author_plugindata']['Version']									// Stylesheet version, equal to plugin version
 	);
 	
 	/* Add script for changing the post author */
@@ -56,7 +56,7 @@ function cc_author_add_metabox() {
 		array(																		// Script dependencies
 			'jquery'
 		),
-		$_ENV['cc_author_version']													// Script version, equal to plugin version
+		$_ENV['cc_author_plugindata']['Version']									// Script version, equal to plugin version
 	);
 	wp_localize_script(																// Localize script for AJAX calls
 		'cc-author-change-post-author',												// Name of script call being localized
