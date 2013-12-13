@@ -10,7 +10,14 @@ License: GPLv2
 */
 
 
-$_ENV['cc_author_version'] = '0.1.1'; // Set plugin version number for use elsewhere in the plugin
+/**
+ * Plugin Environment Data
+ */
+/* Set plugin version data for use elsewhere in the plugin */
+$_ENV['cc_author_plugindata'] = array( 'Version' => '0.2.0' );
+/**
+ * End Plugin Environment Data
+ */
 
 /**
  * Author Info
