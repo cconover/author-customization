@@ -52,7 +52,7 @@ function cc_author_add_metabox() {
 	/* Add script for changing the post author */
 	wp_enqueue_script(																// Add JS to <head>
 		'cc-author-change-post-author',												// Registered script handle
-		plugins_url( 'assets/js/change-post-author.js', dirname( __FILE__ ) ),		// URL to script
+		plugins_url( 'assets/js/edit-post.js', dirname( __FILE__ ) ),		// URL to script
 		array(																		// Script dependencies
 			'jquery'
 		),
