@@ -17,8 +17,10 @@ License: GPLv2
 if ( function_exists( 'get_plugin_data' ) ) {
 	$_ENV['cc_author_plugindata'] = get_plugin_data( __FILE__, false );
 }
-else {
-	$_ENV['cc_author_plugindata'] = ''; // If the function get_plugin_data does not exist, return empty variable
+else { // If the function get_plugin_data does not exist, return empty array
+	$_ENV['cc_author_plugindata'] = array(
+		'Version'	=>	''
+	);
 }
 /**
  * End Plugin Environment Data
