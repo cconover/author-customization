@@ -38,7 +38,11 @@ function cc_author_displayname() {
 	
 	/* If the plugin setting is enabled and there's post-specific metadata stored and a post, page, or attachment is being displayed, show the post-specific display name. Otherwise use the profile display name. */
 	if ( $author && isset( $postpage['perpost'] ) ) {
-		$name = $author[0]['display_name']; // Set the name to the display name stored for the post
+		foreach ( $author as $authormeta ) {
+			foreach ( $authormeta as $key => $meta ) {
+				$name = $authormeta['display_name']; // Set the name to the display name stored for the post
+			}
+		}
 	}
 	else {
 		$author = get_userdata( $post->post_author ); // Get the profile data for the post author
@@ -61,7 +65,11 @@ function cc_author_description() {
 	
 	/* If the plugin setting is enabled and there's post-specific metadata stored and a post, page, or attachment is being displayed, show the post-specific bio. Otherwise use the profile bio. */
 	if ( $author && isset( $postpage['perpost'] ) ) {
-		$description = $author[0]['description']; // Set the description to the one saved in the post metadata
+		foreach ( $author as $authormeta ) {
+			foreach ( $authormeta as $key => $meta ) {
+				$description = $authormeta['description']; // Set the description to the one saved in the post metadata
+			}
+		}
 	}
 	else {
 		$author = get_userdata( $post->post_author ); // Get the profile data for the post author
