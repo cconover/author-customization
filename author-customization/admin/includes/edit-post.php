@@ -55,7 +55,8 @@ function cc_author_add_metabox() {
 		plugins_url( 'assets/js/change-post-author.js', dirname( __FILE__ ) ),		// URL to script
 		array(																		// Script dependencies
 			'jquery'
-		)
+		),
+		$_ENV['cc_author_version']													// Script version, equal to plugin version
 	);
 	wp_localize_script(																// Localize script for AJAX calls
 		'cc-author-change-post-author',												// Name of script call being localized
