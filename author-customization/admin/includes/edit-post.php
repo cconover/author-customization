@@ -101,7 +101,7 @@ function cc_author_metabox( $post ) {
 				'selected'		=> $postauthorid // Select the post's author to be displayed by default
 			) );
 			?>
-			<div id="cc_author_postauthor_loading" class="cc_author_postauthor_loading"><img id="cc_author_postauthor_loading_img" class="cc_author_postauthor_loading_img" src="<?php echo admin_url( 'images/wpspin_light-2x.gif' ); ?>" width="20px" height="auto"></div>
+			<div id="cc_author_postauthor_loading" class="cc_author_postauthor_loading"><img id="cc_author_postauthor_loading_img" class="cc_author_postauthor_loading_img" src="<?php echo admin_url( 'images/wpspin_light-2x.gif' ); ?>" width="20px" height="20px"></div>
 			<input type="hidden" name="cc_author_currentpostauthor" value="<?php echo $postauthorid; ?>">
 			<input type="hidden" name="cc_author_javascript" id="cc_author_javascript" value="">
 			<?php
