@@ -7,7 +7,7 @@ admin/includes/edit-post.php
 
 jQuery( document ).ready( function( $ ) { // Don't execute anything until the page is loaded
 	$( "#cc_author_postauthor" ).live( "change", function() { // If the author dropdown value is changed, execute the script
-		$( "#cc_author_postauthor_loading_img" ).show(); // Display the 'loading' spinner
+		$( ".cc_author_metabox .spinner" ).show(); // Display the 'loading' spinner
 		
 		/* Data to pass to the server. Called below during $.post() */
 		var data = {
@@ -33,7 +33,7 @@ jQuery( document ).ready( function( $ ) { // Don't execute anything until the pa
 					$( "#cc_author_meta\\[0\\]\\[description\\]" ).val( authormeta.description );	// Change the value of the author bio to the value received from the server
 				}
 				
-				$( "#cc_author_postauthor_loading_img" ).hide(); // Hide the 'loading' spinner
+				$( ".cc_author_metabox .spinner" ).hide(); // Hide the 'loading' spinner
 			} // function( jsonString )
 		); // $.post
 	}); // $( "#cc_author_postauthor" ).change()
