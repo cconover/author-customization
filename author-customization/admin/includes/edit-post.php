@@ -43,11 +43,10 @@ function cc_author_add_metabox() {
 	
 	/* Add custom style for meta box */
 	wp_enqueue_style( // Add style call to <head>
-		'cc-author-metabox',
-		plugins_url(
-			'assets/css/edit-post.css',
-			dirname( __FILE__ )
-		)
+		'cc-author-metabox',														// Stylesheet hook name
+		plugins_url( 'assets/css/edit-post.css', dirname( __FILE__ ) ),				// URL for stylesheet
+		array(),																	// Style dependencies
+		$_ENV['cc_author_version']													// Stylesheet version, equal to plugin version
 	);
 	
 	/* Add script for changing the post author */
