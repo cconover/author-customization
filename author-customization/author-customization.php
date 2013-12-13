@@ -35,7 +35,6 @@ function cc_author_displayname() {
 	global $post; // Access post data
 	
 	$postpage = get_option( 'cc_author_postpage' ); // Retrive plugin's post/page options
-	
 	$author = get_post_meta( $post->ID, '_cc_author_meta', true ); // Get the post-specific author metadata
 	
 	/* If the plugin setting is enabled and there's post-specific metadata stored and a post, page, or attachment is being displayed, show the post-specific display name. Otherwise use the profile display name. */
