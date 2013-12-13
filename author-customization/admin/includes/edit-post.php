@@ -197,13 +197,17 @@ function cc_author_save_meta( $post_id ) {
 		add_action( 'save_post', 'cc_author_save_meta' ); // Re-add the 'save_post' hook after the post author is updated
 		
 		/* If 'Update Profile' is enabled, save the author info to the user profile of the author */
-		if ( isset( $_POST['cc_author_meta[0][update_profile]'] ) ) {
-			wp_update_user( array(
-				'ID'			=> $_POST['cc_author_postauthor'],	// Author user ID
-				'display_name'	=> $author[0]['display_name'],		// Display name
-				'description'	=> $author[0]['description']		// Description
-			) );
-		}
+		foreach ( $author as $authormeta ) {
+			foreach ( $authormeta as $key => $meta ) {
+				if ( isset( $authormeta['update_profile'] ) ) {
+					wp_update_user( array(
+						'ID'			=>	$_POST['cc_author_postauthor'],	// Author user ID
+						'display_name'	=>	$authormeta['display_name'],	// Display name
+						'description'	=>	$authormeta['description'],		// Biographical info
+					) );
+				} // if ( isset( $authormeta['update_profile'] ) )
+			} // foreach ( $authormeta as $key => $meta )
+		} // foreach ( $author as $authormeta )
 	}
 } // cc_author_save_meta( $post_id )
 add_action( 'save_post', 'cc_author_save_meta' ); // Hook WordPress to save meta data when saving post/page
