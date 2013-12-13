@@ -10,6 +10,8 @@ License: GPLv2
 */
 
 
+$_ENV['cc_author_version'] = '0.1.1'; // Set plugin version number for use elsewhere in the plugin
+
 /**
  * Author Info
  * Filter WordPress author functions to replace global profile data with plugin-generated data
