@@ -9,6 +9,10 @@
 	margin-bottom: 1em;
 }
 
+.cc_author_metabox .cc_author_meta_update_profile {
+	margin-top: 1em;
+}
+
 .cc_author_metabox input[type='text'],
 .cc_author_metabox textarea {
 	width: 98%;
