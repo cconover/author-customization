@@ -43,7 +43,7 @@ class ccAuthorDescEditor {
 			'media_buttons'		=> false,	// Don't display media upload options
 			'quicktags'			=> false,	// Disable quicktags
 			'teeny'				=> true,	// Keep editor to minimal button options, instead of full editor
-			'textarea_rows'		=> 10,		// Number of rows in editor
+			'textarea_rows'		=> 5,		// Number of rows in editor
 			'tinymce'			=> array(
 				'theme_advanced_buttons1'	=> 'bold,italic,underline,strikethrough,link,unlink' // Only show the listed buttons in the editor
 			),
