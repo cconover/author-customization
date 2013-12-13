@@ -88,7 +88,7 @@ function cc_author_metabox( $post ) {
 	/* Display the meta box contents */
 	?>
 	<div class="cc_author_metabox">
-		<p>Changes made to this information will only apply to this post, and will not be saved to the user's profile.</p>
+		<p>The information below will be saved to this post, and (unless selected) will not be saved to the author's user profile.</p>
 		<div style="color: #FF0000; font-weight: bold;"><noscript>
 				You have JavaScript disabled. If you change the post author in the dropdown, you will need to save the post for the fields below to update. Please enable JavaScript for a better experience.
 		</noscript></div>
