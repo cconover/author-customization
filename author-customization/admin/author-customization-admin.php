@@ -57,25 +57,32 @@ function cc_author_postpage_init() {
 	register_setting( 'cc_author_options', 'cc_author_postpage', 'cc_author_postpage_validate' ); // Register the settings group and specify validation and database locations
 	
 	add_settings_section(
-		'postpage',							// Name of the section
-		'Post/Page Settings',				// Title of the section, displayed on the options page
-		'cc_author_postpage_callback',		// Callback function for displaying information
-		'cc-author'							// Page ID for the options page
-	);
-	
-	add_settings_field(						// Set whether author info is pulled from post meta or global user data
-		'perpost',							// Field ID
-		'Use author data from post',		// Field title, displayed to the left of the field on the options page
-		'cc_author_perpost_callback',		// Callback function to display the field
-		'cc-author',						// Page ID for the options page
-		'postpage'							// Settings section in which to display the field
-	);
-	add_settings_field(						// Set whether author info is pulled from post meta or global user data
-		'relnofollow',						// Field ID
-		'Add rel="nofollow" to bio links',	// Field title, displayed to the left of the field on the options page
-		'cc_author_relnofollow_callback',	// Callback function to display the field
-		'cc-author',						// Page ID for the options page
-		'postpage'							// Settings section in which to display the field
+		'postpage',									// Name of the section
+		'Post/Page Settings',						// Title of the section, displayed on the options page
+		'cc_author_postpage_callback',				// Callback function for displaying information
+		'cc-author'									// Page ID for the options page
+	);		
+			
+	add_settings_field(								// Set whether author info is pulled from post meta or global user data
+		'perpost',									// Field ID
+		'Use author data from post',				// Field title, displayed to the left of the field on the options page
+		'cc_author_perpost_callback',				// Callback function to display the field
+		'cc-author',								// Page ID for the options page
+		'postpage'									// Settings section in which to display the field
+	);		
+	add_settings_field(								// Set whether author info is pulled from post meta or global user data
+		'multiple-authors',							// Field ID
+		'Enable multiple authors per post',			// Field title, displayed to the left of the field on the options page
+		'cc_author_multiple_authors_callback',		// Callback function to display the field
+		'cc-author',								// Page ID for the options page
+		'postpage'									// Settings section in which to display the field
+	);		
+	add_settings_field(								// Set whether author info is pulled from post meta or global user data
+		'relnofollow',								// Field ID
+		'Add rel="nofollow" to bio links',			// Field title, displayed to the left of the field on the options page
+		'cc_author_relnofollow_callback',			// Callback function to display the field
+		'cc-author',								// Page ID for the options page
+		'postpage'									// Settings section in which to display the field
 	);
 } // cc_author_postpage_list()
 
@@ -100,6 +107,22 @@ function cc_author_perpost_callback() {
 	echo '<p class="description">If checked, the plugin will display author information from the post metadata instead of the user database. Useful for keeping author information specific to the time a post was published.</p><p class="description"><strong>Note:</strong> You can toggle this at any time, as this plugin always saves author information to post metadata regardless of this setting.</p>'; // Description of option
 } // cc_author_perpost_callback()
 
+/* Callback for 'multiple-authors' option */
+function cc_author_multiple_authors_callback() {
+	$postpage = get_option( 'cc_author_postpage' ); // Retrieve plugin options from the database
+	
+	/* Determine whether the box should be checked based on setting in database */
+	if ( $postpage['multiple-authors'] ) {
+		$checked = 'checked';
+	}
+	else {
+		$checked = '';
+	}
+	
+	echo '<input id="cc_author_postpage[multiple-authors]" name="cc_author_postpage[multiple-authors]" type="checkbox" value="Multiple" ' . $checked . '>'; // Print the input field to the screen
+	echo '<p class="description">Enable support for multiple authors on a single post or page.</p>'; // Description of option
+} // cc_author_multiple_authors_callback()
+
 /* Callback for 'relnofollow' option */
 function cc_author_relnofollow_callback() {
 	$postpage = get_option( 'cc_author_postpage' ); // Retrieve plugin options from the database
@@ -121,8 +144,9 @@ function cc_author_postpage_validate( $input ) {
 	$postpage = get_option( 'cc_author_postpage' ); // Retrieve existing options values from the database
 	
 	/* Directly set values that don't require validation */
-	$postpage['perpost']		=	$input['perpost'];
-	$postpage['relnofollow']	=	$input['relnofollow'];
+	$postpage['perpost']			=	$input['perpost'];
+	$postpage['multiple-authors']	=	$input['multiple-authors'];
+	$postpage['relnofollow']		=	$input['relnofollow'];
 	
 	return $postpage; // Send values to database
 } // cc_author_postpage_validate()
