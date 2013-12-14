@@ -247,6 +247,12 @@ function cc_author_options_page() {
 /* Include the functions for use while editing a post */
 require_once( dirname( __FILE__ ) . '/includes/edit-post.php' ); // Retrieve file containing edit post functions
 
+/* Include the class for multiple authors if enabled in plugin options */
+$cc_author_postpage = get_option( 'cc_author_postpage' );
+if ( isset( $cc_author_postpage['multiple-authors'] ) ) {
+	require_once( dirname( __FILE__ ) . '/includes/class.multiAuthorAdmin.php' ); // Retrieve the file containing the multiple authors class
+}
+
 /* If editing user profile, include the functions for use while editing a user */
 if ( strstr( $_SERVER['REQUEST_URI'], 'wp-admin/profile.php' ) || strstr( $_SERVER['REQUEST_URI'], 'wp-admin/user-edit.php' ) ) {
 	require_once( dirname( __FILE__ ) . '/includes/edit-user.php' ); // Retrieve file containing edit user functions
