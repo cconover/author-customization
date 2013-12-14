@@ -88,6 +88,7 @@ class ccAuthorDescEditorUser {
 				<td>
 					<?php 
 					$description = get_user_meta( $user->ID, 'description', true);
+					$description = apply_filters( 'the_content', $description );
 					wp_editor( $description, $this->editorid, $settings ); 
 					?>
 					<p class="description">Share a little biographical information to fill out your profile. This may be shown publicly.</p>
