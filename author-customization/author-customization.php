@@ -11,22 +11,6 @@ License: GPLv2
 
 
 /**
- * Plugin Environment Data
- */
-/* Set plugin version data for use elsewhere in the plugin */
-if ( function_exists( 'get_plugin_data' ) ) {
-	$_ENV['cc_author_plugindata'] = get_plugin_data( __FILE__, false );
-}
-else { // If the function get_plugin_data does not exist, return empty array
-	$_ENV['cc_author_plugindata'] = array(
-		'Version'	=>	''
-	);
-}
-/**
- * End Plugin Environment Data
- */
-
-/**
  * Author Info
  * Filter WordPress author functions to replace global profile data with plugin-generated data
  */
