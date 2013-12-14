@@ -102,7 +102,7 @@ function cc_author_activate() {
 	add_option( 'cc_author_postpage', $postpage ); // Save options to database
 	
 	$admin_options = array(
-		'wysiwyg'		=>	'WYSIWYG'	// Enable the WYSIWYG editor for author bio fields
+		'wysiwyg'			=>	'WYSIWYG'	// Enable the WYSIWYG editor for author bio fields
 	);
 	add_option( 'cc_author_admin_options', $admin_options ); // Save options to database
 } // cc_author_activate()
