@@ -102,7 +102,7 @@ class ccAuthorDescEditorUser {
 		if ( $hook == 'profile.php' || $hook == 'user-edit.php' ) { // Only load JS if editing a user
 			wp_enqueue_script(
 				'edit-user-bio-editor', // Name of script in WordPress
-				plugins_url ( 'assets/js/edit-user-bio-editor.js', dirname( __FILE__ ) ), // Location of script
+				plugins_url ( 'assets/js/edit-user.js', dirname( __FILE__ ) ), // Location of script
 				'jquery', // Dependencies
 				false, // No version number specified; allow WordPress to handle this
 				true // Load script in footer
