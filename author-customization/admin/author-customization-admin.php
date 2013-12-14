@@ -103,7 +103,7 @@ function cc_author_perpost_callback() {
 		$checked = '';
 	}
 	
-	echo '<input id="perpost" name="cc_author_postpage[perpost]" type="checkbox" value="Post" ' . $checked . '>'; // Print the input field to the screen
+	echo '<input id="cc_author_postpage[perpost]" name="cc_author_postpage[perpost]" type="checkbox" value="Post" ' . $checked . '>'; // Print the input field to the screen
 	echo '<p class="description">If checked, the plugin will display author information from the post metadata instead of the user database. Useful for keeping author information specific to the time a post was published.</p><p class="description"><strong>Note:</strong> You can toggle this at any time, as this plugin always saves author information to post metadata regardless of this setting.</p>'; // Description of option
 } // cc_author_perpost_callback()
 
@@ -135,8 +135,8 @@ function cc_author_relnofollow_callback() {
 		$checked = '';
 	}
 	
-	echo '<input id="relnofollow" name="cc_author_postpage[relnofollow]" type="checkbox" value="Nofollow" ' . $checked . '>'; // Print the input field to the screen
-	echo '<p class="description">Add a <a href="https://support.google.com/webmasters/answer/96569?hl=en">rel="nofollow"</a> attribute to any links in an author\'s biographical info when displayed. This prevents search engines from counting those links as part of your rank score.</p>'; // Description of option
+	echo '<input id="cc_author_postpage[relnofollow]" name="cc_author_postpage[relnofollow]" type="checkbox" value="Nofollow" ' . $checked . '>'; // Print the input field to the screen
+	echo '<p class="description">Add a <a href="https://support.google.com/webmasters/answer/96569?hl=en" target="_blank">rel="nofollow"</a> attribute to any links in an author\'s biographical info when displayed. This prevents search engines from counting those links as part of your rank score.</p>'; // Description of option
 } // cc_author_relnofollow_callback()
 
 /* Validate submitted options */
@@ -197,7 +197,7 @@ function cc_author_wysiwyg_callback() {
 		$checked = '';
 	}
 	
-	echo '<input id="wysiwyg" name="cc_author_admin_options[wysiwyg]" type="checkbox" value="WYSIWYG" ' . $checked . '>'; // Print the input field to the screen
+	echo '<input id="cc_author_admin_options[wysiwyg]" name="cc_author_admin_options[wysiwyg]" type="checkbox" value="WYSIWYG" ' . $checked . '>'; // Print the input field to the screen
 	echo '<p class="description">Enable a WYSIWYG editor for the author bio field, both in the user profile area and in the post/page meta box.</p>'; // Description of option
 } // cc_author_wysiwyg_callback()/* Call back fo
 
