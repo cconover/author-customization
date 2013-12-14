@@ -208,6 +208,7 @@ function cc_author_save_meta( $post_id ) {
 					wp_update_user( array(
 						'ID'			=>	$_POST['cc_author_postauthor'],	// Author user ID
 						'display_name'	=>	$authormeta['display_name'],	// Display name
+						'nickname'		=>	$authormeta['display_name'],	// Set nickname to display name
 						'description'	=>	$authormeta['description'],		// Biographical info
 					) );
 				} // if ( isset( $authormeta['update_profile'] ) )
