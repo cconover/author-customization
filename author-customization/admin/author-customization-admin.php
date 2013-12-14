@@ -8,6 +8,27 @@ author-customization.php
 
 
 /**
+ * Plugin Admin Initialization
+ * Environment data and other elements to initialize the plugin admin
+ */
+function cc_author_admin_init() {
+	/* Set plugin data for use elsewhere in the plugin */
+	if ( function_exists( 'get_plugin_data' ) ) {
+		$_ENV['cc_author_plugindata'] = get_plugin_data( plugin_dir_path( dirname( __FILE__ ) ) . 'author-customization.php', false );
+	}
+	else { // If the function get_plugin_data does not exist, return empty array
+		$_ENV['cc_author_plugindata'] = array(
+			'Version'	=>	''
+		);
+	}
+}
+add_action( 'admin_init', 'cc_author_admin_init' ); // Hook plugin admin initialization
+/**
+ * End Plugin Admin Initialization
+ */
+
+
+/**
  * Create entry in Settings menu
  * A submenu entry titled 'Custom Authors' is shown under Settings
  */
