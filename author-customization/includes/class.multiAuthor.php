@@ -22,7 +22,10 @@ class multiAuthor {
 		add_action( 'save_post', array( $this, 'cc_author_multiauthor_update_post' ) ); // Action when saving/updating a post
 	}
 	
-	/* Class initialization */
+	function cc_author_multiauthors() {
+		$this->__construct();
+	}
+	
 	function init() {
 		/* Register the author taxonomy */
 		$taxonomy_args = array( // Arguments for the register_taxonomy function
