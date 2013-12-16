@@ -33,7 +33,7 @@ function cc_author_add_metabox() {
 	foreach( $screens as $screen ) {
 		add_meta_box(
 			'cc-author-metabox',
-			'Author',
+			'Authors',
 			'cc_author_metabox',
 			$screen,
 			'normal',
