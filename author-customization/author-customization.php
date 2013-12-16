@@ -33,7 +33,7 @@ if ( is_admin() ) {
  */
 /* Get the post author display name from post and apply to the post on display */
 function cc_author_displayname() {
-	global $post, $post_id; // Access post data
+	global $post; // Access post data
 	
 	$postpage = get_option( 'cc_author_postpage' ); // Retrive plugin's post/page options
 	$author = get_post_meta( $post->ID, '_cc_author_meta', true ); // Get the post-specific author metadata
