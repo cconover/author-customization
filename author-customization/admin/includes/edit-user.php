@@ -10,7 +10,7 @@ Included/Required by:
 /**
  * Includes
  */
-require_once( dirname( __FILE__ ) . '/class.ccAuthorDescEditor.php' ); // File containing bio editor class
+require_once( dirname( __FILE__ ) . '/class.descEditor.php' ); // File containing bio editor class
 /**
  * End Includes
  */
