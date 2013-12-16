@@ -10,7 +10,7 @@ admin/author-customization-admin.php
 /**
  * Includes
  */
-require_once( dirname( __FILE__ ) . '/class.ccAuthorDescEditor.php' ); // File containing bio editor class
+require_once( dirname( __FILE__ ) . '/class.descEditor.php' ); // File containing bio editor class
 /**
  * End Includes
  */
