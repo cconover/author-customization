@@ -1,6 +1,8 @@
 <?php
 /*
 Class for managing multiple authors for posts & pages inside WordPress admin
+This class uses code from the WordPress plugin Co-Authors Plus (http://wordpress.org/plugins/co-authors-plus/)
+I've done this both to maintain compatibility with their data structure, and also so I don't have to reinvent the wheel.
 */
 
 class multiAuthorAdmin {
