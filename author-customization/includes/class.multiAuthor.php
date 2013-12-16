@@ -16,6 +16,7 @@ class multiAuthor {
 	function __construct() {
 		/* Initialization */
 		add_action( 'init', array( $this, 'init' ) );
+		add_action( 'init', array( $this, 'late_init' ), 100 );
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
 		
 		add_action( 'save_post', array( $this, 'cc_author_multiauthor_update_post' ) ); // Action when saving/updating a post
