@@ -26,7 +26,11 @@ class multiAuthor {
 		$this->__construct();
 	}
 	
+	/* Main class initialization */
 	function init() {
+		
+	}
+	
 		/* Register the author taxonomy */
 		$taxonomy_args = array( // Arguments for the register_taxonomy function
 			
