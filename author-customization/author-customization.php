@@ -107,11 +107,6 @@ if ( !is_admin() ) { // Only add filters if not in admin
  * End Author Info
  */
 
-/* If in wp-admin, load plugin's admin functions */
-if ( is_admin() ) {
-	require_once( dirname( __FILE__ ) . '/admin/author-customization-admin.php' ); // Retrieve file containing admin functions
-}
-
 
 /**
  * Plugin Activation
