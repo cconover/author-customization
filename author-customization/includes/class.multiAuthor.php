@@ -5,7 +5,7 @@ This class uses code from the WordPress plugin Co-Authors Plus (http://wordpress
 I've done this both to maintain compatibility with their data structure, and also so I don't have to reinvent the wheel.
 */
 
-class multiAuthorAdmin {
+class multiAuthor {
 	/* Variables for use within the class */
 	var $author_taxonomy = 'author';
 	var $post_types = array();
