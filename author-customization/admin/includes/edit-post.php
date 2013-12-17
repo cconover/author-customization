@@ -17,8 +17,8 @@ require_once( dirname( __FILE__ ) . '/class.descEditor.php' ); // File containin
 
 
 /**
- * Author Meta Box
- * Functions for creating and displaying the meta box
+ * Author Meta Box Class
+ * Create author meta box for existing user
  */
 /* Add meta box to Edit Post and Edit Page, and remove WordPress default Author meta box */
 function cc_author_add_metabox() {
