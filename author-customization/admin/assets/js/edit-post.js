@@ -8,7 +8,7 @@ admin/includes/edit-post.php
 jQuery( document ).ready( function( $ ) { // Don't execute anything until the page is loaded
 	$( "#cc_author_metabox" ).show(); // Show the meta box form if JavaScript is enabled
 	$( "#cc_author_postauthor" ).live( "change", function() { // If the author dropdown value is changed, execute the script
-		$( ".cc_author_metabox .spinner" ).show(); // Display the 'loading' spinner
+		$( "#cc-author-metabox .spinner" ).css( 'display', 'inline-block' ); // Display the 'loading' spinner
 		
 		/* Data to pass to the server. Called below during $.post() */
 		var data = {
