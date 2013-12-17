@@ -68,7 +68,7 @@ class multiAuthor {
 	}
 	
 	/* Save/update post */
-	function update_post( $post, $post_id ) {
+	function update_post( $post ) {
 		
 	}
 }
