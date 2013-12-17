@@ -13,15 +13,15 @@ License: GPLv2
 /**
  * Includes
  */
+/* If in wp-admin, load plugin's admin functions */
+if ( is_admin() ) {
+	require_once( dirname( __FILE__ ) . '/admin/author-customization-admin.php' ); // Retrieve file containing admin functions
+}
+
 /* Include the class for multiple authors if enabled in plugin options */
 $cc_author_postpage = get_option( 'cc_author_postpage' );
 if ( isset( $cc_author_postpage['multiple-authors'] ) ) {
 	require_once( dirname( __FILE__ ) . '/includes/class.multiAuthor.php' ); // Retrieve the file containing the multiple authors class
-}
-
-/* If in wp-admin, load plugin's admin functions */
-if ( is_admin() ) {
-	require_once( dirname( __FILE__ ) . '/admin/author-customization-admin.php' ); // Retrieve file containing admin functions
 }
 /**
  * End Includes
