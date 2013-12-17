@@ -20,204 +20,364 @@ require_once( dirname( __FILE__ ) . '/class.descEditor.php' ); // File containin
  * Author Meta Box Class
  * Create author meta box for existing user
  */
-/* Add meta box to Edit Post and Edit Page, and remove WordPress default Author meta box */
-function cc_author_add_metabox() {
-	$screens = array( 'post', 'page' ); // Locations where the metabox should show
+class ccAuthorMetaBox {
+	/* Class constructor */
+	function __construct() {
+		/* Variables attached to the class */
+		$this->spinner = '<span class="spinner"></span>';
+		
+		add_action( 'admin_init', array( $this, 'admin_init' ) ); // Initializtion within admin
+		
+		add_action( 'add_meta_boxes', array( $this, 'add_metabox' ) ); // Hook meta box updates into WordPress
+		
+		/* AJAX action hooks */
+		add_action( 'wp_ajax_cc_author_change_postauthor', array( $this, 'change_postauthor_callback' ) );
+		add_action( 'wp_ajax_cc_author_create_user_metabox_request_form', array( $this, 'create_user_metabox_request_form' ) );
+		add_action( 'wp_ajax_cc_author_create_user_metabox_callback', array( $this, 'create_user_metabox_callback' ) );
+		
+		add_action( 'save_post', array( $this, 'save_meta' ) ); // Hook WordPress to save meta data when saving post/page		
+	} // __construct()
 	
-	/* Remove WordPress default Author meta box */
-	foreach ( $screens as $screen ) {
-		remove_meta_box( 'authordiv', $screen, 'normal' ); // Parameters for removing Author meta box from Post and Page edit screens
-	}
+	/* Initialization for admin */
+	function admin_init() {
+		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts' ) ); // Load scripts and styles
+	} // admin_init()
 	
-	/* Iterate through locations to add meta box */
-	foreach( $screens as $screen ) {
-		add_meta_box(
-			'cc-author-metabox',
-			'Authors',
-			'cc_author_metabox',
-			$screen,
-			'normal',
-			'high'
+	/* Add scripts and styles */
+	function add_scripts() {
+		/* Add custom style for meta box */
+		wp_enqueue_style( // Add style call to <head>
+			'cc-author-metabox',														// Stylesheet hook name
+			plugins_url( 'assets/css/edit-post.css', dirname( __FILE__ ) ),				// URL for stylesheet
+			array()																	// Style dependencies
 		);
-	}
-	
-	/* Add custom style for meta box */
-	wp_enqueue_style( // Add style call to <head>
-		'cc-author-metabox',														// Stylesheet hook name
-		plugins_url( 'assets/css/edit-post.css', dirname( __FILE__ ) ),				// URL for stylesheet
-		array(),																	// Style dependencies
-		$_ENV['cc_author_plugindata']['Version']									// Stylesheet version, equal to plugin version
-	);
-	
-	/* Add script for changing the post author */
-	wp_enqueue_script(																// Add JS to <head>
-		'cc-author-change-post-author',												// Registered script handle
-		plugins_url( 'assets/js/edit-post.js', dirname( __FILE__ ) ),				// URL to script
-		array(																		// Script dependencies
-			'jquery'
-		),
-		$_ENV['cc_author_plugindata']['Version']									// Script version, equal to plugin version
-	);
-	wp_localize_script(																// Localize script for AJAX calls
-		'cc-author-change-post-author',												// Name of script call being localized
-		'authorchange',																// AJAX object namespace, used to call values in the JS file
-		array(
-			'ajaxurl'	=> admin_url( 'admin-ajax.php' ),							// URL for admin AJAX calls
-			'nonce'		=> wp_create_nonce( 'cc-author-change-author-nonce' )		// Nonce to authenticate request
-		)
-	);
-} // cc_author_add_metabox()
-add_action( 'add_meta_boxes', 'cc_author_add_metabox' ); // Hook meta box updates into WordPress
-
-/* Meta box code: $post is the data for the current post */
-function cc_author_metabox( $post ) {
-	/* Retrieve current values if they exist */
-	$cc_author_meta = get_post_meta( $post->ID, '_cc_author_meta', true ); // Author meta data (stored as an array)
-	$postauthorid = $post->post_author; // Get the user ID of the post author
-	
-	/* If any of the values are missing from the post, retrieve them from the author's global profile */
-	if ( !$cc_author_meta ) {		
-		$postauthor = get_userdata( $postauthorid ); // Retrieve the details of the post author
 		
-		$cc_author_meta = array(); // Initialize main array
-		$cc_author_meta[0] = array( // Nested array for author data
-			'display_name'	=> $postauthor->display_name, // Set display name from post author's data
-			'description'	=> $postauthor->description // Set bio from the post author's data
+		/* Add script for changing the post author */
+		wp_enqueue_script(																// Add JS to <head>
+			'cc-author-edit-post',														// Registered script handle
+			plugins_url( 'assets/js/edit-post.js', dirname( __FILE__ ) ),				// URL to script
+			array(																		// Script dependencies
+				'jquery'
+			)
 		);
-	}
+		wp_localize_script(																// Localize script for AJAX calls
+			'cc-author-edit-post',														// Name of script call being localized
+			'cc_author_edit_post',														// AJAX object namespace, used to call values in the JS file
+			array(
+				'ajaxurl'	=> admin_url( 'admin-ajax.php' ),							// URL for admin AJAX calls
+				'nonce'		=> wp_create_nonce( 'cc-author-edit-post-nonce' )			// Nonce to authenticate request
+			)
+		);
+	} // add_scripts()
 	
-	/* Display the meta box contents */
-	?>
-	<div class="cc_author_metabox">
-		<p>The information below will be saved to this post, and (unless selected) will not be saved to the author's user profile.</p>
-		<div style="color: #FF0000; font-weight: bold;"><noscript>
-				You have JavaScript disabled. If you change the post author in the dropdown, you will need to save the post for the fields below to update. Please enable JavaScript for a better experience.
-		</noscript></div>
-		<?php
-		if ( current_user_can( 'edit_others_posts' ) || current_user_can( 'edit_others_pages' ) ) { // Check the capabilities of the current user for sufficient privileges
-			?>
-			<div id="cc_author_metabox_postauthor" class="cc_author_metabox_postauthor">
-			<?php
-				wp_dropdown_users( array(
-					'name'			=> 'cc_author_postauthor', // Name for the form item
-					'id'			=> 'cc_author_postauthor', // ID for the form item
-					'class'			=> 'cc_author_postauthor', // Class for the form item
-					'selected'		=> $postauthorid // Select the post's author to be displayed by default
-				) );
-				?>
-				<span class="spinner"></span>
-				<input type="hidden" name="cc_author_currentpostauthor" value="<?php echo $postauthorid; ?>">
-				<input type="hidden" name="cc_author_javascript" id="cc_author_javascript" value="">
-				</div><!-- #cc_author_metabox_postauthor -->
-			<?php
-		}
-		?>
-		<label for="cc_author_meta[0][display_name]" class="selectit">Name</label>
-		<input type="text" name="cc_author_meta[0][display_name]" id="cc_author_meta[0][display_name]" value="<?php echo esc_attr( $cc_author_meta[0]['display_name'] ); ?>" />
-
-		<label for="cc_author_meta[0][description]" class="selectit">Bio</label>
-		<?
-		$descEditor = new ccAuthorDescEditor( $cc_author_meta[0]['description'], 'cc_author_meta[0][description]' ); // Create the bio editor object
-		echo $descEditor->editor(); // Display the editor
-		?>
-		<div class="cc_author_meta_update_profile">
-			<input type="checkbox" name="cc_author_meta[0][update_profile]" id="cc_author_meta[0][update_profile]" value="Profile">Update Profile
-			<p class="description">Enabling this will update the author's user profile with the information you've entered.</p>
-		</div>
-	</div>
-	<?php
-} // cc_author_metabox( $post )
-/**
- * End Author Meta Box
- */
- 
- 
- /**
-  * Update Author Metadata
-  * Functions for saving and updating author metadata
-  */
-/* Callback for change author JavaScript */
-function cc_author_change_postauthor_callback() {
-	global $wpdb; // Allow access to database
-	
-	$nonce = $_POST['nonce']; // Assign a local variable for nonce
-	
-	if ( ! wp_verify_nonce( $nonce, 'cc-author-change-author-nonce' ) ) { // If the nonce doesn't check out, fail the request
-		exit( 'Your request could not be authenticated' ); // Error message for unauthenticated request
-	}
-	
-	if ( current_user_can( 'edit_others_posts' ) || current_user_can( 'edit_others_pages' ) ) { // Check for proper permissions before handling request
-		$author = $_POST['authorID']; // Assign local variable for submitted post author
-		$authordata = get_userdata( $author ); // Retrieve the selected user's data from their profile
+	/**
+	 * Author Meta Box
+	 * Functions for creating and displaying the meta box
+	 */
+	/* Add meta box to Edit Post and Edit Page, and remove WordPress default Author meta box */
+	function add_metabox() {
+		$screens = array( 'post', 'page' ); // Locations where the metabox should show
 		
-		$admin_options = get_option( 'cc_author_admin_options' ); // Get plugin's admin options
-		/* Determine whether 'wysiwyg' is enabled and set the value of $wysiwyg accordingly */
-		if ( isset( $admin_options['wysiwyg'] ) ) {
-			$wysiwyg = 'yes';
+		/* Remove WordPress default Author meta box */
+		foreach ( $screens as $screen ) {
+			remove_meta_box( 'authordiv', $screen, 'normal' ); // Parameters for removing Author meta box from Post and Page edit screens
 		}
-	
-		$authormeta = json_encode( array( // Encode data as JSON
-			'display_name'	=> $authordata->display_name,	// Display name from profile
-			'description'	=> $authordata->description,	// Biographical info from profile
-			'wysiwyg'		=> $wysiwyg						// Tell JS whether or not WYSIWYG is enabled
-		) );
 		
-		echo $authormeta; // Return the values retrieved from the database
-	}
+		/* Iterate through locations to add meta box */
+		foreach( $screens as $screen ) {
+			add_meta_box(
+				'cc-author-metabox',
+				'Authors' . $this->spinner,
+				array( $this, 'metabox' ),
+				$screen,
+				'normal',
+				'high'
+			);
+		}
+	} // add_metabox()
 	
-	exit; // End response. Required for callback to return a proper result.
-} // cc_author_change_postauthor_callback()
-add_action( 'wp_ajax_cc_author_change_postauthor', 'cc_author_change_postauthor_callback' ); // Add action hook for the callback
-
-/* Save the meta box data to post meta */
-function cc_author_save_meta( $post_id ) {
-	if ( isset( $_POST['cc_author_meta'] ) ) { // Verify that values have been provided
-		if ( isset( $_POST['cc_author_postauthor'] ) && ( $_POST['cc_author_postauthor'] != $_POST['cc_author_currentpostauthor'] ) && !isset( $_POST['cc_author_javascript'] ) ) { // If the post author has been changed and JavaScript is not enabled, use the new post author's profile values for post-specific data. Otherwise, use data submitted from the meta box.
-			$postauthor = get_userdata( $_POST['cc_author_postauthor'] ); // Retrieve the details of the post author
-	
-			$author = array(); // Initialize main array
-			$author[0] = array( // Nested array for author data
+	/* Meta box code: $post is the data for the current post */
+	function metabox( $post ) {
+		/* Retrieve current values if they exist */
+		$cc_author_meta = get_post_meta( $post->ID, '_cc_author_meta', true ); // Author meta data (stored as an array)
+		$postauthorid = $post->post_author; // Get the user ID of the post author
+		
+		/* If any of the values are missing from the post, retrieve them from the author's global profile */
+		if ( !$cc_author_meta ) {		
+			$postauthor = get_userdata( $postauthorid ); // Retrieve the details of the post author
+			
+			$cc_author_meta = array(); // Initialize main array
+			$cc_author_meta[0] = array( // Nested array for author data
 				'display_name'	=> $postauthor->display_name, // Set display name from post author's data
 				'description'	=> $postauthor->description // Set bio from the post author's data
 			);
 		}
-		else {
-			$author = $_POST['cc_author_meta']; // Assign POST data to local variable
+		
+		/* Display the meta box contents */
+		?>
+		<noscript>
+				JavaScript must be enabled to use this feature.
+		</noscript>
+		<div id="cc_author_metabox" class="cc_author_metabox" style="display: none;">
+			<p>The information below will be saved to this post, and (unless selected) will not be saved to the author's user profile.</p>
+			<?php
+			if ( current_user_can( 'edit_others_posts' ) || current_user_can( 'edit_others_pages' ) ) { // Check the capabilities of the current user for sufficient privileges
+				?>
+				<div id="cc_author_metabox_postauthor" class="cc_author_metabox_postauthor">
+				<?php
+					wp_dropdown_users( array(
+						'name'			=> 'cc_author_postauthor', // Name for the form item
+						'id'			=> 'cc_author_postauthor', // ID for the form item
+						'class'			=> 'cc_author_postauthor', // Class for the form item
+						'selected'		=> $postauthorid // Select the post's author to be displayed by default
+					) );
+					?>
+					<?php
+					if ( current_user_can( 'create_users' ) ) { // Only display if the current user can create users
+					?>
+						<span id="cc_author_create_author" class="cc_author_create_author button" style="cursor: pointer;">Create New Author</span>
+					<?php
+					}
+					?>
+					<input type="hidden" name="cc_author_currentpostauthor" value="<?php echo $postauthorid; ?>">
+					<input type="hidden" name="cc_author_javascript" id="cc_author_javascript" value="">
+				</div><!-- #cc_author_metabox_postauthor -->
+				<?php
+			}
+			?>
+			<label id="label_cc_author_meta[0][display_name]" for="cc_author_meta[0][display_name]" class="selectit">Name</label>
+			<input type="text" name="cc_author_meta[0][display_name]" id="cc_author_meta[0][display_name]" value="<?php echo esc_attr( $cc_author_meta[0]['display_name'] ); ?>" />
+	
+			<label for="cc_author_meta[0][description]" class="selectit">Bio</label>
+			<?
+			$descEditor = new ccAuthorDescEditor( $cc_author_meta[0]['description'], 'cc_author_meta[0][description]' ); // Create the bio editor object
+			echo $descEditor->editor(); // Display the editor
+			?>
+			<div class="cc_author_meta_update_profile">
+				<input type="checkbox" name="cc_author_meta[0][update_profile]" id="cc_author_meta[0][update_profile]" value="Profile">Update Profile
+				<p class="description">Enabling this will update the author's user profile with the information you've entered.</p>
+			</div>
+		</div> <!-- .cc_author_metabox -->
+		<?php
+	} // metabox( $post )
+	/**
+	 * End Author Meta Box
+	 */
+	 
+	 
+	 /**
+	  * Update Author Metadata
+	  * Functions for saving and updating author metadata
+	  */
+	/* Callback for change author JavaScript */
+	function change_postauthor_callback() {
+		global $wpdb; // Allow access to database
+		
+		$nonce = $_POST['nonce']; // Assign a local variable for nonce
+		
+		if ( ! wp_verify_nonce( $nonce, 'cc-author-edit-post-nonce' ) ) { // If the nonce doesn't check out, fail the request
+			exit( 'Your request could not be authenticated' ); // Error message for unauthenticated request
 		}
 		
-		/* Sanitize array values */
-		foreach ( $author as $authormeta ) {
-			foreach ( $authormeta as $key => $meta ) {
-				$authormeta['display_name'] = strip_tags( $meta );
+		if ( current_user_can( 'edit_others_posts' ) || current_user_can( 'edit_others_pages' ) ) { // Check for proper permissions before handling request
+			$author = $_POST['authorID']; // Assign local variable for submitted post author
+			$authordata = get_userdata( $author ); // Retrieve the selected user's data from their profile
+			
+			$admin_options = get_option( 'cc_author_admin_options' ); // Get plugin's admin options
+			/* Determine whether 'wysiwyg' is enabled and set the value of $wysiwyg accordingly */
+			if ( isset( $admin_options['wysiwyg'] ) ) {
+				$wysiwyg = 'yes';
+			}
+		
+			$authormeta = json_encode( array( // Encode data as JSON
+				'display_name'	=> $authordata->display_name,	// Display name from profile
+				'description'	=> $authordata->description,	// Biographical info from profile
+				'wysiwyg'		=> $wysiwyg						// Tell JS whether or not WYSIWYG is enabled
+			) );
+			
+			echo $authormeta; // Return the values retrieved from the database
+		}
+		
+		exit; // End response. Required for callback to return a proper result.
+	} // change_postauthor_callback()
+	
+	/* Save the meta box data to post meta */
+	function save_meta( $post_id ) {
+		if ( isset( $_POST['cc_author_meta'] ) ) { // Verify that values have been provided
+			if ( isset( $_POST['cc_author_postauthor'] ) && ( $_POST['cc_author_postauthor'] != $_POST['cc_author_currentpostauthor'] ) && !isset( $_POST['cc_author_javascript'] ) ) { // If the post author has been changed and JavaScript is not enabled, use the new post author's profile values for post-specific data. Otherwise, use data submitted from the meta box.
+				$postauthor = get_userdata( $_POST['cc_author_postauthor'] ); // Retrieve the details of the post author
+		
+				$author = array(); // Initialize main array
+				$author[0] = array( // Nested array for author data
+					'display_name'	=> $postauthor->display_name, // Set display name from post author's data
+					'description'	=> $postauthor->description // Set bio from the post author's data
+				);
+			}
+			else {
+				$author = $_POST['cc_author_meta']; // Assign POST data to local variable
+			}
+			
+			/* Sanitize array values */
+			foreach ( $author as $authormeta ) {
+				foreach ( $authormeta as $key => $meta ) {
+					$authormeta['display_name'] = strip_tags( $meta );
+				}
+			}
+			update_post_meta( $post_id, '_cc_author_meta', $author ); // Save author metadata to post meta
+			
+			/* Save the post/page author */
+			remove_action( 'save_post', 'cc_author_save_meta' ); // Remove the 'save_post' hook before updating the post author to prevent an infinite loop
+			wp_update_post( array(
+				'ID'			=> $post_id,
+				'post_author'	=> $_POST['cc_author_postauthor'] // Use the post author ID from the dropdown
+			) );
+			add_action( 'save_post', 'cc_author_save_meta' ); // Re-add the 'save_post' hook after the post author is updated
+			
+			/* If 'Update Profile' is enabled, save the author info to the user profile of the author */
+			foreach ( $author as $authormeta ) {
+				foreach ( $authormeta as $key => $meta ) {
+					if ( isset( $authormeta['update_profile'] ) ) {
+						wp_update_user( array(
+							'ID'			=>	$_POST['cc_author_postauthor'],	// Author user ID
+							'display_name'	=>	$authormeta['display_name'],	// Display name
+							'nickname'		=>	$authormeta['display_name'],	// Set nickname to display name
+							'description'	=>	$authormeta['description'],		// Biographical info
+						) );
+					} // if ( isset( $authormeta['update_profile'] ) )
+				} // foreach ( $authormeta as $key => $meta )
+			} // foreach ( $author as $authormeta )
+		}
+	} // save_meta( $post_id )
+	/**
+	 * End Update Author Metadata
+	 */
+	 
+	 
+	 /**
+	 * New Author Meta Box class
+	 * Create the form and submission for a new post author
+	 * Extends ccAuthorMetaBox
+	 */
+	function create_user_metabox() {
+		/* HTML for the meta box */
+		?>
+		<noscript>
+				JavaScript must be enabled to use this feature.
+		</noscript>
+		<div id="cc_author_create_metabox" class="cc_author_create_metabox">
+			<?php
+			if ( current_user_can( 'create_users' ) ) { // Check the capabilities of the current user for sufficient privileges
+			?>
+				<p>Use the form below to create a new user.</p>
+				<input type="hidden" name="cc_author_currentpostauthor" value="<?php echo $postauthorid; ?>">
+				<input type="hidden" name="cc_author_javascript" id="cc_author_javascript" value="">
+				
+				<label id="label_cc_author_create[first_name]" for="cc_author_create[first_name]" class="selectit">First Name</label>
+				<input type="text" name="cc_author_create[first_name]" id="cc_author_create[first_name]" />
+				
+				<label id="label_cc_author_create[last_name]" for="cc_author_create[last_name]" class="selectit">Last Name</label>
+				<input type="text" name="cc_author_create[last_name]" id="cc_author_create[last_name]" />
+				
+				<label id="label_cc_author_create[display_name]" for="cc_author_create[display_name]" class="selectit">Display Name</label>
+				<input type="text" name="cc_author_create[display_name]" id="cc_author_create[display_name]" />
+				
+				<label id="label_cc_author_create[email]" for="cc_author_create[email]" class="selectit">Email</label>
+				<input type="text" name="cc_author_create[email]" id="cc_author_create[email]" />
+				
+				<label for="cc_author_create[description]" class="selectit">Bio</label>
+				<?php
+				$descEditor = new ccAuthorDescEditor( '', 'cc_author_create[description]' ); // Create the bio editor object
+				echo $descEditor->editor(); // Display the editor
+				?>
+				
+				<a id="cc_author_create_submit" class="cc_author_create_sumbit button" href="#">Create Author</a>
+			<?php
+			} // Check user permissions
+			?>
+		</div> <!-- .cc_author_metabox -->
+		<?php
+	} // metabox( $post )
+	
+	function create_user_metabox_request_form() {
+		global $wpdb; // Gain access to WordPress database queries
+		
+		$nonce = $_POST['nonce']; // Assign a local variable for nonce
+		
+		if ( !wp_verify_nonce( $nonce, 'cc-author-edit-post-nonce' ) ) { // If the nonce doesn't check out, fail the request
+			exit( 'Your request could not be authenticated' ); // Error message for unauthenticated request
+		}
+		
+		if ( current_user_can( 'create_users' ) ) {
+			if ( isset( $_POST['newuserform'] ) ) {
+				$newuserform = $this->create_user_metabox();
+				echo $newuserform;
 			}
 		}
-		update_post_meta( $post_id, '_cc_author_meta', $author ); // Save author metadata to post meta
+		else {
+			exit( 'You do not have permissions to add a user.' );
+		}
+	}
+	
+	/* Save the meta box data as a new system user */
+	function create_user_metabox_callback() {
+		global $wpdb; // Gain access to WordPress database queries
 		
-		/* Save the post/page author */
-		remove_action( 'save_post', 'cc_author_save_meta' ); // Remove the 'save_post' hook before updating the post author to prevent an infinite loop
-		wp_update_post( array(
-			'ID'			=> $post_id,
-			'post_author'	=> $_POST['cc_author_postauthor'] // Use the post author ID from the dropdown
-		) );
-		add_action( 'save_post', 'cc_author_save_meta' ); // Re-add the 'save_post' hook after the post author is updated
+		$nonce = $_POST['nonce']; // Assign a local variable for nonce
 		
-		/* If 'Update Profile' is enabled, save the author info to the user profile of the author */
-		foreach ( $author as $authormeta ) {
-			foreach ( $authormeta as $key => $meta ) {
-				if ( isset( $authormeta['update_profile'] ) ) {
+		if ( ! wp_verify_nonce( $nonce, 'cc-author-edit-post-nonce' ) ) { // If the nonce doesn't check out, fail the request
+			exit( 'Your request could not be authenticated' ); // Error message for unauthenticated request
+		}
+		
+		if ( isset( $_POST['cc_author_create'] ) ) { // Verify that values have been provided
+			$newauthor = $_POST['cc_author_create']; // Set POST data to local variable
+			
+			if ( current_user_can( 'create_users' ) ) { // Check the capabilities of current user to make sure they're authorized to create a new user
+				$password = wp_generate_password( 64 ); // Generate a random 64 character password
+				$username = strtolower( $newauthor['first_name'] . $newauthor['last_name'] ); // Create username from combination of first and last name; set to lowercase
+				
+				/* Set user email address */
+				if ( isset( $newauthor['email'] ) ) {
+					$email = $newauthor['email']; // Set email address to value submitted by form
+				}
+				else {
+					$email = get_bloginfo ( 'admin_email' ); // Retrive the site email address
+					$email = preg_replace( '@', '+' . $username, $email ); // Insert '+username' before @ symbol in admin address to set as user email
+				}
+				
+				$user_id = wp_create_user( $username, $password, $email ); // Create the new user
+				
+				if ( is_wp_error( $user_id ) ) {
+					$newauthorresult = json_encode( array (
+						'status'		=> 'error',
+						'message'		=> $user_id->get_error_message()
+					) );
+				}
+				else {
 					wp_update_user( array(
-						'ID'			=>	$_POST['cc_author_postauthor'],	// Author user ID
+						'ID'			=>	$user_id,						// Author user ID
+						'first_name'	=>	$newauthor['first_name'],		// First name
+						'last_name'		=>	$newauthor['last_name'],		// Last name
 						'display_name'	=>	$authormeta['display_name'],	// Display name
 						'nickname'		=>	$authormeta['display_name'],	// Set nickname to display name
 						'description'	=>	$authormeta['description'],		// Biographical info
 					) );
-				} // if ( isset( $authormeta['update_profile'] ) )
-			} // foreach ( $authormeta as $key => $meta )
-		} // foreach ( $author as $authormeta )
-	}
-} // cc_author_save_meta( $post_id )
-add_action( 'save_post', 'cc_author_save_meta' ); // Hook WordPress to save meta data when saving post/page
+					
+					$newauthorresult = json_encode( array(
+						'status'		=> 'success',
+						'message'		=> 'New author "' . $newauthor['first_name'] . ' ' . $newauthor['last_name'] . '" created successfully',
+						'user_id'		=> $user_id
+					) );
+					
+				}
+				
+				echo $newauthorresult; // Send the results back to JS
+			}
+		} // Validate values have been provided
+	} // create_user_metabox_callback()
+}
 /**
- * End Update Author Metadata
+ * End Author Meta Box Class
  */
+
+$cc_author_metabox = new ccAuthorMetaBox();
 ?>
