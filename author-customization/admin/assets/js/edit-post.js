@@ -37,6 +37,55 @@ jQuery( document ).ready( function( $ ) { // Don't execute anything until the pa
 				$( "#cc-author-metabox .spinner" ).css( 'display', 'none' ); // Hide the 'loading' spinner
 			} // function( jsonString )
 		); // $.post
-	}); // $( "#cc_author_postauthor" ).change()
+	}); // $( "#cc_author_postauthor" ).live( "change" )
+
+	$( "#cc_author_create_author" ).on( "click", function() {
+		$( "#cc-author-metabox .spinner" ).css( 'display', 'inline-block' ); // Display the 'loading' spinner
+		
+		/* Author data to pass to the server */
+		var authorinfo = {
+			action : 'cc_author_create_author',
+			nonce : cc_author_edit_post.nonce,
+			cc_author_create : {
+				first_name : $( "#cc_author_create\\[first_name\\]" ).val(),
+				last_name : $( "#cc_author_create\\[last_name\\]" ).val(),
+				display_name : $( "#cc_author_create\\[display_name\\]" ).val(),
+				email : $( "#cc_author_create\\[email\\]" ).val(),
+				description : $( "#cc_author_create\\[description\\]" ).val()
+			}
+		};
+		
+		var requestform = {
+			action : 'cc_author_create_user_metabox_request_form',
+			nonce : cc_author_edit_post.nonce,
+			newuserform : 'yes'
+		};
+		
+		$( "#cc_author_metabox" ).remove(); // Hide the standard metabox fields
+		
+		$.post(
+			cc_author_edit_post.ajaxurl,
+			requestform,
+			function( response ) {
+				var newuserform = response; // Parse the JSON sent back from the server
+				
+				$( "#cc-author-metabox .inside" ).append( response ); // Show new user form
+				
+				$( "#cc-author-metabox .spinner" ).css( 'display', 'none' ); // Hide the 'loading' spinner
+			}
+		);
+		
+		$( "a.cc_author_create_submit" ).on( "click", function() {
+			/* Send POST request to the server and process the response */
+			$.post(
+				cc_author_edit_post.ajaxurl,
+				authorinfo,
+				function( jsonString ) {
+					var newauthor = $.parseJSON( jsonString ); // Parse the JSON returned from the server
+				}
+			);
+		} );
+	}); // $( "#cc_author_add_author" ).click()
+	
 	$( "#cc_author_javascript" ).val( "yes" ); // Set JavaScript field to 'yes' so the server can know whether JavaScript is working
 }); // jQuery ready check
