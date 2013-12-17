@@ -54,7 +54,7 @@ class multiAuthor {
 		
 		register_taxonomy(
 			$this->author_taxonomy,			// Taxonomy name. This is the same as Co-Authors Plus for compatibility
-			$this->post_types,				// Taxonomy objects
+			$this->post_types,				// Taxonomy objects. Only includes post types that support an author attribute.
 			$taxonomy_args					// Arguments for the taxonomy registration
 		);
 		/* End register the author taxonomy */
