@@ -62,6 +62,8 @@ class multiAuthor {
 	
 	/* Initialize for admin */
 	function admin_init() {
+		global $pagenow;
+		
 		
 	}
 	
