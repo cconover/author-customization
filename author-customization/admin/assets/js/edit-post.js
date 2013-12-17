@@ -13,13 +13,13 @@ jQuery( document ).ready( function( $ ) { // Don't execute anything until the pa
 		/* Data to pass to the server. Called below during $.post() */
 		var data = {
 			action : 'cc_author_change_postauthor',				// Action hook for the server-side callback
-			nonce : authorchange.nonce,							// Nonce received from server to authenticate request
+			nonce : cc_author_edit_post.nonce,					// Nonce received from server to authenticate request
 			authorID : $( "#cc_author_postauthor" ).val()		// author ID for retrieving profile data
 		};
 		
 		/* Send request to the server and process response */
 		$.post(
-			authorchange.ajaxurl,								// URL to send the request to the server
+			cc_author_edit_post.ajaxurl,								// URL to send the request to the server
 			data,												// Data to send to the server, stored in var data
 			function( jsonString ) {							// Script to execute upon successful response from server
 				var authormeta = $.parseJSON( jsonString );		// Parse the JSON received from the server response
