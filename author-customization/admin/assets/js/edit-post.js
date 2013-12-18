@@ -49,9 +49,7 @@ jQuery( document ).ready( function( $ ) { // Don't execute anything until the pa
 			cc_author_create : {
 				first_name : $( "#cc_author_create\\[first_name\\]" ).val(),
 				last_name : $( "#cc_author_create\\[last_name\\]" ).val(),
-				display_name : $( "#cc_author_create\\[display_name\\]" ).val(),
-				email : $( "#cc_author_create\\[email\\]" ).val(),
-				description : $( "#cc_author_create\\[description\\]" ).val()
+				email : $( "#cc_author_create\\[email\\]" ).val()
 			}
 		};
 		
