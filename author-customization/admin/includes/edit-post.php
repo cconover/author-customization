@@ -295,7 +295,7 @@ class ccAuthorMetaBox {
 		if ( current_user_can( 'create_users' ) ) {
 			if ( isset( $_POST['newuserform'] ) ) {
 				$newuserform = $this->create_user_metabox();
-				echo $newuserform;
+				return $newuserform;
 			}
 		}
 		else {
