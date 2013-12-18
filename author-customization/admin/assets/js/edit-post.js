@@ -74,7 +74,7 @@ jQuery( document ).ready( function( $ ) { // Don't execute anything until the pa
 			}
 		);
 		
-		$( "a.cc_author_create_submit" ).on( "click", function() {
+		$( "#cc_author_create_submit" ).on( "click", function() {
 			/* Send POST request to the server and process the response */
 			$.post(
 				cc_author_edit_post.ajaxurl,
