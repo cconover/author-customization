@@ -276,6 +276,10 @@ class ccAuthorMetaBox {
 				
 				<label id="label_cc_author_create[email]" for="cc_author_create[email]" class="selectit">Email</label>
 				<input type="text" name="cc_author_create[email]" id="cc_author_create[email]" />
+				<div class="cc_author_create_buttons">
+					<span id="cc_author_create_submit" class="cc_author_create_sumbit button button-primary">Create Author</span>
+					<span id="cc_author_create_cancel" class="cc_author_create_cancel button">Cancel</span>
+				</div><!-- .cc_author_create_buttons -->
 			<?php
 			} // Check user permissions
 			?>
