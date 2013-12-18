@@ -155,7 +155,7 @@ class ccAuthorMetaBox {
 			?>
 			<div class="cc_author_meta_update_profile">
 				<input type="checkbox" name="cc_author_meta[0][update_profile]" id="cc_author_meta[0][update_profile]" value="Profile">Update Profile
-				<p class="description">Enabling this will update the author's user profile with the information you've entered.</p>
+				<p class="description">Enabling this will update the author's site-wide user profile with the information you've entered.</p>
 			</div>
 		</div> <!-- .cc_author_metabox -->
 		<?php
