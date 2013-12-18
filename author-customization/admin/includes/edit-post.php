@@ -261,9 +261,6 @@ class ccAuthorMetaBox {
 	function create_user_metabox() {
 		/* HTML for the meta box */
 		?>
-		<noscript>
-				JavaScript must be enabled to use this feature.
-		</noscript>
 		<div id="cc_author_create_metabox" class="cc_author_create_metabox">
 			<?php
 			if ( current_user_can( 'create_users' ) ) { // Check the capabilities of the current user for sufficient privileges
