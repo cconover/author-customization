@@ -151,7 +151,7 @@ class ccAuthorMetaBox {
 			<label for="cc_author_meta[0][description]" class="selectit">Bio</label>
 			<?
 			$descEditor = new ccAuthorDescEditor( $cc_author_meta[0]['description'], 'cc_author_meta[0][description]' ); // Create the bio editor object
-			echo $descEditor->editor(); // Display the editor
+			$descEditor->editor(); // Display the editor
 			?>
 			<div class="cc_author_meta_update_profile">
 				<input type="checkbox" name="cc_author_meta[0][update_profile]" id="cc_author_meta[0][update_profile]" value="Profile">Update Profile
