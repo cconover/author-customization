@@ -21,3 +21,7 @@
 #cc-author-metabox .spinner {
 	float: none;
 }
+
+.cc_author_create_metabox .cc_author_create_buttons {
+	clear: both;
+}
