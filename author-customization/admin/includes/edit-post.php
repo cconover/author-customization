@@ -279,7 +279,7 @@ class ccAuthorMetaBox {
 			<?php
 			} // Check user permissions
 			?>
-		</div> <!-- .cc_author_metabox -->
+		</div> <!-- .cc_author_create_metabox -->
 		<?php
 	} // metabox( $post )
 	
