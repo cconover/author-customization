@@ -352,7 +352,7 @@ class ccAuthorMetaBox {
 					
 				}
 				
-				echo $newauthorresult; // Send the results back to JS
+				return $newauthorresult; // Send the results back to JS
 			}
 		} // Validate values have been provided
 	} // create_user_metabox_callback()
