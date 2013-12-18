@@ -342,9 +342,6 @@ class ccAuthorMetaBox {
 						'ID'			=>	$user_id,						// Author user ID
 						'first_name'	=>	$newauthor['first_name'],		// First name
 						'last_name'		=>	$newauthor['last_name'],		// Last name
-						'display_name'	=>	$authormeta['display_name'],	// Display name
-						'nickname'		=>	$authormeta['display_name'],	// Set nickname to display name
-						'description'	=>	$authormeta['description'],		// Biographical info
 					) );
 					
 					$newauthorresult = json_encode( array(
