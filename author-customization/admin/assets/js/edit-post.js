@@ -68,6 +68,7 @@ jQuery( document ).ready( function( $ ) { // Don't execute anything until the pa
 				var newuserform = response; // Parse the JSON sent back from the server
 				
 				$( "#cc-author-metabox .inside" ).append( response ); // Show new user form
+				console.log( response ); // Output server info to console
 				
 				$( "#cc-author-metabox .spinner" ).css( 'display', 'none' ); // Hide the 'loading' spinner
 			}
