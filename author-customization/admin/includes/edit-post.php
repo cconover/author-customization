@@ -266,7 +266,6 @@ class ccAuthorMetaBox {
 			if ( current_user_can( 'create_users' ) ) { // Check the capabilities of the current user for sufficient privileges
 			?>
 				<p>Use the form below to create a new user.</p>
-				<input type="hidden" name="cc_author_currentpostauthor" value="<?php echo $postauthorid; ?>">
 				<input type="hidden" name="cc_author_javascript" id="cc_author_javascript" value="">
 				
 				<label id="label_cc_author_create[first_name]" for="cc_author_create[first_name]" class="selectit">First Name</label>
@@ -275,19 +274,8 @@ class ccAuthorMetaBox {
 				<label id="label_cc_author_create[last_name]" for="cc_author_create[last_name]" class="selectit">Last Name</label>
 				<input type="text" name="cc_author_create[last_name]" id="cc_author_create[last_name]" />
 				
-				<label id="label_cc_author_create[display_name]" for="cc_author_create[display_name]" class="selectit">Display Name</label>
-				<input type="text" name="cc_author_create[display_name]" id="cc_author_create[display_name]" />
-				
 				<label id="label_cc_author_create[email]" for="cc_author_create[email]" class="selectit">Email</label>
 				<input type="text" name="cc_author_create[email]" id="cc_author_create[email]" />
-				
-				<label for="cc_author_create[description]" class="selectit">Bio</label>
-				<?php
-				$descEditor = new ccAuthorDescEditor( '', 'cc_author_create[description]' ); // Create the bio editor object
-				echo $descEditor->editor(); // Display the editor
-				?>
-				
-				<a id="cc_author_create_submit" class="cc_author_create_sumbit button" href="#">Create Author</a>
 			<?php
 			} // Check user permissions
 			?>
