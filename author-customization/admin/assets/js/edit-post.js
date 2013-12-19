@@ -7,7 +7,7 @@ admin/includes/edit-post.php
 
 jQuery( document ).ready( function( $ ) { // Don't execute anything until the page is loaded
 	$( "#cc_author_metabox" ).show(); // Show the meta box form if JavaScript is enabled
-	$( "#cc_author_postauthor" ).live( "change", function() { // If the author dropdown value is changed, execute the script
+	$( "#cc_author_postauthor" ).change( function() { // If the author dropdown value is changed, execute the script
 		$( "#cc-author-metabox .spinner" ).css( 'display', 'inline-block' ); // Display the 'loading' spinner
 		
 		/* Data to pass to the server. Called below during $.post() */
@@ -37,9 +37,9 @@ jQuery( document ).ready( function( $ ) { // Don't execute anything until the pa
 				$( "#cc-author-metabox .spinner" ).css( 'display', 'none' ); // Hide the 'loading' spinner
 			} // function( jsonString )
 		); // $.post
-	}); // $( "#cc_author_postauthor" ).live( "change" )
+	}); // $( "#cc_author_postauthor" ).change()
 
-	$( "#cc_author_create_author" ).on( "click", function() {
+	$( "#cc_author_create_author" ).click( function() {
 		$( "#cc-author-metabox .spinner" ).css( 'display', 'inline-block' ); // Display the 'loading' spinner
 		
 		/* Author data to pass to the server */
