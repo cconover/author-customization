@@ -306,7 +306,7 @@ class ccAuthorMetaBox {
 		else {
 			exit( 'You do not have permissions to add a user.' );
 		}
-	}
+	} // create_user_metabox_request_form()
 	
 	/* Save the meta box data as a new system user */
 	function create_user_metabox_callback() {
