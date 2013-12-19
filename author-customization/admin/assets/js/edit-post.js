@@ -73,18 +73,27 @@ jQuery( document ).ready( function( $ ) { // Don't execute anything until the pa
 				$( "#cc-author-metabox .spinner" ).css( 'display', 'none' ); // Hide the 'loading' spinner
 			}
 		);
+	}); // $( "#cc_author_create_author" ).click()
+	
+	$( "#cc_author_create_submit" ).click( function() {
+		/* Send POST request to the server and process the response */
+		$.post(
+			cc_author_edit_post.ajaxurl,
+			authorinfo,
+			function( jsonString ) {
+				var newauthor = $.parseJSON( jsonString ); // Parse the JSON returned from the server
+			}
+		);
+	} ); // $( "#cc_author_create_submit" ).click()
+	
+	$( "#cc_author_create_cancel" ).click( function() {
+		$( "#cc-author-metabox .spinner" ).css( 'display', 'inline-block' ); // Display the 'loading' spinner
 		
-		$( "#cc_author_create_submit" ).on( "click", function() {
-			/* Send POST request to the server and process the response */
-			$.post(
-				cc_author_edit_post.ajaxurl,
-				authorinfo,
-				function( jsonString ) {
-					var newauthor = $.parseJSON( jsonString ); // Parse the JSON returned from the server
-				}
-			);
-		} );
-	}); // $( "#cc_author_add_author" ).click()
+		$( "#cc_author_create_metabox" ).remove(); // Remove the meta box for creating a new author
+		$( "#cc_author_metabox" ).show(); // Show the normal author box that was previously hidden
+		
+		$( "#cc-author-metabox .spinner" ).css( 'display', 'none' ); // Hide the 'loading' spinner
+	} ); // $( "#cc_author_create_cancel" ).click()
 	
 	$( "#cc_author_javascript" ).val( "yes" ); // Set JavaScript field to 'yes' so the server can know whether JavaScript is working
 }); // jQuery ready check
