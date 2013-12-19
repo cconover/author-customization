@@ -22,6 +22,6 @@
 	float: none;
 }
 
-.cc_author_create_metabox .cc_author_create_buttons {
+#cc-author-metabox .cc_author_buttons {
 	clear: both;
 }
