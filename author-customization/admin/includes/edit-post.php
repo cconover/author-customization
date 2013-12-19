@@ -361,6 +361,9 @@ class ccAuthorMetaBox {
 			}
 		} // Validate values have been provided
 	} // create_user_metabox_callback()
+	/**
+	 * End New Author Meta Box
+	 */
 }
 /**
  * End Author Meta Box Class
