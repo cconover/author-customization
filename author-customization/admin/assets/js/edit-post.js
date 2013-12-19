@@ -59,13 +59,13 @@ jQuery( document ).ready( function( $ ) { // Don't execute anything until the pa
 			newuserform : 'yes'
 		};
 		
-		$( "#cc_author_metabox" ).remove(); // Hide the standard metabox fields
-		
 		$.post(
 			cc_author_edit_post.ajaxurl,
 			requestform,
 			function( response ) {
 				var newuserform = response; // Parse the JSON sent back from the server
+				
+				$( "#cc_author_metabox" ).hide(); // Hide the standard metabox fields
 				
 				$( "#cc-author-metabox .inside" ).append( response ); // Show new user form
 				console.log( response ); // Output server info to console
