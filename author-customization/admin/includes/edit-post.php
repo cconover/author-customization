@@ -226,12 +226,12 @@ class ccAuthorMetaBox {
 			update_post_meta( $post_id, '_cc_author_meta', $author ); // Save author metadata to post meta
 			
 			/* Save the post/page author */
-			remove_action( 'save_post', 'cc_author_save_meta' ); // Remove the 'save_post' hook before updating the post author to prevent an infinite loop
+			remove_action( 'save_post', 'save_meta' ); // Remove the 'save_post' hook before updating the post author to prevent an infinite loop
 			wp_update_post( array(
 				'ID'			=> $post_id,
 				'post_author'	=> $_POST['cc_author_postauthor'] // Use the post author ID from the dropdown
 			) );
-			add_action( 'save_post', 'cc_author_save_meta' ); // Re-add the 'save_post' hook after the post author is updated
+			add_action( 'save_post', 'save_meta' ); // Re-add the 'save_post' hook after the post author is updated
 			
 			/* If 'Update Profile' is enabled, save the author info to the user profile of the author */
 			foreach ( $author as $authormeta ) {
