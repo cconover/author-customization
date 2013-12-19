@@ -254,7 +254,7 @@ class ccAuthorMetaBox {
 	 
 	 
 	 /**
-	 * New Author Meta Box class
+	 * New Author Meta Box
 	 * Create the form and submission for a new post author
 	 * Extends ccAuthorMetaBox
 	 */
