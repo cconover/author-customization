@@ -36,7 +36,7 @@ function cc_author_displayname( $post ) {
 	$postpage = get_option( 'cc_author_postpage' ); // Retrive plugin's post/page options
 	
 	if ( isset( $postpage['multiple-authors'] ) ) { // If multiple authors support is enabled in plugin options, run this code
-		
+		$name = 'Multiple Authors';
 	}
 	else { // If multiple authors support is not enabled in plugin options, run this code
 		$author = get_post_meta( $post->ID, '_cc_author_meta', true ); // Get the post-specific author metadata
