@@ -32,9 +32,7 @@ if ( isset( $cc_author_postpage['multiple-authors'] ) ) {
  * Filter WordPress author functions to replace global profile data with plugin-generated data
  */
 /* Get the post author display name from post and apply to the post on display */
-function cc_author_displayname() {
-	global $post; // Access post data
-	
+function cc_author_displayname( $post ) {
 	$postpage = get_option( 'cc_author_postpage' ); // Retrive plugin's post/page options
 	
 	if ( isset( $postpage['multiple-authors'] ) ) { // If multiple authors support is enabled in plugin options, run this code
