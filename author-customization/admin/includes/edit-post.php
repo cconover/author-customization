@@ -24,7 +24,7 @@ class ccAuthorMetaBox {
 	/* Class constructor */
 	function __construct() {
 		/* Variables attached to the class */
-		$this->spinner = '<span class="spinner"></span>';
+		$this->spinner	= '<span class="spinner"></span>';
 		
 		add_action( 'admin_init', array( $this, 'admin_init' ) ); // Initializtion within admin
 		
