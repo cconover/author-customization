@@ -153,8 +153,8 @@ class ccAuthorMetaBox {
 			$descEditor->editor(); // Display the editor
 			?>
 			<div class="cc_author_meta_update_profile">
-				<input type="checkbox" name="cc_author_meta[0][update_profile]" id="cc_author_meta[0][update_profile]" value="Profile">Update Profile
-				<p class="description">Enabling this will update the author's site-wide user profile with the information you've entered.</p>
+				<input type="checkbox" name="cc_author_meta[0][update_profile]" id="cc_author_meta[0][update_profile]" value="Profile">Update author's global profile
+				<p class="description">Checking this will update the author's site-wide user profile with the information you've entered.</p>
 			</div>
 		</div> <!-- .cc_author_metabox -->
 		<?php
