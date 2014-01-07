@@ -43,8 +43,8 @@ function cc_author_displayname() {
 		$postmeta = get_post_meta( get_the_ID(), '_cc_author_meta', true ); // Get the post-specific author metadata, if available
 		
 		/* If the plugin setting is enabled and there's post-specific metadata stored and a post, page, or attachment is being displayed, show the post-specific display name. Otherwise use the profile display name. */
-		if ( $author && !is_author() && isset( $postpage['perpost'] ) ) {
-			foreach ( $author as $authormeta ) {
+		if ( $postmeta && !is_author() && isset( $postpage['perpost'] ) ) {
+			foreach ( $postmeta as $authormeta ) {
 				foreach ( $authormeta as $key => $meta ) {
 					$name = $authormeta['display_name']; // Set the name to the display name stored for the post
 				}
