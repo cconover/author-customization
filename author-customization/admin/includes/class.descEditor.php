@@ -7,6 +7,21 @@ Included/Required by:
 /admin/includes/edit-user.php
 */
 
+/* Editor settings */
+function cc_author_editorsettings() {
+	$settings = array( // Settings for WYSIWYG
+		'media_buttons'		=> false,	// Don't display media upload options
+		'quicktags'			=> false,	// Disable quicktags
+		'teeny'				=> true,	// Keep editor to minimal button options, instead of full editor
+		'textarea_rows'		=> 5,		// Number of rows in editor
+		'tinymce'			=> array(
+			'theme_advanced_buttons1'	=> 'bold,italic,underline,strikethrough,link,unlink' // Only show the listed buttons in the editor
+		),
+	);
+	
+	return $settings;
+} // cc_author_editorsettings()
+
 /* Edit post/page author editor */
 class ccAuthorDescEditor {
 	/* Properties */
