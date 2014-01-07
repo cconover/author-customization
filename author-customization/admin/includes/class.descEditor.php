@@ -41,7 +41,7 @@ class ccAuthorDescEditor {
 		/* If 'wysiwyg is enabled, show the WYSIWYG editor. Otherwise, show standard textarea. */
 		if ( isset( $admin_options['wysiwyg'] ) && function_exists( 'wp_editor' ) ) {
 			/* Create the WYSIWYG */
-			$settings = $this->editorsettings(); // Editor settings
+			$settings = cc_author_editorsettings(); // Editor settings
 
 			$editor = wp_editor( $this->content, $this->editorid, $settings ); // Call the WordPress WYSIWYG
 		}
@@ -90,7 +90,7 @@ class ccAuthorDescEditorUser {
 	public function editor( $user ) {
 		$admin_options = get_option( 'cc_author_admin_options' ); // Get plugin's admin options
 	
-		$settings = ccAuthorDescEditor::editorsettings(); // Editor settings
+		$settings = cc_author_editorsettings(); // Editor settings
 			
 		?>
 		<div style="color: #FF0000; font-weight: bold;"><noscript>
