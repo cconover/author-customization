@@ -65,8 +65,6 @@ if ( !is_admin() ) { // Only add filters if not in admin
 
 /* Get the post author description from post and apply it to the displayed post/page */
 function cc_author_description() {
-	global $post; // Access post data
-
 	$postpage = get_option( 'cc_author_postpage' ); // Get plugin options for posts/pages
 	
 	if ( isset( $postpage['multiple-authors'] ) ) { // If multiple authors support is enabled in plugin options, run this code
