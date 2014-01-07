@@ -51,7 +51,7 @@ function cc_author_displayname() {
 			}
 		}
 		else {
-			$postmeta = get_post_meta( get_the_ID(), 'post_author', true ); // Get the author ID for the post
+			$postmeta = get_post_meta( get_the_ID(), 'post_author' ); // Get the author ID for the post
 			var_dump( $postmeta );
 			
 			$author = get_userdata( $postmeta ); // Get the profile data for the post author
