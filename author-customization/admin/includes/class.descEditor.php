@@ -50,21 +50,6 @@ class ccAuthorDescEditor {
 		}
 		return $editor; // Display the editor
 	} // editor()
-	
-	/* Editor settings */
-	public function editorsettings() {
-		$settings = array( // Settings for WYSIWYG
-			'media_buttons'		=> false,	// Don't display media upload options
-			'quicktags'			=> false,	// Disable quicktags
-			'teeny'				=> true,	// Keep editor to minimal button options, instead of full editor
-			'textarea_rows'		=> 5,		// Number of rows in editor
-			'tinymce'			=> array(
-				'theme_advanced_buttons1'	=> 'bold,italic,underline,strikethrough,link,unlink' // Only show the listed buttons in the editor
-			),
-		);
-		
-		return $settings;
-	} // editorsettings()
 } // ccAuthorDescEditor
 
 /* User profile editor */
