@@ -53,11 +53,7 @@ function cc_author_displayname( $post ) {
 			}
 		}
 		else {
-			$postmeta = get_post_meta( get_the_ID(), 'post_author' ); // Get the author ID for the post
-			var_dump( $postmeta );
-			
-			$author = get_userdata( $postmeta ); // Get the profile data for the post author
-			var_dump( $author );
+			$author = get_userdata( $post->post_author ); // Get the profile data for the post author
 			$name = $author->display_name; // Set the display name to the value stored in the author's profile
 		}
 	}
