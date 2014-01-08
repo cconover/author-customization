@@ -33,7 +33,9 @@ if ( isset( $cc_author_postpage['multiple-authors'] ) ) {
  */
 
 /* Get the post author display name from post and apply to the post on display */
-function cc_author_displayname() {
+function cc_author_displayname( $post ) {
+	global $post;
+	
 	$postpage = get_option( 'cc_author_postpage' ); // Retrive plugin's post/page options
 	
 	if ( isset( $postpage['multiple-authors'] ) ) { // If multiple authors support is enabled in plugin options, run this code
@@ -68,7 +70,9 @@ if ( !is_admin() ) { // Only add filters if not in admin
 }
 
 /* Get the post author description from post and apply it to the displayed post/page */
-function cc_author_description() {
+function cc_author_description( $post ) {
+	global $post;
+	
 	$postpage = get_option( 'cc_author_postpage' ); // Get plugin options for posts/pages
 	
 	if ( isset( $postpage['multiple-authors'] ) ) { // If multiple authors support is enabled in plugin options, run this code
