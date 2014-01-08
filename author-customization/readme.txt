@@ -48,6 +48,8 @@ In order for author information to appear on your posts and pages, the theme you
 
 = 0.2.1 =
 * Bug fix: WYSIWYG on Edit Profile page was not showing full formatting.
+* Bug fix: Calling profile display name and description when no post-specific info was available could result in fatal error.
+* Bug fix: WYSIWYG editor settings was called improperly for profile page editor.
 
 = 0.2.0 =
 * Added option to update the author's user profile with the data entered in the post author info fields.
