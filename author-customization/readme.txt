@@ -64,5 +64,8 @@ Initial release.
 
 == Upgrade Notice ==
 
+= 0.2.1 =
+Fixed bugs that can cause fatal errors when displaying the author name & description.
+
 = 0.1.1 =
 Major bug in saving customized author info when selecting a new post author has been corrected.
