@@ -71,13 +71,6 @@ function cc_author_postpage_init() {
 		'postpage'									// Settings section in which to display the field
 	);		
 	add_settings_field(								// Set whether author info is pulled from post meta or global user data
-		'multiple-authors',							// Field ID
-		'Enable multiple authors per post',			// Field title, displayed to the left of the field on the options page
-		'cc_author_multiple_authors_callback',		// Callback function to display the field
-		'cc-author',								// Page ID for the options page
-		'postpage'									// Settings section in which to display the field
-	);		
-	add_settings_field(								// Set whether author info is pulled from post meta or global user data
 		'relnofollow',								// Field ID
 		'Add rel="nofollow" to bio links',			// Field title, displayed to the left of the field on the options page
 		'cc_author_relnofollow_callback',			// Callback function to display the field
