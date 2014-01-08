@@ -122,7 +122,6 @@ function cc_author_activate() {
 	/* Set default features for plugin */
 	$postpage = array (
 		'perpost'			=>	'Post',		// Save author info to each individual post, rather than pulling from global author data
-		'multiple-authors'	=>	'Multiple',	// Enable support for multiple authors per post/page
 		'relnofollow'		=>	'Nofollow'	// Add rel="nofollow" to links in bio entries
 	);
 	add_option( 'cc_author_postpage', $postpage ); // Save options to database
