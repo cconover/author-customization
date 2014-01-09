@@ -46,6 +46,9 @@ In order for author information to appear on your posts and pages, the theme you
 
 == Changelog ==
 
+= 0.2.2 =
+* Fixed bug that caused an error when creating a new post.
+
 = 0.2.1 =
 * Bug fix: WYSIWYG on Edit Profile page was not showing full formatting.
 * Bug fix: Calling profile display name and description when no post-specific info was available could result in fatal error.
