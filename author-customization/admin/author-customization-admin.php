@@ -107,6 +107,22 @@ function cc_author_perpost_callback() {
 	echo '<p class="description">Display author information from the post metadata instead of the user database. Useful for keeping author information specific to the time a post was published.</p><p class="description"><strong>Note:</strong> You can toggle this at any time, as this plugin always saves author information to post metadata regardless of this setting.</p>'; // Description of option
 } // cc_author_perpost_callback()
 
+/* Callback for 'multiple-authors' option */
+function cc_author_multiple_authors_callback() {
+	$postpage = get_option( 'cc_author_postpage' ); // Retrieve plugin options from the database
+	
+	/* Determine whether the box should be checked based on setting in database */
+	if ( $postpage['multiple-authors'] ) {
+		$checked = 'checked';
+	}
+	else {
+		$checked = '';
+	}
+	
+	echo '<input id="cc_author_postpage[multiple-authors]" name="cc_author_postpage[multiple-authors]" type="checkbox" value="Multiple" ' . $checked . '>'; // Print the input field to the screen
+	echo '<p class="description">Enable support for multiple authors on a single post or page.</p>'; // Description of option
+} // cc_author_multiple_authors_callback()
+
 /* Callback for 'relnofollow' option */
 function cc_author_relnofollow_callback() {
 	$postpage = get_option( 'cc_author_postpage' ); // Retrieve plugin options from the database
