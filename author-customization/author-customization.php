@@ -38,19 +38,24 @@ function cc_author_displayname( $post ) {
 	
 	$postpage = get_option( 'cc_author_postpage' ); // Retrive plugin's post/page options
 	
-	$postmeta = get_post_meta( $post->ID, '_cc_author_meta', true ); // Get the post-specific author metadata, if available
+	if ( isset( $postpage['multiple-authors'] ) ) { // If multiple authors support is enabled in plugin options, run this code
+		$name = 'Multiple Authors';
+	}
+	else { // If multiple authors support is not enabled in plugin options, run this code
+		$postmeta = get_post_meta( $post->ID, '_cc_author_meta', true ); // Get the post-specific author metadata, if available
 		
-	/* If the plugin setting is enabled and there's post-specific metadata stored and a post, page, or attachment is being displayed, show the post-specific display name. Otherwise use the profile display name. */
-	if ( $postmeta && !is_author() && isset( $postpage['perpost'] ) ) {
-		foreach ( $postmeta as $authormeta ) {
-			foreach ( $authormeta as $key => $meta ) {
-				$name = $authormeta['display_name']; // Set the name to the display name stored for the post
+		/* If the plugin setting is enabled and there's post-specific metadata stored and a post, page, or attachment is being displayed, show the post-specific display name. Otherwise use the profile display name. */
+		if ( $postmeta && !is_author() && isset( $postpage['perpost'] ) ) {
+			foreach ( $postmeta as $authormeta ) {
+				foreach ( $authormeta as $key => $meta ) {
+					$name = $authormeta['display_name']; // Set the name to the display name stored for the post
+				}
 			}
 		}
-	}
-	else {
-		$author = get_userdata( $post->post_author ); // Get the profile data for the post author
-		$name = $author->display_name; // Set the display name to the value stored in the author's profile
+		else {
+			$author = get_userdata( $post->post_author ); // Get the profile data for the post author
+			$name = $author->display_name; // Set the display name to the value stored in the author's profile
+		}
 	}
 	
 	return $name; // Send the name back to WordPress for displaying on the post
@@ -66,28 +71,32 @@ function cc_author_description( $post ) {
 	
 	$postpage = get_option( 'cc_author_postpage' ); // Get plugin options for posts/pages
 	
-	
-	$author = get_post_meta( $post->ID, '_cc_author_meta', true ); // Get the post-specific author metadata
-	
-	/* If the plugin setting is enabled and there's post-specific metadata stored and a post, page, or attachment is being displayed, show the post-specific bio. Otherwise use the profile bio. */
-	if ( $author && isset( $postpage['perpost'] ) ) {
-		foreach ( $author as $authormeta ) {
-			foreach ( $authormeta as $key => $meta ) {
-				$description = $authormeta['description']; // Set the description to the one saved in the post metadata
+	if ( isset( $postpage['multiple-authors'] ) ) { // If multiple authors support is enabled in plugin options, run this code
+		
+	}
+	else { // If multiple authors support is not enabled in plugin options, run this code
+		$author = get_post_meta( $post->ID, '_cc_author_meta', true ); // Get the post-specific author metadata
+		
+		/* If the plugin setting is enabled and there's post-specific metadata stored and a post, page, or attachment is being displayed, show the post-specific bio. Otherwise use the profile bio. */
+		if ( $author && isset( $postpage['perpost'] ) ) {
+			foreach ( $author as $authormeta ) {
+				foreach ( $authormeta as $key => $meta ) {
+					$description = $authormeta['description']; // Set the description to the one saved in the post metadata
+				}
 			}
 		}
+		else {
+			$author = get_userdata( $post->post_author ); // Get the profile data for the post author
+			$description = $author->description; // Set the description to the value stored in the author's profile
+		}
+		
+		/* If 'relnofollow' is set, add rel="nofollow" to links in bio */
+		if ( isset( $postpage['relnofollow'] ) ) {
+			$description = str_replace( 'href', 'rel="nofollow" href', $description );
+		}
+		
+		$description = apply_filters( 'the_content', $description ); // Enable formatting for bio
 	}
-	else {
-		$author = get_userdata( $post->post_author ); // Get the profile data for the post author
-		$description = $author->description; // Set the description to the value stored in the author's profile
-	}
-	
-	/* If 'relnofollow' is set, add rel="nofollow" to links in bio */
-	if ( isset( $postpage['relnofollow'] ) ) {
-		$description = str_replace( 'href', 'rel="nofollow" href', $description );
-	}
-	
-	$description = apply_filters( 'the_content', $description ); // Enable formatting for bio
 	
 	return $description; // Send back the description for WordPress to display
 } // cc_author_description()
