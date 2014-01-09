@@ -145,6 +145,7 @@ function cc_author_postpage_validate( $input ) {
 	
 	/* Directly set values that don't require validation */
 	$postpage['perpost']			=	$input['perpost'];
+	$postpage['multiple-authors']	=	$input['multiple-authors'];
 	$postpage['relnofollow']		=	$input['relnofollow'];
 	
 	return $postpage; // Send values to database
