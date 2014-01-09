@@ -131,6 +131,12 @@ class ccAuthorMetaBox {
 						'class'			=> 'cc_author_postauthor', // Class for the form item
 						'selected'		=> $postauthorid // Select the post's author to be displayed by default
 					) );
+					
+					if ( current_user_can( 'create_users' ) ) { // Only display if the current user can create users
+					?>
+						<span id="cc_author_create_author" class="cc_author_create_author button" style="cursor: pointer;">Create New Author</span>
+					<?php
+					}
 					?>
 					<input type="hidden" name="cc_author_currentpostauthor" value="<?php echo $postauthorid; ?>">
 					<input type="hidden" name="cc_author_javascript" id="cc_author_javascript" value="">
