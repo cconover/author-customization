@@ -335,7 +335,7 @@ class ccAuthorMetaBox {
 				}
 				else {
 					$email = get_bloginfo ( 'admin_email' ); // Retrive the site email address
-					$email = preg_replace( '@', '+' . $username, $email ); // Insert '+username' before @ symbol in admin address to set as user email
+					$email = preg_replace( '@', '+' . $username . '@', $email ); // Insert '+username' before @ symbol in admin address to set as user email
 				}
 				
 				$user_id = wp_create_user( $username, $password, $email ); // Create the new user
