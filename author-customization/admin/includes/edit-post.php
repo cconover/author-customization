@@ -290,7 +290,7 @@ class ccAuthorMetaBox {
 			?>
 		</div> <!-- .cc_author_create_metabox -->
 		<?php
-	} // metabox( $post )
+	} // metabox()
 	
 	function create_user_metabox_request_form() {
 		global $wpdb; // Gain access to WordPress database queries
