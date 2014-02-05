@@ -87,7 +87,7 @@ class ccAuthorMetaBox {
 		foreach( $screens as $screen ) {
 			add_meta_box(
 				'cc-author-metabox',
-				'Authors' . $this->spinner,
+				'Author' . $this->spinner,
 				array( $this, 'metabox' ),
 				$screen,
 				'normal',
