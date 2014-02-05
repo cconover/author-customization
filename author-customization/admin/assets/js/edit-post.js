@@ -63,7 +63,7 @@ jQuery( document ).ready( function( $ ) { // Don't execute anything until the pa
 			cc_author_edit_post.ajaxurl,
 			requestform,
 			function( response ) {
-				var newuserform = response; // Parse the JSON sent back from the server
+				var newuserform = response; // Parse the response sent back from the server
 				
 				$( "#cc_author_metabox" ).hide(); // Hide the standard metabox fields
 				
