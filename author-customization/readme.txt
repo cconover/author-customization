@@ -47,7 +47,7 @@ In order for author information to appear on your posts and pages, the theme you
 == Changelog ==
 
 = 0.2.2 =
-* Fixed bug that caused an error when creating a new post.
+Fixed bug that threw a "Missing Argument" error when creating a new post.
 
 = 0.2.1 =
 * Bug fix: WYSIWYG on Edit Profile page was not showing full formatting.
