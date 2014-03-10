@@ -57,5 +57,5 @@ class cc_author {
 
 /* Create an instance of the plugin in the global space */
 global $cc_author;
-$cc_author = new cc_author();
+$cc_author = new cc_author;
 ?>
