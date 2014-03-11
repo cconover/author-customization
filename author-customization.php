@@ -46,7 +46,7 @@ class cc_author {
 			add_filter( 'the_author', array( &$this, 'displayname' ) ); // Hook display name function into 'the_author' filter
 			add_filter( 'get_the_author_display_name', array( &$this, 'displayname' ) ); // Hook display name function into 'get_the_author_display_name' filter
 			add_filter( 'get_the_author_description', array( &$this, 'description' ) ); // Hook description into 'get_the_author_description' filter
-		}
+		}		
 		
 		// Load admin class if in admin
 		if ( is_admin() ) {
@@ -57,7 +57,7 @@ class cc_author {
 			register_activation_hook( $this->pluginfile, array( &$admin, 'activate' ) );
 			register_deactivation_hook( $this->pluginfile, array( &$admin, 'deactivate' ) );
 		}
-	}
+	} // End __construct()
 	
 	// Display the author name
 	public function displayname( $post ) {
