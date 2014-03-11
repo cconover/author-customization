@@ -23,8 +23,11 @@ class cc_author_admin extends cc_author {
 	 		wp_die( 'Your version of WordPress is too old to use this plugin. Please upgrade to the latest version of WordPress.' );
 	 	}
 	 	
-	 	/* Prior to version 0.3.0 plugin options were spread out across a few database entries. From 0.3.0 on they are all in a single entry.
-	 	   We need to determine whether old plugin settings are present, and if so update the database with the new setup. */
+	 	/*
+	 	MOVE TO UPDATE METHOD
+	 	Prior to version 0.3.0 plugin options were spread out across a few database entries. From 0.3.0 on they are all in a single entry.
+	 	We need to determine whether old plugin settings are present, and if so update the database with the new setup.
+	 	*/
 		if ( get_option( 'cc_author_postpage' ) ) {
 			// If the old options entries are present, we need to retrieve those values and assign them to the new structure
 			$postpage = get_option( 'cc_author_postpage' );
@@ -57,7 +60,8 @@ class cc_author_admin extends cc_author {
 	 
 	 // Plugin deactivation
 	 public function deactivate() {
-	 	
+	 	// Remove the plugin options from the database
+	 	delete_option( $this->prefix . 'options' );
 	 } // End deactivate()
 }
 /**
