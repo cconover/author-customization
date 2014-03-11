@@ -23,18 +23,14 @@ class cc_author_admin extends cc_author {
 	 		wp_die( 'Your version of WordPress is too old to use this plugin. Please upgrade to the latest version of WordPress.' );
 	 	}
 	 	
-	 	/* Set default features for plugin */
-		$postpage = array (
+	 	/* Set default options for plugin */
+		$options = array (
 			'perpost'			=>	'Post',		// Save author info to each individual post, rather than pulling from global author data
 			'multiple-authors'	=>	'Multiple',	// Enable support for multiple authors per post/page
-			'relnofollow'		=>	'Nofollow'	// Add rel="nofollow" to links in bio entries
-		);
-		add_option( $this->prefix . 'postpage', $postpage ); // Save options to database
-	
-		$admin_options = array(
+			'relnofollow'		=>	'Nofollow',	// Add rel="nofollow" to links in bio entries
 			'wysiwyg'			=>	'WYSIWYG'	// Enable the WYSIWYG editor for author bio fields
 		);
-		add_option( $this->prefix . 'admin_options', $admin_options ); // Save options to database
+		add_option( $this->prefix . 'options', $options ); // Save options to database
 	 } // End activate()
 	 
 	 // Plugin deactivation
