@@ -42,6 +42,7 @@ class cc_author_admin extends cc_author {
 			delete_option( 'cc_author_postpage' );
 			delete_option( 'cc_author_admin_options' );
 		}
+		// If old options are not present, we can proceed to set up our options unchanged
 		else {
 	 		/* Set options for plugin */
 			$options = array (
