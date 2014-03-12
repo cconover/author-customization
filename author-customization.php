@@ -27,11 +27,12 @@ class cc_author {
 	protected $pluginfile;					// Plugin file path
 	
 	/* Plugin's class constructor */
-	function __construct() {
+	public function __construct() {
 		// Set plugin variables
 		$this->pluginpath = dirname( __FILE__ );
 		$this->pluginfile = __FILE__;
 		$this->options = get_option( $this->prefix . 'options' );
+		var_dump( $this->options );
 		
 		/* Plugin hooks and filters */
 		// Display name and description
