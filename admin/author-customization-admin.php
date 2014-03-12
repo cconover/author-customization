@@ -8,6 +8,10 @@
  * Plugin admin class
  **/
 class cc_author_admin extends cc_author {
+	/** Class variables */
+	private $editorid;
+	private $editorsettings;
+	
 	// Class constructor
 	public function __construct() {
 		// Initialize the plugin
@@ -19,10 +23,10 @@ class cc_author_admin extends cc_author {
 		
 		// Hooks and filters for the editor
 		if ( isset( $this->options['wysiwyg'] ) && function_exists( 'wp_editor' ) ) {
-			add_action( 'show_user_profile', array( &$this, 'editor' ) ); // User profile
-			add_action( 'edit_user_profile', array( &$this, 'editor' ) ); // User profile
+			add_action( 'show_user_profile', array( &$this, 'editorprofile' ) ); // User profile
+			add_action( 'edit_user_profile', array( &$this, 'editorprofile' ) ); // User profile
 			add_action( 'admin_init', array( &$this, 'editor_remove_filters' ) ); // Remove filters from textarea
-			add_action( 'admin_enqueue_scripts', array( &$this, 'editorjs' ) ); // Load JavaScript
+			add_action( 'admin_enqueue_scripts', array( &$this, 'profilejs' ) ); // Load JavaScript
 		}
 		/* End hooks and filters */
 	} // End __construct()
@@ -215,9 +219,15 @@ class cc_author_admin extends cc_author {
 	/**
 	 * WYSIWYG Editor
 	 **/
-	// Editor
+	// Editor for posts and pages
 	public function editor() {
-		global $user;
+		// Initialize the editor
+		$this->editor_initialize();
+	}
+	// Editor for user profile
+	public function editorprofile( $user ) {
+		// Initialize the editor
+		$this->editor_initialize();
 		?>
 		<div style="color: #FF0000; font-weight: bold;"><noscript>
 			You currently have JavaScript disabled, which is why you're seeing duplicate Biographical Info fields and no WYSIWYG. Please enable JavaScript.
@@ -237,6 +247,7 @@ class cc_author_admin extends cc_author {
 		</table>
 		<?php
 	} // End editor()
+	
 	// Initialize the editor
 	function editor_initialize() {
 		// Editor ID
@@ -253,6 +264,24 @@ class cc_author_admin extends cc_author {
 			)
 		);
 	} // End editor_initialize()
+	
+	// Remove filters from biographical info
+	function editor_remove_filters() {
+		remove_all_filters( 'pre_user_description' );
+	} // End editor_remove_filters()
+	
+	// Load JavaScript for profile
+	public function profilejs( $hook ) {
+		if ( $hook == 'profile.php' || $hook == 'user-edit.php' ) { // Only load JS if editing a user
+			wp_enqueue_script(
+				self::ID . '-edit-user', // Name of script in WordPress
+				plugins_url ( 'admin/assets/js/edit-user.js', dirname( __FILE__ ) ), // Location of script
+				'jquery', // Dependencies
+				self::VERSION, // Use plugin version number
+				true // Whether to load script in footer
+			);
+		}
+	} // End profilejs()
 	/**
 	 * End WYSIWYG Editor
 	 **/
