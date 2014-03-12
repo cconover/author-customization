@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name: Author Customization
- * Plugin URI: https://christiaanconover.com/code/wp-author-customization
+ * Plugin URI: https://christiaanconover.com/code/wp-author-customization?ref=plugin-data
  * Description: Author Customization adds additional author management capabilities beyond the native user account structure. Save author data to each post, enable WYSIWYG editing of biographical info, and more.
  * Version: 0.3.0-alpha
  * Author: Christiaan Conover
- * Author URI: https://christiaanconover.com
+ * Author URI: https://christiaanconover.com?ref=wp-author-customization-plugin-author-uri
  * License: GPLv2
- * @package cc-author-customization
+ * @package cc-author
  **/
 
 /**
@@ -63,7 +63,7 @@ class cc_author {
 			$postmeta = get_post_meta( $post->ID, '_cc_author_meta', true ); // Get the post-specific author metadata, if available
 			
 			/* If the plugin setting is enabled and there's post-specific metadata stored and a post, page, or attachment is being displayed, show the post-specific display name. Otherwise use the profile display name. */
-			if ( $postmeta && !is_author() && isset( $postpage['perpost'] ) ) {
+			if ( $postmeta && !is_author() && isset( $this->options['perpost'] ) ) {
 				foreach ( $postmeta as $authormeta ) {
 					foreach ( $authormeta as $key => $meta ) {
 						$name = $authormeta['display_name']; // Set the name to the display name stored for the post
@@ -82,14 +82,14 @@ class cc_author {
 	public function description( $post ) {
 		global $post;
 	
-		if ( isset( $postpage['multiple-authors'] ) ) { // If multiple authors support is enabled in plugin options, run this code
+		if ( isset( $this->options['multiple-authors'] ) ) { // If multiple authors support is enabled in plugin options, run this code
 			
 		}
 		else { // If multiple authors support is not enabled in plugin options, run this code
 			$author = get_post_meta( $post->ID, '_cc_author_meta', true ); // Get the post-specific author metadata
 			
 			/* If the plugin setting is enabled and there's post-specific metadata stored and a post, page, or attachment is being displayed, show the post-specific bio. Otherwise use the profile bio. */
-			if ( $author && isset( $postpage['perpost'] ) ) {
+			if ( $author && isset( $this->options['perpost'] ) ) {
 				foreach ( $author as $authormeta ) {
 					foreach ( $authormeta as $key => $meta ) {
 						$description = $authormeta['description']; // Set the description to the one saved in the post metadata
@@ -102,7 +102,7 @@ class cc_author {
 			}
 		
 			/* If 'relnofollow' is set, add rel="nofollow" to links in bio */
-			if ( isset( $postpage['relnofollow'] ) ) {
+			if ( isset( $this->options['relnofollow'] ) ) {
 				$description = str_replace( 'href', 'rel="nofollow" href', $description );
 			}
 			
