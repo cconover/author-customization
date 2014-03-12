@@ -15,16 +15,16 @@
  **/
 class cc_author {
 	/* Plugin constants */
-	const ID = 'cc-author';					// Plugin identifier
-	const NAME = 'Author Customization';	// Plugin name
-	const VERSION = '0.3.0-alpha';			// Plugin version
-	const WPVER = '3.5.2';					// Minimum version of WordPress required for this plugin
+	const ID = 'cc-author'; // Plugin identifier
+	const NAME = 'Author Customization'; // Plugin name
+	const VERSION = '0.3.0-alpha'; // Plugin version
+	const WPVER = '3.5.2'; // Minimum version of WordPress required for this plugin
 	
 	/* Plugin variables */
-	protected $prefix = 'cc_author_';		// Plugin database prefix
-	protected $options;						// Plugin options
-	protected $pluginpath;					// Plugin directory path
-	protected $pluginfile;					// Plugin file path
+	protected $prefix = 'cc_author_'; // Plugin database prefix
+	protected $options; // Plugin options
+	protected $pluginpath; // Plugin directory path
+	protected $pluginfile; // Plugin file path
 	
 	/* Plugin's class constructor */
 	public function __construct() {
