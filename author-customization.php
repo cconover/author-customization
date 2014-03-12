@@ -14,31 +14,24 @@
  * Main plugin class
  **/
 class cc_author {
-	/* Plugin-wide settings and data */
-	// Plugin identifier
-	const ID = 'cc-author';
+	/* Plugin constants */
+	const ID = 'cc-author';					// Plugin identifier
+	const NAME = 'Author Customization';	// Plugin name
+	const VERSION = '0.3.0-alpha';			// Plugin version
+	const WPVER = '3.5.2';					// Minimum version of WordPress required for this plugin
 	
-	// Plugin name
-	const NAME = 'Author Customization';
-	
-	// Plugin version
-	const VERSION = '0.3.0-alpha';
-	
-	// Minimum version of WordPress required for this plugin
-	const WPVER = '3.5.2';
-	
-	// This plugin's database prefix
-	protected $prefix = 'cc_author_';
-	
-	/* Plugin path & file location */
-	protected $pluginpath;
-	protected $pluginfile;
+	/* Plugin variables */
+	protected $prefix = 'cc_author_';		// Plugin database prefix
+	protected $options;						// Plugin options
+	protected $pluginpath;					// Plugin directory path
+	protected $pluginfile;					// Plugin file path
 	
 	/* Plugin's class constructor */
 	function __construct() {
 		// Set plugin variables
 		$this->pluginpath = dirname( __FILE__ );
 		$this->pluginfile = __FILE__;
+		$this->options = get_option( $this->prefix . 'options' );
 		
 		/* Plugin hooks and filters */
 		// Display name and description
@@ -62,10 +55,8 @@ class cc_author {
 	// Display the author name
 	public function displayname( $post ) {
 		global $post;
-		
-		$postpage = get_option( 'cc_author_postpage' ); // Retrive plugin's post/page options
 	
-		if ( isset( $postpage['multiple-authors'] ) ) { // If multiple authors support is enabled in plugin options, run this code
+		if ( isset( $this->options['multiple-authors'] ) ) { // If multiple authors support is enabled in plugin options, run this code
 			$name = 'Multiple Authors';
 		}
 		else { // If multiple authors support is not enabled in plugin options, run this code
@@ -90,8 +81,6 @@ class cc_author {
 	
 	public function description( $post ) {
 		global $post;
-	
-		$postpage = get_option( 'cc_author_postpage' ); // Get plugin options for posts/pages
 	
 		if ( isset( $postpage['multiple-authors'] ) ) { // If multiple authors support is enabled in plugin options, run this code
 			
