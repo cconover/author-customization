@@ -20,7 +20,7 @@ class cc_author {
 	const VERSION = '0.3.0-alpha'; // Plugin version
 	const WPVER = '3.5.2'; // Minimum version of WordPress required for this plugin
 	
-	/* Plugin variables */
+	/* Plugin properties */
 	protected $prefix = 'cc_author_'; // Plugin database prefix
 	protected $options; // Plugin options
 	protected $pluginpath; // Plugin directory path
