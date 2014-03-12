@@ -16,7 +16,16 @@ class cc_author_admin extends cc_author {
 		/* Hooks and filters */
 		add_action( 'admin_menu', array( &$this, 'create_options_menu' ) ); // Add menu entry to Settings menu
 		add_action( 'admin_init', array( &$this, 'options_init' ) ); // Initialize plugin options
-	}
+		
+		// Hooks and filters for the editor
+		if ( isset( $this->options['wysiwyg'] ) && function_exists( 'wp_editor' ) ) {
+			add_action( 'show_user_profile', array( &$this, 'editor' ) ); // User profile
+			add_action( 'edit_user_profile', array( &$this, 'editor' ) ); // User profile
+			add_action( 'admin_init', array( &$this, 'editor_remove_filters' ) ); // Remove filters from textarea
+			add_action( 'admin_enqueue_scripts', array( &$this, 'editorjs' ) ); // Load JavaScript
+		}
+		/* End hooks and filters */
+	} // End __construct()
 	
 	/**
 	 * Plugin options
@@ -201,6 +210,51 @@ class cc_author_admin extends cc_author {
 	/* End plugin options callbacks */
 	/**
 	 * End plugin options
+	 **/
+	
+	/**
+	 * WYSIWYG Editor
+	 **/
+	// Editor
+	public function editor() {
+		global $user;
+		?>
+		<div style="color: #FF0000; font-weight: bold;"><noscript>
+			You currently have JavaScript disabled, which is why you're seeing duplicate Biographical Info fields and no WYSIWYG. Please enable JavaScript.
+		</noscript></div>
+		<table class="form-table">
+			<tr>
+				<th><label for="description">Biographical Info</label></th>
+				<td>
+					<?php 
+					$description = get_user_meta( $user->ID, 'description', true);
+					$description = apply_filters( 'the_content', $description );
+					wp_editor( $description, $this->editorid, $this->editorsettings ); 
+					?>
+					<p class="description">Share a little biographical information to fill out your profile. This may be shown publicly.</p>
+				</td>
+			</tr>
+		</table>
+		<?php
+	} // End editor()
+	// Initialize the editor
+	function editor_initialize() {
+		// Editor ID
+		$this->editorid = self::ID . '-user-description';
+		
+		// Editor settings
+		$this->editorsettings = array(
+			'media_buttons'		=> false,	// Don't display media upload options
+			'quicktags'			=> false,	// Disable quicktags
+			'teeny'				=> true,	// Keep editor to minimal button options, instead of full editor
+			'textarea_rows'		=> 5,		// Number of rows in editor
+			'tinymce'			=> array(
+				'theme_advanced_buttons1'	=> 'bold,italic,underline,strikethrough,link,unlink' // Only show the listed buttons in the editor
+			)
+		);
+	} // End editor_initialize()
+	/**
+	 * End WYSIWYG Editor
 	 **/
 	
 	/**
