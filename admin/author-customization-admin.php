@@ -20,6 +20,7 @@ class cc_author_admin extends cc_author {
 		/* Hooks and filters */
 		add_action( 'admin_menu', array( &$this, 'create_options_menu' ) ); // Add menu entry to Settings menu
 		add_action( 'admin_init', array( &$this, 'options_init' ) ); // Initialize plugin options
+		add_action( 'add_meta_boxes', array( &$this, 'add_metabox' ) ); // Add metabox to post/page editing
 		
 		// Hooks and filters for the editor
 		if ( isset( $this->options['wysiwyg'] ) && function_exists( 'wp_editor' ) ) {
@@ -215,10 +216,39 @@ class cc_author_admin extends cc_author {
 	/**
 	 * End plugin options
 	 **/
+	// Add metabox to post/page editing, remove default Author metabox, and initialize required elements for post/page editing
+	function add_metabox() {
+		/* Metabox hooks and filters */
+		
+	} // End add_metabox()
+	/**
+	 * Post/Page Editing
+	 **/
+	
+	/**
+	 * End Post/Page Editing
+	 **/
 	
 	/**
 	 * WYSIWYG Editor
 	 **/
+	// Initialize the editor
+	function editor_initialize() {
+		// Editor ID
+		$this->editorid = self::ID . '-user-description';
+		
+		// Editor settings
+		$this->editorsettings = array(
+			'media_buttons'		=> false, // Don't display media upload options
+			'quicktags'			=> false, // Disable quicktags
+			'teeny'				=> true, // Keep editor to minimal button options, instead of full editor
+			'textarea_rows'		=> 5, // Number of rows in editor
+			'tinymce'			=> array(
+				'theme_advanced_buttons1'	=> 'bold,italic,underline,strikethrough,link,unlink' // Only show the listed buttons in the editor
+			)
+		);
+	} // End editor_initialize()
+	
 	// Editor for posts and pages
 	function editor() {
 		// Initialize the editor
@@ -246,29 +276,12 @@ class cc_author_admin extends cc_author {
 					$description = apply_filters( 'the_content', $description );
 					wp_editor( $description, 'description', $this->editorsettings ); 
 					?>
-					<p class="description">Share a little biographical information to fill out your profile. This may be shown publicly.</p>
+					<span class="description">Share a little biographical information to fill out your profile. This may be shown publicly.</span>
 				</td>
 			</tr>
 		</table>
 		<?php
 	} // End editor()
-	
-	// Initialize the editor
-	function editor_initialize() {
-		// Editor ID
-		$this->editorid = self::ID . '-user-description';
-		
-		// Editor settings
-		$this->editorsettings = array(
-			'media_buttons'		=> false, // Don't display media upload options
-			'quicktags'			=> false, // Disable quicktags
-			'teeny'				=> true, // Keep editor to minimal button options, instead of full editor
-			'textarea_rows'		=> 5, // Number of rows in editor
-			'tinymce'			=> array(
-				'theme_advanced_buttons1'	=> 'bold,italic,underline,strikethrough,link,unlink' // Only show the listed buttons in the editor
-			)
-		);
-	} // End editor_initialize()
 	
 	// Remove filters from biographical info
 	function editor_remove_filters() {
