@@ -28,11 +28,8 @@ class cc_author {
 	
 	/* Plugin's class constructor */
 	public function __construct() {
-		// Set plugin variables
-		$this->pluginpath = dirname( __FILE__ );
-		$this->pluginfile = __FILE__;
-		$this->options = get_option( $this->prefix . 'options' );
-		var_dump( $this->options );
+		// Initialize plugin
+		$this->initialize();
 		
 		/* Plugin hooks and filters */
 		// Display name and description
@@ -112,6 +109,23 @@ class cc_author {
 		
 		return $description; // Send back the description for WordPress to display
 	} // End description()
+	
+	/* Plugin options and initializers */
+	protected function initialize() {
+		global $wpdb;
+		
+		// Set plugin variables
+		$this->pluginpath = dirname( __FILE__ );
+		$this->pluginfile = __FILE__;
+		
+		// Get plugin options and assign them to the class property
+		$this->get_options();
+	} // End initialize()
+	
+	protected function get_options() {
+		$this->options = get_option( $this->prefix . 'options' );
+	} // End get_options()
+	/* End plugin options and initializers */
 }
 /**
  * End cc_author
