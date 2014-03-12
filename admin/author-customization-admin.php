@@ -239,7 +239,7 @@ class cc_author_admin extends cc_author {
 					<?php 
 					$description = get_user_meta( $user->ID, 'description', true);
 					$description = apply_filters( 'the_content', $description );
-					wp_editor( $description, $this->editorid, $this->editorsettings ); 
+					wp_editor( $description, 'description', $this->editorsettings ); 
 					?>
 					<p class="description">Share a little biographical information to fill out your profile. This may be shown publicly.</p>
 				</td>
