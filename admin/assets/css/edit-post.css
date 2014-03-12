@@ -1,0 +1,27 @@
+/* Custom styling for meta box */
+#cc-author-metabox label {
+	display: block;
+}
+
+#cc-author-metabox select,
+#cc-author-metabox input[type='text'],
+#cc-author-metabox textarea {
+	margin-bottom: 1em;
+}
+
+.cc_author_metabox .cc_author_meta_update_profile {
+	margin-top: 1em;
+}
+
+.cc_author_metabox input[type='text'],
+.cc_author_metabox textarea {
+	width: 98%;
+}
+
+#cc-author-metabox .spinner {
+	float: none;
+}
+
+#cc-author-metabox .cc_author_buttons {
+	clear: both;
+}
