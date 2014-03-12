@@ -8,12 +8,12 @@
  * Plugin admin class
  **/
 class cc_author_admin extends cc_author {
-	/** Class variables */
+	/** Class properties */
 	private $editorid;
 	private $editorsettings;
 	
 	// Class constructor
-	public function __construct() {
+	function __construct() {
 		// Initialize the plugin
 		$this->initialize();
 		
@@ -35,7 +35,7 @@ class cc_author_admin extends cc_author {
 	 * Plugin options
 	 **/
 	// Create the menu entry under the Settings menu
-	public function create_options_menu() {
+	function create_options_menu() {
 		add_options_page(
 			self::NAME, // Page title. This is displayed in the browser title bar.
 			self::NAME, // Menu title. This is displayed in the Settings submenu.
@@ -220,12 +220,17 @@ class cc_author_admin extends cc_author {
 	 * WYSIWYG Editor
 	 **/
 	// Editor for posts and pages
-	public function editor() {
+	function editor() {
 		// Initialize the editor
 		$this->editor_initialize();
+		
+		// If WYSIWYG is enabled, use it. Otherwise, use a standard textarea.
+		if ( isset( $this->options['wysiwyg'] ) && function_exists( 'wp_editor' ) ) {
+			
+		}
 	}
 	// Editor for user profile
-	public function editorprofile( $user ) {
+	function editorprofile( $user ) {
 		// Initialize the editor
 		$this->editor_initialize();
 		?>
@@ -271,7 +276,7 @@ class cc_author_admin extends cc_author {
 	} // End editor_remove_filters()
 	
 	// Load JavaScript for profile
-	public function profilejs( $hook ) {
+	function profilejs( $hook ) {
 		if ( $hook == 'profile.php' || $hook == 'user-edit.php' ) { // Only load JS if editing a user
 			wp_enqueue_script(
 				self::ID . '-edit-user', // Name of script in WordPress
