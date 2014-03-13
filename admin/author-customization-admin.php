@@ -21,7 +21,11 @@ class cc_author_admin extends cc_author {
 		add_action( 'admin_menu', array( &$this, 'create_options_menu' ) ); // Add menu entry to Settings menu
 		add_action( 'admin_init', array( &$this, 'options_init' ) ); // Initialize plugin options
 		add_action( 'add_meta_boxes', array( &$this, 'add_metabox' ) ); // Add metabox to post/page editing screen
-		add_action( 'admin_enqueue_scripts', array( $this, 'add_metabox_scripts' ) ); // Load scripts and styles
+		add_action( 'admin_enqueue_scripts', array( &$this, 'add_metabox_scripts' ) ); // Load scripts and styles
+		add_action( 'save_post', array( $this, 'save_meta' ) ); // Hook WordPress to save meta box data when saving post/page
+		
+		// AJAX hooks
+		add_action( 'wp_ajax_cc_author_change_postauthor', array( &$this, 'change_postauthor_callback' ) ); // Change the post author in the meta box
 		
 		// Hooks and filters for the editor
 		if ( isset( $this->options['wysiwyg'] ) && function_exists( 'wp_editor' ) ) {
@@ -268,8 +272,8 @@ class cc_author_admin extends cc_author {
 			self::ID . '-edit-post', // Name of script call being localized
 			$this->prefix . 'edit_post', // AJAX object namespace, used to call values in the JS file
 			array(
-				'ajaxurl'	=> admin_url( 'admin-ajax.php' ), // URL for admin AJAX calls
-				'nonce'		=> wp_create_nonce( 'cc-author-edit-post-nonce' ) // Nonce to authenticate request
+				'ajaxurl' => admin_url( 'admin-ajax.php' ), // URL for admin AJAX calls
+				'nonce' => wp_create_nonce( 'cc-author-edit-post-nonce' ) // Nonce to authenticate request
 			)
 		);
 	} // End add_metabox_scripts()
@@ -277,17 +281,17 @@ class cc_author_admin extends cc_author {
 	// Meta box
 	function metabox( $post ) {
 		// Retrieve current values if they exist
-		$author_meta = get_post_meta( $post->ID, '_' . $this->prefix . 'meta', true ); // Author meta data (stored as an array)
+		$cc_author_meta = get_post_meta( $post->ID, '_' . $this->prefix . 'meta', true ); // Author metadata (stored as an array)
 		$postauthorid = $post->post_author; // Get the user ID of the post author
 		
 		// If any of the values are missing from the post, retrieve them from the author's global profile
-		if ( ! $author_meta ) {		
+		if ( ! $cc_author_meta ) {		
 			$postauthor = get_userdata( $postauthorid ); // Retrieve the details of the post author
 			
 			$cc_author_meta = array(); // Initialize main array
 			$cc_author_meta[0] = array( // Nested array for author data
-				'display_name'	=> $postauthor->display_name, // Set display name from post author's data
-				'description'	=> $postauthor->description // Set bio from the post author's data
+				'display_name' => $postauthor->display_name, // Set display name from post author's data
+				'description' => $postauthor->description // Set bio from the post author's data
 			);
 		}
 		
@@ -304,17 +308,11 @@ class cc_author_admin extends cc_author {
 				<div id="<?php echo $this->prefix; ?>metabox_postauthor" class="<?php echo $this->prefix; ?>metabox_postauthor">
 				<?php
 					wp_dropdown_users( array(
-						'name'			=> $this->prefix . 'postauthor', // Name for the form item
-						'id'			=> $this->prefix . 'postauthor', // ID for the form item
-						'class'			=> $this->prefix . 'postauthor', // Class for the form item
-						'selected'		=> $postauthorid // Select the post's author to be displayed by default
+						'name' => $this->prefix . 'postauthor', // Name for the form item
+						'id' => $this->prefix . 'postauthor', // ID for the form item
+						'class'=> $this->prefix . 'postauthor', // Class for the form item
+						'selected' => $postauthorid // Select the post's author to be displayed by default
 					) );
-					
-					if ( current_user_can( 'create_users' ) ) { // Only display if the current user can create users
-					?>
-						<span id="<?php echo $this->prefix; ?>create_author" class="<?php echo $this->prefix; ?>create_author button" style="cursor: pointer;">Create New Author</span>
-					<?php
-					}
 					?>
 					<input type="hidden" name="<?php echo $this->prefix; ?>currentpostauthor" value="<?php echo $postauthorid; ?>">
 					<input type="hidden" name="<?php echo $this->prefix; ?>javascript" id="<?php echo $this->prefix; ?>javascript" value="">
@@ -337,6 +335,81 @@ class cc_author_admin extends cc_author {
 		</div> <!-- .cc_author_metabox -->
 		<?php
 	} // End metabox()
+	
+	// Callback for AJAX call to change the post author
+	function change_postauthor_callback() {
+		global $wpdb; // Allow access to database
+		
+		$nonce = $_POST['nonce']; // Assign a local variable for nonce
+		
+		if ( ! wp_verify_nonce( $nonce, self::ID . '-edit-post-nonce' ) ) { // If the nonce doesn't check out, fail the request
+			exit( 'Your request could not be authenticated' ); // Error message for unauthenticated request
+		}
+		
+		if ( current_user_can( 'edit_others_posts' ) || current_user_can( 'edit_others_pages' ) ) { // Check for proper permissions before handling request
+			$author = $_POST['authorID']; // Assign local variable for submitted post author
+			$authordata = get_userdata( $author ); // Retrieve the selected user's data from their profile
+			
+			// Encode response as JSON
+			$authormeta = json_encode( array(
+				'display_name'	=> $authordata->display_name, // Display name from profile
+				'description'	=> $authordata->description, // Biographical info from profile
+				'wysiwyg'		=> $this->options['wysiwyg'] // Tell JS whether or not WYSIWYG is enabled
+			) );
+			
+			echo $authormeta; // Return the values retrieved from the database
+		}
+		
+		exit; // End response. Required for callback to return a proper result.
+	} // End change_postauthor_callback()
+	
+	// Save the information in the meta box
+	function save_meta( $post_id ) {
+		if ( isset( $_POST[$this->prefix . 'meta'] ) ) { // Verify that values have been provided
+			if ( isset( $_POST[$this->prefix . 'postauthor'] ) && ( $_POST[$this->prefix . 'postauthor'] != $_POST[$this->prefix . 'currentpostauthor'] ) && ! isset( $_POST[$this->prefix . 'javascript'] ) ) { // If the post author has been changed and JavaScript is not enabled, use the new post author's profile values for post-specific data. Otherwise, use data submitted from the meta box.
+				$postauthor = get_userdata( $_POST[$this->prefix . 'postauthor'] ); // Retrieve the details of the post author
+		
+				$author = array(); // Initialize main array
+				$author[0] = array( // Nested array for author data
+					'display_name' => $postauthor->display_name, // Set display name from post author's data
+					'description' => $postauthor->description // Set bio from the post author's data
+				);
+			}
+			else {
+				$author = $_POST[$this->prefix . 'meta']; // Assign POST data to local variable
+			}
+			
+			// Sanitize array values
+			foreach ( $author as $authormeta ) {
+				foreach ( $authormeta as $key => $meta ) {
+					$authormeta['display_name'] = strip_tags( $meta );
+				}
+			}
+			update_post_meta( $post_id, '_' . $this->prefix . 'meta', $author ); // Save author metadata to post meta
+			
+			// Save the post/page author
+			remove_action( 'save_post', array( &$this, 'save_meta' ) ); // Remove the 'save_post' hook before updating the post author to prevent an infinite loop
+			wp_update_post( array(
+				'ID'			=> $post_id,
+				'post_author'	=> $_POST[$this->prefix . 'postauthor'] // Use the post author ID from the dropdown
+			) );
+			add_action( 'save_post', array( &$this, 'save_meta' ) ); // Re-add the 'save_post' hook after the post author is updated
+			
+			/* If 'Update Profile' is enabled, save the author info to the user profile of the author */
+			foreach ( $author as $authormeta ) {
+				foreach ( $authormeta as $key => $meta ) {
+					if ( isset( $authormeta['update_profile'] ) ) {
+						wp_update_user( array(
+							'ID' => $_POST[$this->prefix . 'postauthor'], // Author user ID
+							'display_name' => $authormeta['display_name'], // Display name
+							'nickname' => $authormeta['display_name'], // Set nickname to display name
+							'description' => $authormeta['description'], // Biographical info
+						) );
+					}
+				}
+			}
+		}
+	} // End save_meta()
 	/*
 	===== End Post/Page Editing =====
 	*/
