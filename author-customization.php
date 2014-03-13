@@ -18,7 +18,7 @@ class cc_author {
 	const ID = 'cc-author'; // Plugin identifier
 	const NAME = 'Author Customization'; // Plugin name
 	const VERSION = '0.3.0-alpha'; // Plugin version
-	const WPVER = '3.5.2'; // Minimum version of WordPress required for this plugin
+	const WPVER = '3.6'; // Minimum version of WordPress required for this plugin
 	
 	/* Plugin properties */
 	protected $prefix = 'cc_author_'; // Plugin database prefix
