@@ -16,6 +16,7 @@ class cc_author_admin extends cc_author {
 	function __construct() {
 		// Initialize the plugin
 		$this->initialize();
+		$this->admin_initialize();
 		
 		/* Hooks and filters */
 		add_action( 'admin_menu', array( &$this, 'create_options_menu' ) ); // Add menu entry to Settings menu
@@ -498,21 +499,17 @@ class cc_author_admin extends cc_author {
 	*/
 	
 	/*
-	===== Plugin activation and deactivation methods =====
+	===== Admin initialization =====
 	*/
-	 // Plugin activation
-	 public function activate() {
-	 	// Check WordPress version for plugin compatibility
-	 	if ( version_compare( get_bloginfo( 'version' ), self::VERSION, '<' ) ) {
-	 		wp_die( 'Your version of WordPress is too old to use this plugin. Please upgrade to the latest version of WordPress.' );
-	 	}
-	 	
-	 	/*
-	 	MOVE TO UPDATE METHOD
-	 	Prior to version 0.3.0 plugin options were spread out across a few database entries. From 0.3.0 on they are all in a single entry.
-	 	We need to determine whether old plugin settings are present, and if so update the database with the new setup.
-	 	*/
-		if ( get_option( 'cc_author_postpage' ) ) {
+	// Initialize the admin class
+	protected function admin_initialize() {
+		// Run plugin upgrade
+		$this->upgrade();
+	} // End admin_initialize()
+	
+	// Plugin upgrade
+	function upgrade() {
+		if ( get_option( $this->prefix . 'postpage' ) ) {
 			// If the old options entries are present, we need to retrieve those values and assign them to the new structure
 			$postpage = get_option( 'cc_author_postpage' );
 			$adminoptions = get_option( 'cc_author_admin_options' );
@@ -525,20 +522,36 @@ class cc_author_admin extends cc_author {
 				'wysiwyg'			=>	$adminoptions['wysiwyg'] // Enable the WYSIWYG editor for author bio fields
 			);
 			
+			// Save options to the database
+			add_option( $this->prefix . 'options', $options );
+			
 			// Delete the old options entries from the database
 			delete_option( 'cc_author_postpage' );
 			delete_option( 'cc_author_admin_options' );
 		}
-		// If old options are not present, we can proceed to set up our options unchanged
-		else {
-	 		/* Set options for plugin */
-			$options = array (
-				'perpost'			=>	'yes', // Save author info to each individual post, rather than pulling from global author data
-				'multiple-authors'	=>	'yes', // Enable support for multiple authors per post/page
-				'relnofollow'		=>	'yes', // Add rel="nofollow" to links in bio entries
-				'wysiwyg'			=>	'yes' // Enable the WYSIWYG editor for author bio fields
-			);
-		}
+	} // End upgrade()
+	/*
+	===== End Admin Initialization =====
+	*/
+	
+	/*
+	===== Plugin activation and deactivation methods =====
+	*/
+	 // Plugin activation
+	 public function activate() {
+	 	// Check WordPress version for plugin compatibility
+	 	if ( version_compare( get_bloginfo( 'version' ), self::VERSION, '<' ) ) {
+	 		wp_die( 'Your version of WordPress is too old to use this plugin. Please upgrade to the latest version of WordPress.' );
+	 	}
+	 	
+	 	// Set options for plugin
+		$options = array (
+			'perpost'			=>	'yes', // Save author info to each individual post, rather than pulling from global author data
+			'multiple-authors'	=>	'yes', // Enable support for multiple authors per post/page
+			'relnofollow'		=>	'yes', // Add rel="nofollow" to links in bio entries
+			'wysiwyg'			=>	'yes' // Enable the WYSIWYG editor for author bio fields
+		);
+		
 		add_option( $this->prefix . 'options', $options ); // Save options to database
 	} // End activate()
 	 
