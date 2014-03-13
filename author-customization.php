@@ -115,8 +115,9 @@ class cc_author {
 		global $wpdb;
 		
 		// Set plugin variables
-		$this->pluginpath = dirname( __FILE__ );
-		$this->pluginfile = __FILE__;
+		$this->pluginpath = dirname( __FILE__ ); // Plugin directory path
+		$this->pluginfile = __FILE__; // Plugin file path
+		$this->spinner	= '<span class="spinner"></span>'; // Spinner graphic to indicate "loading"
 		
 		// Get plugin options and assign them to the class property
 		$this->get_options();
