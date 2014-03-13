@@ -33,7 +33,7 @@ class cc_author {
 		
 		/* Plugin hooks and filters */
 		// Display name and description
-		if ( !is_admin() ) { // Only add filters if not in admin
+		if ( ! is_admin() ) { // Only add filters if not in admin
 			add_filter( 'the_author', array( &$this, 'displayname' ) ); // Hook display name function into 'the_author' filter
 			add_filter( 'get_the_author_display_name', array( &$this, 'displayname' ) ); // Hook display name function into 'get_the_author_display_name' filter
 			add_filter( 'get_the_author_description', array( &$this, 'description' ) ); // Hook description into 'get_the_author_description' filter
