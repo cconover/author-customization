@@ -20,7 +20,8 @@ class cc_author_admin extends cc_author {
 		/* Hooks and filters */
 		add_action( 'admin_menu', array( &$this, 'create_options_menu' ) ); // Add menu entry to Settings menu
 		add_action( 'admin_init', array( &$this, 'options_init' ) ); // Initialize plugin options
-		add_action( 'add_meta_boxes', array( &$this, 'add_metabox' ) ); // Add metabox to post/page editing
+		add_action( 'add_meta_boxes', array( &$this, 'add_metabox' ) ); // Add metabox to post/page editing screen
+		add_action( 'admin_enqueue_scripts', array( $this, 'add_metabox_scripts' ) ); // Load scripts and styles
 		
 		// Hooks and filters for the editor
 		if ( isset( $this->options['wysiwyg'] ) && function_exists( 'wp_editor' ) ) {
@@ -220,12 +221,122 @@ class cc_author_admin extends cc_author {
 	/*
 	===== Post/Page Editing =====
 	*/
-	// Initialize
 	// Add metabox to post/page editing, remove default Author metabox, and initialize required elements for post/page editing
 	function add_metabox() {
-		/* Metabox hooks and filters */
+		$screens = array( 'post', 'page' ); // Locations where the metabox should show
 		
+		/* Remove WordPress default Author meta box */
+		foreach ( $screens as $screen ) {
+			remove_meta_box( 'authordiv', $screen, 'normal' ); // Parameters for removing Author meta box from Post and Page edit screens
+		}
+		
+		/* Iterate through locations to add meta box */
+		foreach( $screens as $screen ) {
+			add_meta_box(
+				self::ID . '-metabox', // Meta box ID
+				'Author' . $this->spinner, // Meta box title
+				array( $this, 'metabox' ), // Meta box callback (outputs the HTML for the meta box)
+				$screen, // Post types where this meta box should be used
+				'normal', // Context (placement) on the edit screen
+				'high' // Priority within the specified context
+			);
+		}
 	} // End add_metabox()
+	
+	// Scripts and stylesheets for use with the meta box
+	function add_metabox_scripts() {
+		// Custom stylesheet for meta box
+		wp_enqueue_style(
+			self::ID . '-metabox', // Stylesheet hook name
+			plugins_url( 'admin/assets/css/edit-post.css', $this->pluginfile ), // URL for stylesheet
+			array(), // Style dependencies
+			self::VERSION // Plugin version
+		);
+		
+		/* Add script for changing the post author */
+		wp_enqueue_script(
+			'cc-author-edit-post', // Registered script handle
+			plugins_url( 'admin/assets/js/edit-post.js', $this->pluginfile ), // URL to script
+			array( // Script dependencies
+				'jquery'
+			),
+			self::VERSION // Plugin version
+		);
+		
+		// Localize the script for AJAX calls
+		wp_localize_script(
+			self::ID . '-edit-post', // Name of script call being localized
+			$this->prefix . 'edit_post', // AJAX object namespace, used to call values in the JS file
+			array(
+				'ajaxurl'	=> admin_url( 'admin-ajax.php' ), // URL for admin AJAX calls
+				'nonce'		=> wp_create_nonce( 'cc-author-edit-post-nonce' ) // Nonce to authenticate request
+			)
+		);
+	} // End add_metabox_scripts()
+	
+	// Meta box
+	function metabox( $post ) {
+		// Retrieve current values if they exist
+		$author_meta = get_post_meta( $post->ID, '_' . $this->prefix . 'meta', true ); // Author meta data (stored as an array)
+		$postauthorid = $post->post_author; // Get the user ID of the post author
+		
+		// If any of the values are missing from the post, retrieve them from the author's global profile
+		if ( ! $author_meta ) {		
+			$postauthor = get_userdata( $postauthorid ); // Retrieve the details of the post author
+			
+			$cc_author_meta = array(); // Initialize main array
+			$cc_author_meta[0] = array( // Nested array for author data
+				'display_name'	=> $postauthor->display_name, // Set display name from post author's data
+				'description'	=> $postauthor->description // Set bio from the post author's data
+			);
+		}
+		
+		// Display the meta box contents
+		?>
+		<noscript>
+				JavaScript must be enabled to use this feature.
+		</noscript>
+		<div id="<?php echo $this->prefix; ?>metabox" class="<?php echo $this->prefix; ?>metabox" style="display: none;">
+			<p>The information below will be saved to this post, and (unless selected) will not be saved to the author's user profile.</p>
+			<?php
+			if ( current_user_can( 'edit_others_posts' ) || current_user_can( 'edit_others_pages' ) ) { // Check the capabilities of the current user for sufficient privileges
+				?>
+				<div id="<?php echo $this->prefix; ?>metabox_postauthor" class="<?php echo $this->prefix; ?>metabox_postauthor">
+				<?php
+					wp_dropdown_users( array(
+						'name'			=> $this->prefix . 'postauthor', // Name for the form item
+						'id'			=> $this->prefix . 'postauthor', // ID for the form item
+						'class'			=> $this->prefix . 'postauthor', // Class for the form item
+						'selected'		=> $postauthorid // Select the post's author to be displayed by default
+					) );
+					
+					if ( current_user_can( 'create_users' ) ) { // Only display if the current user can create users
+					?>
+						<span id="<?php echo $this->prefix; ?>create_author" class="<?php echo $this->prefix; ?>create_author button" style="cursor: pointer;">Create New Author</span>
+					<?php
+					}
+					?>
+					<input type="hidden" name="<?php echo $this->prefix; ?>currentpostauthor" value="<?php echo $postauthorid; ?>">
+					<input type="hidden" name="<?php echo $this->prefix; ?>javascript" id="<?php echo $this->prefix; ?>javascript" value="">
+				</div><!-- #cc_author_metabox_postauthor -->
+				<?php
+			}
+			?>
+			<label id="label_<?php echo $this->prefix; ?>meta[0][display_name]" for="<?php echo $this->prefix; ?>meta[0][display_name]" class="selectit">Name</label>
+			<input type="text" name="<?php echo $this->prefix; ?>meta[0][display_name]" id="<?php echo $this->prefix; ?>meta[0][display_name]" value="<?php echo esc_attr( $cc_author_meta[0]['display_name'] ); ?>" />
+	
+			<label for="<?php echo $this->prefix; ?>meta[0][description]" class="selectit">Bio</label>
+			<?
+			// Render the editor for biographical info
+			echo $this->editor( $cc_author_meta[0]['description'], $this->prefix . 'meta[0][description]' );
+			?>
+			<div class="<?php echo $this->prefix; ?>meta_update_profile">
+				<input type="checkbox" name="<?php echo $this->prefix; ?>meta[0][update_profile]" id="<?php echo $this->prefix; ?>meta[0][update_profile]" value="Profile">Update author's default profile
+				<p class="description">Checking this will overwrite the author's site-wide user profile with the information you've entered.</p>
+			</div>
+		</div> <!-- .cc_author_metabox -->
+		<?php
+	} // End metabox()
 	/*
 	===== End Post/Page Editing =====
 	*/
@@ -251,14 +362,22 @@ class cc_author_admin extends cc_author {
 	} // End editor_initialize()
 	
 	// Editor for posts and pages
-	function editor() {
+	function editor( $content, $id ) {
 		// Initialize the editor
 		$this->editor_initialize();
 		
 		// If WYSIWYG is enabled, use it. Otherwise, use a standard textarea.
 		if ( isset( $this->options['wysiwyg'] ) && function_exists( 'wp_editor' ) ) {
-			
+			// Create the editor using the provided values
+			$editor = wp_editor( $content, $id, $this->editorsettings );
 		}
+		// If WYSIWYG is not enabled, use a simple textarea
+		else {
+			$editor = '<textarea id="' . $id . '" name="' . $id . '" rows="5" cols="50" required>' . esc_attr( $content ) . '</textarea>';
+		}
+		
+		// Return the editor
+		return $editor;
 	}
 	// Editor for user profile
 	function editorprofile( $user ) {
