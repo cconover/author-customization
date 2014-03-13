@@ -86,15 +86,6 @@ class cc_author_admin extends cc_author {
 			'postpage' // Settings section in which to display the field
 		);
 		
-		// Support for multiple authors on a single post
-		add_settings_field(
-			'multiple-authors', // Field ID
-			'Enable multiple authors on a single post', // Field title/label, displayed to the user
-			array( &$this, 'multiple_authors_callback' ), // Callback method to display the option field
-			self::ID, // Page ID for the options page
-			'postpage' // Settings section in which to display the field
-		);
-		
 		// Add rel="nofollow" to links inside an author's biographical info
 		add_settings_field(
 			'relnofollow', // Field ID
@@ -139,20 +130,6 @@ class cc_author_admin extends cc_author {
 		echo '<p class="description">Display author information from the post metadata instead of the user database. Useful for keeping author information specific to the time a post was published.</p><p class="description"><strong>Note:</strong> You can toggle this at any time, as this plugin always saves author information to post metadata regardless of this setting.</p>'; // Description of option
 	} // End perpost_callback()
 	
-	// Callback for multiple authors per post
-	function multiple_authors_callback() {
-		// Check the status of this option in the database
-		if ( isset( $this->options['multiple-authors'] ) ) {
-			$checked = 'checked';
-		}
-		else {
-			$checked = NULL;
-		}
-		
-		echo '<input id="' . $this->prefix . 'options[multiple-authors]" name="' . $this->prefix . 'options[multiple-authors]" type="checkbox" value="yes" ' . $checked . '>'; // Print the input field to the screen
-		echo '<p class="description">Enable support for multiple authors on a single post or page.</p>'; // Description of option
-	} // End multiple_authors_callback()
-	
 	// Callback for rel="nofollow" option
 	function relnofollow_callback() {
 		// Check the status of this option in the database
@@ -188,7 +165,6 @@ class cc_author_admin extends cc_author {
 		
 		// Directly set options that require no validation (such as checkboxes)
 		$options['perpost'] = $input['perpost'];
-		$options['multiple-authors'] = $input['multiple-authors'];
 		$options['relnofollow'] = $input['relnofollow'];
 		$options['wysiwyg'] = $input['wysiwyg'];
 		
@@ -517,7 +493,6 @@ class cc_author_admin extends cc_author {
 			// Set up the new options structure with old values
 			$options = array (
 				'perpost'			=>	$postpage['perpost'], // Save author info to each individual post, rather than pulling from global author data
-				'multiple-authors'	=>	$postpage['multiple-authors'], // Enable support for multiple authors per post/page
 				'relnofollow'		=>	$postpage['relnofollow'], // Add rel="nofollow" to links in bio entries
 				'wysiwyg'			=>	$adminoptions['wysiwyg'] // Enable the WYSIWYG editor for author bio fields
 			);
@@ -547,7 +522,6 @@ class cc_author_admin extends cc_author {
 	 	// Set options for plugin
 		$options = array (
 			'perpost'			=>	'yes', // Save author info to each individual post, rather than pulling from global author data
-			'multiple-authors'	=>	'yes', // Enable support for multiple authors per post/page
 			'relnofollow'		=>	'yes', // Add rel="nofollow" to links in bio entries
 			'wysiwyg'			=>	'yes' // Enable the WYSIWYG editor for author bio fields
 		);
