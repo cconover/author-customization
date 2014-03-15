@@ -10,14 +10,16 @@
  * @package cc-author
  **/
 
+namespace cconover\author;
+
 /**
  * Main plugin class
  **/
-class cc_author {
+class Author {
 	/* Plugin constants */
 	const ID = 'cc-author'; // Plugin identifier
 	const NAME = 'Author Customization'; // Plugin name
-	const VERSION = '0.3.0-alpha'; // Plugin version
+	const VERSION = '0.3.1'; // Plugin version
 	const WPVER = '3.6'; // Minimum version of WordPress required for this plugin
 	
 	/* Plugin properties */
@@ -42,7 +44,7 @@ class cc_author {
 		// Load admin class if in admin
 		if ( is_admin() ) {
 			require_once( $this->pluginpath . '/admin/author-customization-admin.php' );
-			$admin = new cc_author_admin;
+			$admin = new \cconover\author\Admin;
 			
 			// Register plugin activation and deactivation hooks
 			register_activation_hook( $this->pluginfile, array( &$admin, 'activate' ) );
@@ -134,5 +136,5 @@ class cc_author {
 
 /* Create an instance of the plugin in the global space */
 global $cc_author;
-$cc_author = new cc_author;
+$cc_author = new \cconover\author\Author;
 ?>

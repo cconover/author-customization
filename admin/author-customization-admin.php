@@ -4,10 +4,12 @@
  * admin/author-customization-admin.php
  **/
 
+namespace cconover\author;
+
 /**
  * Plugin admin class
  **/
-class cc_author_admin extends cc_author {
+class Admin extends Author {
 	/** Class properties */
 	private $editorid;
 	private $editorsettings;
