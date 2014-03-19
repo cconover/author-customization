@@ -487,24 +487,40 @@ class Admin extends Author {
 	
 	// Plugin upgrade
 	function upgrade() {
-		if ( get_option( $this->prefix . 'postpage' ) ) {
-			// If the old options entries are present, we need to retrieve those values and assign them to the new structure
-			$postpage = get_option( 'cc_author_postpage' );
-			$adminoptions = get_option( 'cc_author_admin_options' );
+		// Check whether the database-stored plugin version number is less than the current plugin version number, or whether there is no plugin version saved in the database
+		if ( version_compare( $this->options['dbversion'], self::VERSION, '<' ) || empty( $this->options['dbversion'] ) ) {
+			// Set local variable for options
+			$options = $this->options;
 			
-			// Set up the new options structure with old values
-			$options = array (
-				'perpost'			=>	$postpage['perpost'], // Save author info to each individual post, rather than pulling from global author data
-				'relnofollow'		=>	$postpage['relnofollow'], // Add rel="nofollow" to links in bio entries
-				'wysiwyg'			=>	$adminoptions['wysiwyg'] // Enable the WYSIWYG editor for author bio fields
-			);
+			// If the deprecated options entries are present, we need to retrieve those values and assign them to the new structure
+			if ( get_option( $this->prefix . 'postpage' ) ) {
+				// Retrieve the current options from the database
+				$postpage = get_option( 'cc_author_postpage' );
+				$adminoptions = get_option( 'cc_author_admin_options' );
+				
+				// Set up the new options structure with old values
+				$options = array (
+					'perpost'			=>	$postpage['perpost'], // Save author info to each individual post, rather than pulling from global author data
+					'relnofollow'		=>	$postpage['relnofollow'], // Add rel="nofollow" to links in bio entries
+					'wysiwyg'			=>	$adminoptions['wysiwyg'], // Enable the WYSIWYG editor for author bio fields
+					'dbversion'			=>	self::VERSION // Save the current plugin version
+				);
+				
+				// Save options to the database
+				add_option( $this->prefix . 'options', $options );
+				
+				// Delete the old options entries from the database
+				delete_option( 'cc_author_postpage' );
+				delete_option( 'cc_author_admin_options' );
+			}
 			
-			// Save options to the database
-			add_option( $this->prefix . 'options', $options );
-			
-			// Delete the old options entries from the database
-			delete_option( 'cc_author_postpage' );
-			delete_option( 'cc_author_admin_options' );
+			/* Update the plugin version saved in the database (always the last step of the upgrade process) */
+			// Set the value of the plugin version
+			$options['dbversion'] = self::VERSION;
+				
+			// Save to the database
+			update_option( $this->prefix . 'options', $options );
+			/* End update plugin version */
 		}
 	} // End upgrade()
 	/*
@@ -525,7 +541,8 @@ class Admin extends Author {
 		$options = array (
 			'perpost'			=>	'yes', // Save author info to each individual post, rather than pulling from global author data
 			'relnofollow'		=>	'yes', // Add rel="nofollow" to links in bio entries
-			'wysiwyg'			=>	'yes' // Enable the WYSIWYG editor for author bio fields
+			'wysiwyg'			=>	'yes', // Enable the WYSIWYG editor for author bio fields
+			'dbversion'			=>	self::VERSION // Save the current plugin version
 		);
 		
 		add_option( $this->prefix . 'options', $options ); // Save options to database
