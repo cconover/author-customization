@@ -488,7 +488,7 @@ class Admin extends Author {
 	// Plugin upgrade
 	function upgrade() {
 		// Check whether the database-stored plugin version number is less than the current plugin version number, or whether there is no plugin version saved in the database
-		if ( version_compare( $this->options['dbversion'], self::VERSION, '<' ) || empty( $this->options['dbversion'] ) ) {
+		if ( ! empty( $this->options ) && version_compare( $this->options['dbversion'], self::VERSION, '<' ) ) {
 			// Set local variable for options
 			$options = $this->options;
 			
