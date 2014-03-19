@@ -533,7 +533,7 @@ class Admin extends Author {
 	 // Plugin activation
 	 public function activate() {
 	 	// Check WordPress version for plugin compatibility
-	 	if ( version_compare( get_bloginfo( 'version' ), self::VERSION, '<' ) ) {
+	 	if ( version_compare( get_bloginfo( 'version' ), self::WPVER, '<' ) ) {
 	 		wp_die( 'Your version of WordPress is too old to use this plugin. Please upgrade to the latest version of WordPress.' );
 	 	}
 	 	
