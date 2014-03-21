@@ -3,8 +3,8 @@ Contributors: cconover
 Donate link: https://christiaanconover.com/code/wp-author-customization#donate
 Tags: author, user, profile, tinymce, wysiwyg, rel-nofollow
 Requires at least: 3.6
-Tested up to: 3.8.1
-Stable tag: 0.3.0
+Tested up to: 3.9-beta2
+Stable tag: 0.3.1
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,11 @@ In order for author information to appear on your posts and pages, the theme you
 
 == Changelog ==
 
+= 0.3.1 =
+* Full support for TinyMCE 4.0 which will be released with WordPress 3.9
+* Fixed the plugin upgrade process to ensure deprecated settings are upgraded, and upgrades run more smoothly for all future versions
+* General code cleanup and minor bug fixes
+
 = 0.3.0 =
 The plugin has been completely rewritten to be object-oriented, in preparation for new features being added in the future, and to make it run more efficiently.
 
@@ -73,6 +78,9 @@ Fixed bug that threw a "Missing Argument" error when creating a new post.
 Initial release.
 
 == Upgrade Notice ==
+
+= 0.3.1 =
+Fixed incompatibilities with the upcoming TinyMCE 4.0 that will be released with WordPress 3.9.
 
 = 0.3.0 =
 Completely rewritten to be object-oriented.
