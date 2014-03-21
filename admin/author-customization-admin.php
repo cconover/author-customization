@@ -331,9 +331,9 @@ class Admin extends Author {
 			
 			// Encode response as JSON
 			$authormeta = json_encode( array(
-				'display_name'	=> $authordata->display_name, // Display name from profile
-				'description'	=> $authordata->description, // Biographical info from profile
-				'wysiwyg'		=> $this->options['wysiwyg'] // Tell JS whether or not WYSIWYG is enabled
+				'display_name' => $authordata->display_name, // Display name from profile
+				'description' => $authordata->description, // Biographical info from profile
+				'wysiwyg' => $this->options['wysiwyg'] // Tell JS whether or not WYSIWYG is enabled
 			) );
 			
 			echo $authormeta; // Return the values retrieved from the database
@@ -369,8 +369,8 @@ class Admin extends Author {
 			// Save the post/page author
 			remove_action( 'save_post', array( &$this, 'save_meta' ) ); // Remove the 'save_post' hook before updating the post author to prevent an infinite loop
 			wp_update_post( array(
-				'ID'			=> $post_id,
-				'post_author'	=> $_POST[$this->prefix . 'postauthor'] // Use the post author ID from the dropdown
+				'ID' => $post_id,
+				'post_author' => $_POST[$this->prefix . 'postauthor'] // Use the post author ID from the dropdown
 			) );
 			add_action( 'save_post', array( &$this, 'save_meta' ) ); // Re-add the 'save_post' hook after the post author is updated
 			
@@ -514,10 +514,10 @@ class Admin extends Author {
 			
 			// Set up the new options structure with old values
 			$options = array (
-				'perpost'			=>	$postpage['perpost'], // Save author info to each individual post, rather than pulling from global author data
-				'relnofollow'		=>	$postpage['relnofollow'], // Add rel="nofollow" to links in bio entries
-				'wysiwyg'			=>	$adminoptions['wysiwyg'], // Enable the WYSIWYG editor for author bio fields
-				'dbversion'			=>	self::VERSION // Save the current plugin version
+				'perpost' => $postpage['perpost'], // Save author info to each individual post, rather than pulling from global author data
+				'relnofollow' => $postpage['relnofollow'], // Add rel="nofollow" to links in bio entries
+				'wysiwyg' => $adminoptions['wysiwyg'], // Enable the WYSIWYG editor for author bio fields
+				'dbversion' => self::VERSION // Save the current plugin version
 			);
 			
 			// Save options to the database
@@ -544,10 +544,10 @@ class Admin extends Author {
 	 	
 	 	// Set options for plugin
 		$options = array (
-			'perpost'			=>	'yes', // Save author info to each individual post, rather than pulling from global author data
-			'relnofollow'		=>	'yes', // Add rel="nofollow" to links in bio entries
-			'wysiwyg'			=>	'yes', // Enable the WYSIWYG editor for author bio fields
-			'dbversion'			=>	self::VERSION // Save the current plugin version
+			'perpost' => 'yes', // Save author info to each individual post, rather than pulling from global author data
+			'relnofollow' => 'yes', // Add rel="nofollow" to links in bio entries
+			'wysiwyg' => 'yes', // Enable the WYSIWYG editor for author bio fields
+			'dbversion' => self::VERSION // Save the current plugin version
 		);
 		
 		add_option( $this->prefix . 'options', $options ); // Save options to database
