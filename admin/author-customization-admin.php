@@ -403,12 +403,13 @@ class Admin extends Author {
 		
 		// Editor settings
 		$this->editorsettings = array(
-			'media_buttons'		=> false, // Don't display media upload options
-			'quicktags'			=> false, // Disable quicktags
-			'teeny'				=> true, // Keep editor to minimal button options, instead of full editor
-			'textarea_rows'		=> 5, // Number of rows in editor
-			'tinymce'			=> array(
-				'theme_advanced_buttons1'	=> 'bold,italic,underline,strikethrough,link,unlink' // Only show the listed buttons in the editor
+			'media_buttons' => false, // Don't display media upload options
+			'quicktags' => false, // Disable quicktags
+			'teeny' => true, // Keep editor to minimal button options, instead of full editor
+			'textarea_rows' => 5, // Number of rows in editor
+			'tinymce' => array(
+				'toolbar1' => 'bold,italic,underline,strikethrough,link,unlink', // TinyMCE 4.0+: Only show the listed buttons in the editor
+				'theme_advanced_buttons1' => 'bold,italic,underline,strikethrough,link,unlink' // Legacy TinyMCE setting
 			)
 		);
 	} // End editor_initialize()
@@ -492,28 +493,6 @@ class Admin extends Author {
 			// Set local variable for options
 			$options = $this->options;
 			
-			// If the deprecated options entries are present, we need to retrieve those values and assign them to the new structure
-			if ( get_option( $this->prefix . 'postpage' ) ) {
-				// Retrieve the current options from the database
-				$postpage = get_option( 'cc_author_postpage' );
-				$adminoptions = get_option( 'cc_author_admin_options' );
-				
-				// Set up the new options structure with old values
-				$options = array (
-					'perpost'			=>	$postpage['perpost'], // Save author info to each individual post, rather than pulling from global author data
-					'relnofollow'		=>	$postpage['relnofollow'], // Add rel="nofollow" to links in bio entries
-					'wysiwyg'			=>	$adminoptions['wysiwyg'], // Enable the WYSIWYG editor for author bio fields
-					'dbversion'			=>	self::VERSION // Save the current plugin version
-				);
-				
-				// Save options to the database
-				add_option( $this->prefix . 'options', $options );
-				
-				// Delete the old options entries from the database
-				delete_option( 'cc_author_postpage' );
-				delete_option( 'cc_author_admin_options' );
-			}
-			
 			/* Update the plugin version saved in the database (always the last step of the upgrade process) */
 			// Set the value of the plugin version
 			$options['dbversion'] = self::VERSION;
@@ -521,6 +500,32 @@ class Admin extends Author {
 			// Save to the database
 			update_option( $this->prefix . 'options', $options );
 			/* End update plugin version */
+		}
+		
+		/*
+		If the deprecated options entries are present, we need to retrieve those values and assign them to the new structure
+		This upgrade process has to fall outside the standard upgrade version validation since the new options structure is not
+		present if the old options structure is present.
+		*/
+		if ( get_option( $this->prefix . 'postpage' ) ) {
+			// Retrieve the current options from the database
+			$postpage = get_option( 'cc_author_postpage' );
+			$adminoptions = get_option( 'cc_author_admin_options' );
+			
+			// Set up the new options structure with old values
+			$options = array (
+				'perpost'			=>	$postpage['perpost'], // Save author info to each individual post, rather than pulling from global author data
+				'relnofollow'		=>	$postpage['relnofollow'], // Add rel="nofollow" to links in bio entries
+				'wysiwyg'			=>	$adminoptions['wysiwyg'], // Enable the WYSIWYG editor for author bio fields
+				'dbversion'			=>	self::VERSION // Save the current plugin version
+			);
+			
+			// Save options to the database
+			add_option( $this->prefix . 'options', $options );
+			
+			// Delete the old options entries from the database
+			delete_option( 'cc_author_postpage' );
+			delete_option( 'cc_author_admin_options' );
 		}
 	} // End upgrade()
 	/*
