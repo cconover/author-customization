@@ -420,7 +420,10 @@ class Admin extends Author {
 		$this->editor_initialize();
 		
 		// If WYSIWYG is enabled, use it. Otherwise, use a standard textarea.
-		if ( isset( $this->options['wysiwyg'] ) && function_exists( 'wp_editor' ) ) {
+		if ( ! empty( $this->options['wysiwyg'] ) && function_exists( 'wp_editor' ) ) {
+			// Filter the author description 
+			$content = apply_filters( 'the_content', $content );
+			
 			// Create the editor using the provided values
 			$editor = wp_editor( $content, $id, $this->editorsettings );
 		}
