@@ -513,9 +513,9 @@ class Admin extends Author {
 		}
 		
 		/*
-		If the deprecated options entries are present, we need to retrieve those values and assign them to the new structure
+		If the deprecated options entries are present, we need to retrieve those values and assign them to the new structure.
 		This upgrade process has to fall outside the standard upgrade version validation since the new options structure is not
-		present if the old options structure is present.
+		present if the old options structure is present, and therefore would never actually be executed.
 		*/
 		if ( get_option( self::PREFIX . 'postpage' ) ) {
 			// Retrieve the current options from the database
