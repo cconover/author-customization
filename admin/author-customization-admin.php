@@ -238,7 +238,7 @@ class Admin extends Author {
 		
 		/* Add script for changing the post author */
 		wp_enqueue_script(
-			'cc-author-edit-post', // Registered script handle
+			self::ID . '-edit-post', // Registered script handle
 			plugins_url( 'admin/assets/js/edit-post.js', $this->pluginfile ), // URL to script
 			array( // Script dependencies
 				'jquery'
@@ -252,7 +252,7 @@ class Admin extends Author {
 			$this->prefix . 'edit_post', // AJAX object namespace, used to call values in the JS file
 			array(
 				'ajaxurl' => admin_url( 'admin-ajax.php' ), // URL for admin AJAX calls
-				'nonce' => wp_create_nonce( 'cc-author-edit-post-nonce' ) // Nonce to authenticate request
+				'nonce' => wp_create_nonce( self::ID . '-edit-post-nonce' ) // Nonce to authenticate request
 			)
 		);
 	} // End add_metabox_scripts()
@@ -277,7 +277,7 @@ class Admin extends Author {
 		// Display the meta box contents
 		?>
 		<noscript>
-				JavaScript must be enabled to use this feature.
+			JavaScript must be enabled to use this feature.
 		</noscript>
 		<div id="<?php echo $this->prefix; ?>metabox" class="<?php echo $this->prefix; ?>metabox" style="display: none;">
 			<p>The information below will be saved to this post, and (unless selected) will not be saved to the author's user profile.</p>
@@ -440,9 +440,9 @@ class Admin extends Author {
 		// Initialize the editor
 		$this->editor_initialize();
 		?>
-		<div style="color: #FF0000; font-weight: bold;"><noscript>
+		<noscript>
 			You currently have JavaScript disabled, which is why you're seeing duplicate Biographical Info fields and no WYSIWYG. Please enable JavaScript.
-		</noscript></div>
+		</noscript>
 		<table class="form-table">
 			<tr>
 				<th><label for="description">Biographical Info</label></th>
