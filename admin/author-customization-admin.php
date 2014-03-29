@@ -37,7 +37,7 @@ class Admin extends Author {
 			add_action( 'admin_init', array( &$this, 'editor_remove_filters' ) ); // Remove filters from textarea
 			add_action( 'admin_enqueue_scripts', array( &$this, 'profilejs' ) ); // Load JavaScript
 		}
-		/* End hooks and filters */
+		// End hooks and filters
 	} // End __construct()
 	
 	/*
@@ -312,7 +312,7 @@ class Admin extends Author {
 			<label for="<?php echo self::PREFIX; ?>meta[0][description]" class="selectit">Bio</label>
 			<?
 			// Render the editor for biographical info
-			echo $this->editor( $cc_author_meta[0]['description'], self::PREFIX . 'meta[0][description]' );
+			$this->editor( $cc_author_meta[0]['description'], self::PREFIX . 'meta[0][description]' );
 			?>
 			<div class="<?php echo self::PREFIX; ?>meta_update_profile">
 				<input type="checkbox" name="<?php echo self::PREFIX; ?>meta[0][update_profile]" id="<?php echo self::PREFIX; ?>meta[0][update_profile]" value="Profile">Update author's default profile
@@ -410,7 +410,7 @@ class Admin extends Author {
 		
 		// Editor settings
 		$this->editorsettings = array(
-			'media_buttons' => false, // Don't display media upload options
+			'media_buttons' => false, // Don't display media upload button
 			'quicktags' => false, // Disable quicktags
 			'teeny' => true, // Keep editor to minimal button options, instead of full editor
 			'textarea_rows' => 5, // Number of rows in editor
@@ -432,16 +432,14 @@ class Admin extends Author {
 			$content = apply_filters( 'the_content', $content );
 			
 			// Create the editor using the provided values
-			$editor = wp_editor( $content, $id, $this->editorsettings );
+			wp_editor( $content, $id, $this->editorsettings );
 		}
 		// If WYSIWYG is not enabled, use a simple textarea
 		else {
-			$editor = '<textarea id="' . $id . '" name="' . $id . '" rows="5" cols="50" required>' . esc_attr( $content ) . '</textarea>';
+			echo '<textarea id="' . $id . '" name="' . $id . '" rows="5" cols="50" required>' . esc_attr( $content ) . '</textarea>';
 		}
-		
-		// Return the editor
-		return $editor;
-	}
+	} // End editor()
+	
 	// Editor for user profile
 	function editorprofile( $user ) {
 		// Initialize the editor
@@ -464,7 +462,7 @@ class Admin extends Author {
 			</tr>
 		</table>
 		<?php
-	} // End editor()
+	} // End editorprofile()
 	
 	// Remove filters from biographical info
 	function editor_remove_filters() {
