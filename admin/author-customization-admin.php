@@ -351,18 +351,32 @@ class Admin extends Author {
 	
 	// Save the information in the meta box
 	function save_meta( $post_id ) {
-		if ( isset( $_POST[self::PREFIX . 'meta'] ) ) { // Verify that values have been provided
-			if ( isset( $_POST[self::PREFIX . 'postauthor'] ) && ( $_POST[self::PREFIX . 'postauthor'] != $_POST[self::PREFIX . 'currentpostauthor'] ) && ! isset( $_POST[self::PREFIX . 'javascript'] ) ) { // If the post author has been changed and JavaScript is not enabled, use the new post author's profile values for post-specific data. Otherwise, use data submitted from the meta box.
-				$postauthor = get_userdata( $_POST[self::PREFIX . 'postauthor'] ); // Retrieve the details of the post author
-		
-				$author = array(); // Initialize main array
-				$author[0] = array( // Nested array for author data
-					'display_name' => $postauthor->display_name, // Set display name from post author's data
-					'description' => $postauthor->description // Set bio from the post author's data
-				);
-			}
-			else {
-				$author = $_POST[self::PREFIX . 'meta']; // Assign POST data to local variable
+		// Verify that values have been provided
+		if ( isset( $_POST[self::PREFIX . 'meta'] ) ) {
+			// If the post author has been changed, update the post with details for the new author
+			if ( ! empty( $_POST[self::PREFIX . 'postauthor'] ) && ( $_POST[self::PREFIX . 'postauthor'] != $_POST[self::PREFIX . 'currentpostauthor'] ) ) {
+				/*
+				If JavaScript is not enabled, get the author's data from their user profile.
+				This is because the values in the author name and bio fields will still be for the old author with JS disabled.
+				*/
+				if ( empty( $_POST[self::PREFIX . 'javascript'] ) ) {
+					// Retrieve the details of the post author
+					$postauthor = get_userdata( $_POST[self::PREFIX . 'postauthor'] );
+			
+					// Initialize main array
+					$author = array();
+					
+					// Nested array for author data
+					$author[0] = array(
+						'display_name' => $postauthor->display_name, // Set display name from post author's data
+						'description' => $postauthor->description // Set bio from the post author's data
+					);
+				}
+				// If JavaScript is enabled, use the values submitted from the meta box since they'll have been updated with the new author
+				else {
+					// Assign POST data to local variable
+					$author = $_POST[self::PREFIX . 'meta'];
+				}
 			}
 			
 			// Sanitize array values
@@ -371,15 +385,18 @@ class Admin extends Author {
 					$authormeta['display_name'] = strip_tags( $meta );
 				}
 			}
-			update_post_meta( $post_id, '_' . self::PREFIX . 'meta', $author ); // Save author metadata to post meta
+			// Save author metadata to post meta
+			update_post_meta( $post_id, '_' . self::PREFIX . 'meta', $author );
 			
 			// Save the post/page author
-			remove_action( 'save_post', array( &$this, 'save_meta' ) ); // Remove the 'save_post' hook before updating the post author to prevent an infinite loop
+			// Remove the 'save_post' hook before updating the post author to prevent an infinite loop
+			remove_action( 'save_post', array( &$this, 'save_meta' ) );
 			wp_update_post( array(
 				'ID' => $post_id,
 				'post_author' => $_POST[self::PREFIX . 'postauthor'] // Use the post author ID from the dropdown
 			) );
-			add_action( 'save_post', array( &$this, 'save_meta' ) ); // Re-add the 'save_post' hook after the post author is updated
+			// Re-add the 'save_post' hook after the post author is updated
+			add_action( 'save_post', array( &$this, 'save_meta' ) );
 			
 			/* If 'Update Profile' is enabled, save the author info to the user profile of the author */
 			foreach ( $author as $authormeta ) {
@@ -411,7 +428,6 @@ class Admin extends Author {
 		// Editor settings
 		$this->editorsettings = array(
 			'media_buttons' => false, // Don't display media upload button
-			'quicktags' => false, // Disable quicktags
 			'teeny' => true, // Keep editor to minimal button options, instead of full editor
 			'textarea_rows' => 5, // Number of rows in editor
 			'tinymce' => array(
