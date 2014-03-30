@@ -23,8 +23,7 @@ class Admin extends Author {
 		/* Hooks and filters */
 		add_action( 'admin_menu', array( &$this, 'create_options_menu' ) ); // Add menu entry to Settings menu
 		add_action( 'admin_init', array( &$this, 'options_init' ) ); // Initialize plugin options
-		add_action( 'edit_form_advanced', array( &$this, 'add_metabox' ) ); // Add metabox to post/page editing screen
-		add_action( 'edit_page_form', array( &$this, 'add_metabox' ) ); // Add metabox to post/page editing screen
+		add_action( 'add_meta_boxes', array( &$this, 'add_metabox' ) ); // Add metabox to post/page editing screen
 		add_action( 'admin_enqueue_scripts', array( &$this, 'add_metabox_scripts' ) ); // Load scripts and styles
 		add_action( 'save_post', array( $this, 'save_meta' ) ); // Hook WordPress to save meta box data when saving post/page
 		
