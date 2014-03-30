@@ -23,7 +23,8 @@ class Admin extends Author {
 		/* Hooks and filters */
 		add_action( 'admin_menu', array( &$this, 'create_options_menu' ) ); // Add menu entry to Settings menu
 		add_action( 'admin_init', array( &$this, 'options_init' ) ); // Initialize plugin options
-		add_action( 'add_meta_boxes', array( &$this, 'add_metabox' ) ); // Add metabox to post/page editing screen
+		add_action( 'edit_form_advanced', array( &$this, 'add_metabox' ) ); // Add metabox to post/page editing screen
+		add_action( 'edit_page_form', array( &$this, 'add_metabox' ) ); // Add metabox to post/page editing screen
 		add_action( 'admin_enqueue_scripts', array( &$this, 'add_metabox_scripts' ) ); // Load scripts and styles
 		add_action( 'save_post', array( $this, 'save_meta' ) ); // Hook WordPress to save meta box data when saving post/page
 		
@@ -427,7 +428,7 @@ class Admin extends Author {
 		$this->editor_initialize();
 		
 		// If WYSIWYG is enabled, use it. Otherwise, use a standard textarea.
-		if ( ! empty( $this->options['wysiwyg'] ) && function_exists( 'wp_editor' ) ) {
+		if ( ! empty( $this->options['wysiwyg'] ) && function_exists( 'wp_editor' ) && user_can_richedit() ) {
 			// Filter the author description 
 			$content = apply_filters( 'the_content', $content );
 			
@@ -442,26 +443,29 @@ class Admin extends Author {
 	
 	// Editor for user profile
 	function editorprofile( $user ) {
-		// Initialize the editor
-		$this->editor_initialize();
-		?>
-		<noscript>
-			You currently have JavaScript disabled, which is why you're seeing duplicate Biographical Info fields and no WYSIWYG. Please enable JavaScript.
-		</noscript>
-		<table class="form-table">
-			<tr>
-				<th><label for="description">Biographical Info</label></th>
-				<td>
-					<?php 
-					$description = get_user_meta( $user->ID, 'description', true);
-					$description = apply_filters( 'the_content', $description );
-					wp_editor( $description, 'description', $this->editorsettings ); 
-					?>
-					<span class="description">Share a little biographical information to fill out your profile. This may be shown publicly.</span>
-				</td>
-			</tr>
-		</table>
+		// Check to make sure the user can use the rich editor
+		if ( user_can_richedit() ) {
+			// Initialize the editor
+			$this->editor_initialize();
+			?>
+			<noscript>
+				You currently have JavaScript disabled, which is why you're seeing duplicate Biographical Info fields and no WYSIWYG. Please enable JavaScript.
+			</noscript>
+			<table class="form-table">
+				<tr>
+					<th><label for="description">Biographical Info</label></th>
+					<td>
+						<?php 
+						$description = get_user_meta( $user->ID, 'description', true);
+						$description = apply_filters( 'the_content', $description );
+						wp_editor( $description, 'description', $this->editorsettings ); 
+						?>
+						<span class="description">Share a little biographical information to fill out your profile. This may be shown publicly.</span>
+					</td>
+				</tr>
+			</table>
 		<?php
+		}
 	} // End editorprofile()
 	
 	// Remove filters from biographical info
