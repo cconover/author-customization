@@ -25,7 +25,7 @@ class Admin extends Author {
 		add_action( 'admin_init', array( &$this, 'options_init' ) ); // Initialize plugin options
 		add_action( 'add_meta_boxes', array( &$this, 'add_metabox' ) ); // Add metabox to post/page editing screen
 		add_action( 'admin_enqueue_scripts', array( &$this, 'add_metabox_scripts' ) ); // Load scripts and styles
-		add_action( 'save_post', array( $this, 'save_meta' ) ); // Hook WordPress to save meta box data when saving post/page
+		add_action( 'save_post', array( &$this, 'save_meta' ) ); // Hook WordPress to save meta box data when saving post/page
 		
 		// AJAX hooks
 		add_action( 'wp_ajax_cc_author_change_postauthor', array( &$this, 'change_postauthor_callback' ) ); // Change the post author in the meta box
