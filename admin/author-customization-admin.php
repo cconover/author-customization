@@ -196,8 +196,12 @@ class Admin extends Author {
 			<h4>Debug Info</h4>
 			<div class="<?php echo self::ID; ?>-debug-info">
 				<p>Please copy and paste the information below when reporting issues, and when requested in the support forums.</p>
-				<strong>PHP version:</strong> <?php echo phpversion(); ?><br />
+				<strong>Site URL:</strong> <?php echo get_bloginfo( 'url' ); ?><br />
 				<strong>WordPress version:</strong> <?php echo get_bloginfo( 'version' ); ?><br />
+				<strong>Plugin version:</strong> <?php echo self::VERSION; ?><br />
+				<strong>Multisite enabled:</strong> <?php if ( is_multisite() ) { echo 'yes'; } else { echo 'no'; } ?><br />
+				<strong>Server software:</strong> <?php echo $_SERVER['SERVER_SOFTWARE']; ?><br />
+				<strong>PHP version:</strong> <?php echo phpversion(); ?><br />
 			</div>
 		</div>
 		
