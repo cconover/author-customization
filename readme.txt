@@ -12,9 +12,13 @@ Author Customization expands core author management with features such as per-po
 
 == Description ==
 
-Author Customization gives you much more flexibility in managing post and page author data. Your author data will no longer be tied to the WordPress user system, and can now be managed on a per-post basis.
+Author Customization gives you much more flexibility in managing post and page author data. Your author data will no longer be tied solely to the WordPress user system, and can now be managed on a per-post basis. Author name and description are saved with each post, allowing you to preserve this information as it was when the post was published.
 
-Features: per-post author display name and biographical info, TinyMCE (WYSIWYG) editor for user profile and per-post biographical info, rel="nofollow" link inside biographical info entries
+**Features**
+
+- Per-post author display name and biographical info
+- TinyMCE (WYSIWYG) editor for user profile and per-post biographical info
+- rel="nofollow" link inside biographical info entries
 
 [Author Customization on Github](https://github.com/cconover/wp-author-customization)
 
@@ -49,7 +53,7 @@ In order for author information to appear on your posts and pages, the theme you
 == Changelog ==
 
 = 0.3.1 =
-* Full support for TinyMCE 4.0 which will be released with WordPress 3.9
+* Full support for WordPress 3.9 and TinyMCE 4.0
 * Fixed the plugin upgrade process to ensure deprecated settings are upgraded, and upgrades run more smoothly for all future versions
 * General code cleanup and minor bug fixes
 
