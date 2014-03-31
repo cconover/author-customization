@@ -315,8 +315,8 @@ class Admin extends Author {
 	
 			<label for="<?php echo self::PREFIX; ?>meta[0][description]" class="selectit">Bio</label>
 			<?
-			// Render the editor for biographical info
-			$this->editor( $cc_author_meta[0]['description'], self::PREFIX . 'meta[0][description]' );
+			// Render the editor for biographical info (editor content, editor ID, textarea name)
+			$this->editor( $cc_author_meta[0]['description'], self::PREFIX . 'meta_description', self::PREFIX . 'meta[0][description]' );
 			?>
 			<div class="<?php echo self::PREFIX; ?>meta_update_profile">
 				<input type="checkbox" name="<?php echo self::PREFIX; ?>meta[0][update_profile]" id="<?php echo self::PREFIX; ?>meta[0][update_profile]" value="Profile">Update author's default profile
@@ -442,7 +442,7 @@ class Admin extends Author {
 	} // End editor_initialize()
 	
 	// Editor for posts and pages
-	function editor( $content, $id ) {
+	function editor( $content, $editor_id, $textarea_name ) {
 		// Initialize the editor
 		$this->editor_initialize();
 		
@@ -451,12 +451,18 @@ class Admin extends Author {
 			// Filter the author description 
 			$content = apply_filters( 'the_content', $content );
 			
+			// Set local variable for editor settings, to allow us to modify the settings for this specific editor
+			$editorsettings = $this->editorsettings;
+			
+			// Set 'textarea_name' in the editor settings
+			$editorsettings['textarea_name'] = $textarea_name;
+			
 			// Create the editor using the provided values
-			wp_editor( $content, $id, $this->editorsettings );
+			wp_editor( $content, $editor_id, $editorsettings );
 		}
 		// If WYSIWYG is not enabled, use a simple textarea
 		else {
-			echo '<textarea id="' . $id . '" name="' . $id . '" rows="5" cols="50" required>' . esc_attr( $content ) . '</textarea>';
+			echo '<textarea id="' . $editor_id . '" name="' . $textarea_name . '" rows="5" cols="50" required>' . esc_attr( $content ) . '</textarea>';
 		}
 	} // End editor()
 	
@@ -494,10 +500,11 @@ class Admin extends Author {
 	
 	// Load JavaScript for profile
 	function profilejs( $hook ) {
-		if ( $hook == 'profile.php' || $hook == 'user-edit.php' ) { // Only load JS if editing a user
+		// Only load JS if editing a user
+		if ( $hook == 'profile.php' || $hook == 'user-edit.php' ) {
 			wp_enqueue_script(
 				self::ID . '-edit-user', // Name of script in WordPress
-				plugins_url ( 'admin/assets/js/edit-user.js', dirname( __FILE__ ) ), // Location of script
+				plugins_url ( 'admin/assets/js/edit-user.js', $this->pluginfile ), // Location of script
 				'jquery', // Dependencies
 				self::VERSION, // Use plugin version number
 				true // Whether to load script in footer
