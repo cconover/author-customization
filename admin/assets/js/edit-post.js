@@ -30,7 +30,7 @@ jQuery( document ).ready( function( $ ) {
 				$( '[name="cc_author_meta\\[0\\]\\[display_name\\]"]' ).val( authormeta.display_name );
 				
 				// If 'wysiwyg' is enabled in plugin options, update the author bio through TinyMCE
-				if ( authormeta.wysiwyg == 'yes' && typeof tinymce == 'object' ) {
+				if ( typeof tinymce == 'object' ) {
 					tinymce.get( 'cc_author_meta_description' ).setContent( authormeta.description );
 				}
 				// If it's not enabled, update the standard textarea

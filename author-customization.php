@@ -3,7 +3,7 @@
  * Plugin Name: Author Customization
  * Plugin URI: https://christiaanconover.com/code/wp-author-customization?ref=plugin-data
  * Description: Author Customization adds additional author management capabilities beyond the native user account structure. Save author data to each post, enable WYSIWYG editing of biographical info, and more.
- * Version: 0.3.1-alpha2
+ * Version: 0.3.1-beta1
  * Author: Christiaan Conover
  * Author URI: https://christiaanconover.com?ref=wp-author-customization-plugin-author-uri
  * License: GPLv2
@@ -19,7 +19,7 @@ class Author {
 	/* Plugin constants */
 	const ID = 'cc-author'; // Plugin identifier
 	const NAME = 'Author Customization'; // Plugin name
-	const VERSION = '0.3.1-alpha2'; // Plugin version
+	const VERSION = '0.3.1-beta1'; // Plugin version
 	const WPVER = '3.6'; // Minimum version of WordPress required for this plugin
 	const PREFIX = 'cc_author_'; // Plugin database prefix
 	
@@ -63,7 +63,7 @@ class Author {
 			$postmeta = get_post_meta( $post->ID, '_' . self::PREFIX . 'meta', true ); // Get the post-specific author metadata, if available
 			
 			/* If the plugin setting is enabled and there's post-specific metadata stored and a post, page, or attachment is being displayed, show the post-specific display name. Otherwise use the profile display name. */
-			if ( $postmeta && !is_author() && isset( $this->options['perpost'] ) ) {
+			if ( $postmeta && ! is_author() && isset( $this->options['perpost'] ) ) {
 				foreach ( $postmeta as $authormeta ) {
 					foreach ( $authormeta as $key => $meta ) {
 						$name = $authormeta['display_name']; // Set the name to the display name stored for the post

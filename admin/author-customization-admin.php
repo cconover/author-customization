@@ -31,7 +31,7 @@ class Admin extends Author {
 		add_action( 'wp_ajax_cc_author_change_postauthor', array( &$this, 'change_postauthor_callback' ) ); // Change the post author in the meta box
 		
 		// Hooks and filters for the editor
-		if ( isset( $this->options['wysiwyg'] ) && function_exists( 'wp_editor' ) ) {
+		if ( function_exists( 'wp_editor' ) ) {
 			add_action( 'show_user_profile', array( &$this, 'editorprofile' ) ); // User profile
 			add_action( 'edit_user_profile', array( &$this, 'editorprofile' ) ); // User profile
 			add_action( 'admin_init', array( &$this, 'editor_remove_filters' ) ); // Remove filters from textarea
@@ -71,14 +71,6 @@ class Admin extends Author {
 			self::ID // Page ID for the options page
 		);
 		
-		// Settings section for admin options
-		add_settings_section(
-			'admin_options', // Name of the section
-			'Admin Settings', // Title of the section, displayed on the options page
-			array( &$this, 'admin_options_callback' ), // Callback method to display plugin options
-			self::ID // Page ID for the options page
-		);
-		
 		// Whether to display per-post author information
 		add_settings_field(
 			'perpost', // Field ID
@@ -95,15 +87,6 @@ class Admin extends Author {
 			array( &$this, 'relnofollow_callback' ), // Callback method to display the option field
 			self::ID, // Page ID for the options page
 			'postpage' // Settings section in which to display the field
-		);
-		
-		// Enable WYSIWYG editor for author biographical info
-		add_settings_field(
-			'wysiwyg', // Field ID
-			'WYSIWYG editor for author bio', // Field title/label, displayed to the user
-			array( &$this, 'wysiwyg_callback' ), // Callback method to display the option field
-			self::ID, // Page ID for the options page
-			'admin_options' // Settings section in which to display the field
 		);
 	} // End options_init()
 	
@@ -146,20 +129,6 @@ class Admin extends Author {
 		echo '<p class="description">Add a <a href="https://support.google.com/webmasters/answer/96569?hl=en" target="_blank">rel="nofollow"</a> attribute to any links in an author\'s biographical info when displayed. This prevents search engines from counting those links as part of your rank score. If you\'re unsure what this is, leave it checked.</p>'; // Description of option
 	} // End relnofollow_callback()
 	
-	// Callback for WYSIWYG option
-	function wysiwyg_callback() {
-		// Check the status of this option in the database
-		if ( isset( $this->options['wysiwyg'] ) ) {
-			$checked = 'checked';
-		}
-		else {
-			$checked = NULL;
-		}
-		
-		echo '<input id="' . self::PREFIX . 'options[wysiwyg]" name="' . self::PREFIX . 'options[wysiwyg]" type="checkbox" value="yes" ' . $checked . '>'; // Print the input field to the screen
-		echo '<p class="description">Enable a WYSIWYG editor for the author bio field, both in the user profile area and in the post/page meta box.</p>'; // Description of option
-	} // End wysiwyg_callback()
-	
 	// Validate options when submitted
 	function options_validate( $input ) {
 		// Set local variable for plugin options stored in the database
@@ -168,7 +137,6 @@ class Admin extends Author {
 		// Directly set options that require no validation (such as checkboxes)
 		$options['perpost'] = $input['perpost'];
 		$options['relnofollow'] = $input['relnofollow'];
-		$options['wysiwyg'] = $input['wysiwyg'];
 		
 		return $options;
 	} // End options_validate()
@@ -344,7 +312,6 @@ class Admin extends Author {
 			$authormeta = json_encode( array(
 				'display_name' => $authordata->display_name, // Display name from profile
 				'description' => $authordata->description, // Biographical info from profile
-				'wysiwyg' => $this->options['wysiwyg'] // Tell JS whether or not WYSIWYG is enabled
 			) );
 			
 			echo $authormeta; // Return the values retrieved from the database
@@ -357,30 +324,27 @@ class Admin extends Author {
 	function save_meta( $post_id ) {
 		// Verify that values have been provided
 		if ( isset( $_POST[self::PREFIX . 'meta'] ) ) {
-			// If the post author has been changed, update the post with details for the new author
-			if ( ! empty( $_POST[self::PREFIX . 'postauthor'] ) && ( $_POST[self::PREFIX . 'postauthor'] != $_POST[self::PREFIX . 'currentpostauthor'] ) ) {
-				/*
-				If JavaScript is not enabled, get the author's data from their user profile.
-				This is because the values in the author name and bio fields will still be for the old author with JS disabled.
-				*/
-				if ( empty( $_POST[self::PREFIX . 'javascript'] ) ) {
-					// Retrieve the details of the post author
-					$postauthor = get_userdata( $_POST[self::PREFIX . 'postauthor'] );
+			/*
+			If JavaScript is not enabled, get the author's data from their user profile.
+			This is because the values in the author name and bio fields will still be for the old author with JS disabled.
+			*/
+			if ( empty( $_POST[self::PREFIX . 'javascript'] ) ) {
+				// Retrieve the details of the post author
+				$postauthor = get_userdata( $_POST[self::PREFIX . 'postauthor'] );
 			
-					// Initialize main array
-					$author = array();
+				// Initialize main array
+				$author = array();
 					
-					// Nested array for author data
-					$author[0] = array(
-						'display_name' => $postauthor->display_name, // Set display name from post author's data
-						'description' => $postauthor->description // Set bio from the post author's data
-					);
-				}
-				// If JavaScript is enabled, use the values submitted from the meta box since they'll have been updated with the new author
-				else {
-					// Assign POST data to local variable
-					$author = $_POST[self::PREFIX . 'meta'];
-				}
+				// Nested array for author data
+				$author[0] = array(
+					'display_name' => $postauthor->display_name, // Set display name from post author's data
+					'description' => $postauthor->description // Set bio from the post author's data
+				);
+			}
+			// If JavaScript is enabled, use the values submitted from the meta box since they'll have been updated with the new author
+			else {
+				// Assign POST data to local variable
+				$author = $_POST[self::PREFIX . 'meta'];
 			}
 			
 			// Sanitize array values
@@ -392,15 +356,17 @@ class Admin extends Author {
 			// Save author metadata to post meta
 			update_post_meta( $post_id, '_' . self::PREFIX . 'meta', $author );
 			
-			// Save the post/page author
-			// Remove the 'save_post' hook before updating the post author to prevent an infinite loop
-			remove_action( 'save_post', array( &$this, 'save_meta' ) );
-			wp_update_post( array(
-				'ID' => $post_id,
-				'post_author' => $_POST[self::PREFIX . 'postauthor'] // Use the post author ID from the dropdown
-			) );
-			// Re-add the 'save_post' hook after the post author is updated
-			add_action( 'save_post', array( &$this, 'save_meta' ) );
+			// If the post author has been changed, update the post author
+			if ( ! empty( $_POST[self::PREFIX . 'postauthor'] ) && ( $_POST[self::PREFIX . 'postauthor'] != $_POST[self::PREFIX . 'currentpostauthor'] ) ) {
+				// Remove the 'save_post' hook before updating the post author to prevent an infinite loop
+				remove_action( 'save_post', array( &$this, 'save_meta' ) );
+				wp_update_post( array(
+					'ID' => $post_id, // Post ID
+					'post_author' => $_POST[self::PREFIX . 'postauthor'] // Use the post author ID from the dropdown
+				) );
+				// Re-add the 'save_post' hook after the post author is updated
+				add_action( 'save_post', array( &$this, 'save_meta' ) );
+			}
 			
 			/* If 'Update Profile' is enabled, save the author info to the user profile of the author */
 			foreach ( $author as $authormeta ) {
@@ -446,8 +412,8 @@ class Admin extends Author {
 		// Initialize the editor
 		$this->editor_initialize();
 		
-		// If WYSIWYG is enabled, use it. Otherwise, use a standard textarea.
-		if ( ! empty( $this->options['wysiwyg'] ) && function_exists( 'wp_editor' ) && user_can_richedit() ) {
+		// If TinyMCE is available and the user can rich edit, use TinyMCE. Otherwise, use a standard textarea.
+		if ( function_exists( 'wp_editor' ) && user_can_richedit() ) {
 			// Filter the author description 
 			$content = apply_filters( 'the_content', $content );
 			
@@ -460,7 +426,7 @@ class Admin extends Author {
 			// Create the editor using the provided values
 			wp_editor( $content, $editor_id, $editorsettings );
 		}
-		// If WYSIWYG is not enabled, use a simple textarea
+		// If TinyMCE can't be used, use a simple textarea
 		else {
 			echo '<textarea id="' . $editor_id . '" name="' . $textarea_name . '" rows="5" cols="50" required>' . esc_attr( $content ) . '</textarea>';
 		}
@@ -531,6 +497,11 @@ class Admin extends Author {
 			// Set local variable for options
 			$options = $this->options;
 			
+			// Remove the option for toggling the WYSIWYG editor if it's present
+			if ( isset( $options['wysiwyg'] ) ) {
+				unset( $options['wysiwyg'] );
+			}
+			
 			/* Update the plugin version saved in the database (always the last step of the upgrade process) */
 			// Set the value of the plugin version
 			$options['dbversion'] = self::VERSION;
@@ -554,7 +525,6 @@ class Admin extends Author {
 			$options = array (
 				'perpost' => $postpage['perpost'], // Save author info to each individual post, rather than pulling from global author data
 				'relnofollow' => $postpage['relnofollow'], // Add rel="nofollow" to links in bio entries
-				'wysiwyg' => $adminoptions['wysiwyg'], // Enable the WYSIWYG editor for author bio fields
 				'dbversion' => self::VERSION // Save the current plugin version
 			);
 			
@@ -584,7 +554,6 @@ class Admin extends Author {
 		$options = array (
 			'perpost' => 'yes', // Save author info to each individual post, rather than pulling from global author data
 			'relnofollow' => 'yes', // Add rel="nofollow" to links in bio entries
-			'wysiwyg' => 'yes', // Enable the WYSIWYG editor for author bio fields
 			'dbversion' => self::VERSION // Save the current plugin version
 		);
 		
