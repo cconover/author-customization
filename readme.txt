@@ -55,6 +55,7 @@ In order for author information to appear on your posts and pages, the theme you
 = 0.3.1 =
 * Full support for WordPress 3.9 and TinyMCE 4.0
 * Fixed the plugin upgrade process to ensure deprecated settings are upgraded, and upgrades run more smoothly for all future versions
+* Option to turn WYSIWYG on or off has been removed. WYSIWYG is on unless the system or user cannot support it.
 * General code cleanup and minor bug fixes
 
 = 0.3.0 =
@@ -86,7 +87,7 @@ Initial release.
 == Upgrade Notice ==
 
 = 0.3.1 =
-Fixed incompatibilities with the upcoming TinyMCE 4.0 that will be released with WordPress 3.9.
+Fixed incompatibilities with WordPress 3.9 and TinyMCE 4.0.
 
 = 0.3.0 =
 Completely rewritten to be object-oriented.
