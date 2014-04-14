@@ -261,8 +261,8 @@ class Admin extends Author {
 		<div id="<?php echo self::PREFIX; ?>metabox" class="<?php echo self::PREFIX; ?>metabox" style="display: none;">
 			<p>The information below will be saved to this post, and (unless selected) will not be saved to the author's user profile.</p>
 			<?php
-			if ( current_user_can( 'edit_others_posts' ) || current_user_can( 'edit_others_pages' ) ) { // Check the capabilities of the current user for sufficient privileges
-				?>
+			// Check the capabilities of the current user for sufficient privileges
+			if ( current_user_can( 'edit_others_posts' ) || current_user_can( 'edit_others_pages' ) ) : ?>
 				<div id="<?php echo self::PREFIX; ?>metabox_postauthor" class="<?php echo self::PREFIX; ?>metabox_postauthor">
 				<?php
 					wp_dropdown_users( array(
@@ -273,11 +273,10 @@ class Admin extends Author {
 					) );
 					?>
 					<input type="hidden" name="<?php echo self::PREFIX; ?>currentpostauthor" value="<?php echo $postauthorid; ?>">
-					<input type="hidden" name="<?php echo self::PREFIX; ?>javascript" id="<?php echo self::PREFIX; ?>javascript" value="">
 				</div><!-- #cc_author_metabox_postauthor -->
-				<?php
-			}
-			?>
+			<?php endif; ?>
+			<input type="hidden" name="<?php echo self::PREFIX; ?>javascript" id="<?php echo self::PREFIX; ?>javascript">
+			
 			<label id="label_<?php echo self::PREFIX; ?>meta[0][display_name]" for="<?php echo self::PREFIX; ?>meta[0][display_name]" class="selectit">Name</label>
 			<input type="text" name="<?php echo self::PREFIX; ?>meta[0][display_name]" id="<?php echo self::PREFIX; ?>meta[0][display_name]" value="<?php echo esc_attr( $cc_author_meta[0]['display_name'] ); ?>" />
 	

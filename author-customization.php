@@ -3,7 +3,7 @@
  * Plugin Name: Author Customization
  * Plugin URI: https://christiaanconover.com/code/wp-author-customization?ref=plugin-data
  * Description: Author Customization adds additional author management capabilities beyond the native user account structure. Save author data to each post, enable WYSIWYG editing of biographical info, and more.
- * Version: 0.3.1
+ * Version: 0.3.2
  * Author: Christiaan Conover
  * Author URI: https://christiaanconover.com?ref=wp-author-customization-plugin-author-uri
  * License: GPLv2
@@ -19,7 +19,7 @@ class Author {
 	/* Plugin constants */
 	const ID = 'cc-author'; // Plugin identifier
 	const NAME = 'Author Customization'; // Plugin name
-	const VERSION = '0.3.1'; // Plugin version
+	const VERSION = '0.3.2'; // Plugin version
 	const WPVER = '3.6'; // Minimum version of WordPress required for this plugin
 	const PREFIX = 'cc_author_'; // Plugin database prefix
 	

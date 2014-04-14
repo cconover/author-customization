@@ -4,7 +4,7 @@ Donate link: https://christiaanconover.com/code/wp-author-customization#donate
 Tags: author, user, profile, tinymce, wysiwyg, rel-nofollow
 Requires at least: 3.6
 Tested up to: 3.9
-Stable tag: 0.3.1
+Stable tag: 0.3.2
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +52,9 @@ In order for author information to appear on your posts and pages, the theme you
 
 == Changelog ==
 
+= 0.3.2 =
+Fixed bug causing author info not to be saved to post meta if the user doesn't have permissions to edit other users' posts and pages.
+
 = 0.3.1 =
 * Full support for WordPress 3.9 and TinyMCE 4.0
 * Fixed the plugin upgrade process to ensure deprecated settings are upgraded, and upgrades run more smoothly for all future versions
@@ -85,6 +88,9 @@ Fixed bug that threw a "Missing Argument" error when creating a new post.
 Initial release.
 
 == Upgrade Notice ==
+
+= 0.3.2 =
+Fixed bug causing author info not to be saved to post meta if the user doesn't have permissions to edit other users' posts and pages.
 
 = 0.3.1 =
 Fixed incompatibilities with WordPress 3.9 and TinyMCE 4.0.
