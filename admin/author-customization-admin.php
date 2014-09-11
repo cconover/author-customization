@@ -10,26 +10,21 @@ namespace cconover\author;
  * Plugin admin class
  **/
 class Admin extends Author {
-	/** Class properties */
-	private $editorid;
-	private $editorsettings;
-	
-	// Class constructor
 	function __construct() {
 		// Initialize the plugin
 		$this->initialize();
 		$this->admin_initialize();
-		
+
 		/* Hooks and filters */
 		add_action( 'admin_menu', array( &$this, 'create_options_menu' ) ); // Add menu entry to Settings menu
 		add_action( 'admin_init', array( &$this, 'options_init' ) ); // Initialize plugin options
 		add_action( 'add_meta_boxes', array( &$this, 'add_metabox' ) ); // Add metabox to post/page editing screen
 		add_action( 'admin_enqueue_scripts', array( &$this, 'add_metabox_scripts' ) ); // Load scripts and styles
 		add_action( 'save_post', array( &$this, 'save_meta' ) ); // Hook WordPress to save meta box data when saving post/page
-		
+
 		// AJAX hooks
 		add_action( 'wp_ajax_cc_author_change_postauthor', array( &$this, 'change_postauthor_callback' ) ); // Change the post author in the meta box
-		
+
 		// Hooks and filters for the editor
 		if ( function_exists( 'wp_editor' ) ) {
 			add_action( 'show_user_profile', array( &$this, 'editorprofile' ) ); // User profile
@@ -38,12 +33,12 @@ class Admin extends Author {
 			add_action( 'admin_enqueue_scripts', array( &$this, 'profilejs' ) ); // Load JavaScript
 		}
 		// End hooks and filters
-	} // End __construct()
-	
-	/*
-	===== Plugin options =====
-	*/
-	// Create the menu entry under the Settings menu
+	} // __construct()
+
+	/* ===== Plugin options ===== */
+	/**
+	 * Create the menu entry under the Settings menu
+	 */
 	function create_options_menu() {
 		add_options_page(
 			self::NAME, // Page title. This is displayed in the browser title bar.
@@ -52,9 +47,11 @@ class Admin extends Author {
 			self::ID, // Menu slug
 			array( &$this, 'options_page' ) // Function to render the options page
 		);
-	} // End create_options_menu()
-	
-	// Initialize plugin options
+	} // create_options_menu()
+
+	/**
+	 * Initialize plugin options
+	 */
 	function options_init() {
 		// Register the plugin options call and the sanitation callback
 		register_setting(
@@ -62,7 +59,7 @@ class Admin extends Author {
 			self::PREFIX . 'options', // The name of the plugin options entry in the database.
 			array( &$this, 'options_validate' ) // The callback method to validate plugin options
 		);
-		
+
 		// Settings section for Post/Page options
 		add_settings_section(
 			'postpage', // Name of the section
@@ -70,7 +67,7 @@ class Admin extends Author {
 			array( &$this, 'postpage_callback' ), // Callback method to display plugin options
 			self::ID // Page ID for the options page
 		);
-		
+
 		// Whether to display per-post author information
 		add_settings_field(
 			'perpost', // Field ID
@@ -79,7 +76,7 @@ class Admin extends Author {
 			self::ID, // Page ID for the options page
 			'postpage' // Settings section in which to display the field
 		);
-		
+
 		// Add rel="nofollow" to links inside an author's biographical info
 		add_settings_field(
 			'relnofollow', // Field ID
@@ -88,20 +85,25 @@ class Admin extends Author {
 			self::ID, // Page ID for the options page
 			'postpage' // Settings section in which to display the field
 		);
-	} // End options_init()
-	
-	/* Plugin options callbacks */
-	// Callback for post/page options section
+	} // options_init()
+
+	/**
+	 * Callback for post/page options section
+	 */
 	function postpage_callback() {
 		echo '<p>These options are specific to posts and pages.</p>';
-	} // End postpage_callback()
-	
-	// Callback for admin option section
+	} // postpage_callback()
+
+	/**
+	 * Callback for admin option section
+	 */
 	function admin_options_callback() {
 		echo '<p>These options are for things that happen inside WordPress admin.</p>';
-	} // End admin_options_callback()
-	
-	// Callback for per-post author information option
+	} // admin_options_callback()
+
+	/**
+	 * Callback for per-post author information option
+	 */
 	function perpost_callback() {
 		// Check the status of this option in the database
 		if ( isset( $this->options['perpost'] ) ) {
@@ -110,12 +112,14 @@ class Admin extends Author {
 		else {
 			$checked = NULL;
 		}
-	
+
 		echo '<input id="' . self::PREFIX . 'options[perpost]" name="' . self::PREFIX . 'options[perpost]" type="checkbox" value="yes" ' . $checked . '>'; // Print the input field to the screen
 		echo '<p class="description">Display author information from the post metadata instead of the user database. Useful for keeping author information specific to the time a post was published.</p><p class="description"><strong>Note:</strong> You can toggle this at any time, as this plugin always saves author information to post metadata regardless of this setting.</p>'; // Description of option
-	} // End perpost_callback()
-	
-	// Callback for rel="nofollow" option
+	} // perpost_callback()
+
+	/**
+	 * Callback for rel="nofollow" option
+	 */
 	function relnofollow_callback() {
 		// Check the status of this option in the database
 		if ( isset( $this->options['relnofollow'] ) ) {
@@ -124,23 +128,23 @@ class Admin extends Author {
 		else {
 			$checked = NULL;
 		}
-		
+
 		echo '<input id="' . self::PREFIX . 'options[relnofollow]" name="' . self::PREFIX . 'options[relnofollow]" type="checkbox" value="yes" ' . $checked . '>'; // Print the input field to the screen
 		echo '<p class="description">Add a <a href="https://support.google.com/webmasters/answer/96569?hl=en" target="_blank">rel="nofollow"</a> attribute to any links in an author\'s biographical info when displayed. This prevents search engines from counting those links as part of your rank score. If you\'re unsure what this is, leave it checked.</p>'; // Description of option
-	} // End relnofollow_callback()
-	
+	} // relnofollow_callback()
+
 	// Validate options when submitted
 	function options_validate( $input ) {
 		// Set local variable for plugin options stored in the database
 		$options = $this->options;
-		
+
 		// Directly set options that require no validation (such as checkboxes)
 		$options['perpost'] = $input['perpost'];
 		$options['relnofollow'] = $input['relnofollow'];
-		
+
 		return $options;
 	} // End options_validate()
-	
+
 	// Options page
 	function options_page() {
 		// Make sure the user has permissions to access the plugin options
@@ -148,7 +152,7 @@ class Admin extends Author {
 			wp_die( '<p>You do not have sufficient privileges to access this page.' );
 		}
 		?>
-		
+
 		<div class="wrap">
 			<?php screen_icon(); ?>
 			<h2><?php echo self::NAME; ?></h2>
@@ -160,7 +164,7 @@ class Admin extends Author {
 				submit_button(); // Form submit button generated by WordPress
 				?>
 			</form>
-			
+
 			<h4>Debug Info</h4>
 			<div class="<?php echo self::ID; ?>-debug-info">
 				<p>Please copy and paste the information below when reporting issues, and when requested in the support forums.</p>
@@ -172,26 +176,26 @@ class Admin extends Author {
 				<strong>PHP version:</strong> <?php echo phpversion(); ?><br />
 			</div>
 		</div>
-		
+
 		<?php
 	} // End options_page()
 	/* End plugin options callbacks */
 	/*
 	===== End plugin options =====
 	*/
-	
+
 	/*
 	===== Post/Page Editing =====
 	*/
 	// Add metabox to post/page editing, remove default Author metabox, and initialize required elements for post/page editing
 	function add_metabox() {
 		$screens = array( 'post', 'page' ); // Locations where the metabox should show
-		
+
 		/* Remove WordPress default Author meta box */
 		foreach ( $screens as $screen ) {
 			remove_meta_box( 'authordiv', $screen, 'normal' ); // Parameters for removing Author meta box from Post and Page edit screens
 		}
-		
+
 		/* Iterate through locations to add meta box */
 		foreach( $screens as $screen ) {
 			add_meta_box(
@@ -204,7 +208,7 @@ class Admin extends Author {
 			);
 		}
 	} // End add_metabox()
-	
+
 	// Scripts and stylesheets for use with the meta box
 	function add_metabox_scripts() {
 		// Custom stylesheet for meta box
@@ -214,7 +218,7 @@ class Admin extends Author {
 			array(), // Style dependencies
 			self::VERSION // Plugin version
 		);
-		
+
 		/* Add script for changing the post author */
 		wp_enqueue_script(
 			self::ID . '-edit-post', // Registered script handle
@@ -224,7 +228,7 @@ class Admin extends Author {
 			),
 			self::VERSION // Plugin version
 		);
-		
+
 		// Localize the script for AJAX calls
 		wp_localize_script(
 			self::ID . '-edit-post', // Name of script call being localized
@@ -235,24 +239,24 @@ class Admin extends Author {
 			)
 		);
 	} // End add_metabox_scripts()
-	
+
 	// Meta box
 	function metabox( $post ) {
 		// Retrieve current values if they exist
 		$cc_author_meta = get_post_meta( $post->ID, '_' . self::PREFIX . 'meta', true ); // Author metadata (stored as an array)
 		$postauthorid = $post->post_author; // Get the user ID of the post author
-		
+
 		// If any of the values are missing from the post, retrieve them from the author's global profile
-		if ( ! $cc_author_meta ) {		
+		if ( ! $cc_author_meta ) {
 			$postauthor = get_userdata( $postauthorid ); // Retrieve the details of the post author
-			
+
 			$cc_author_meta = array(); // Initialize main array
 			$cc_author_meta[0] = array( // Nested array for author data
 				'display_name' => $postauthor->display_name, // Set display name from post author's data
 				'description' => $postauthor->description // Set bio from the post author's data
 			);
 		}
-		
+
 		// Display the meta box contents
 		?>
 		<noscript>
@@ -276,49 +280,49 @@ class Admin extends Author {
 				</div><!-- #cc_author_metabox_postauthor -->
 			<?php endif; ?>
 			<input type="hidden" name="<?php echo self::PREFIX; ?>javascript" id="<?php echo self::PREFIX; ?>javascript">
-			
+
 			<label id="label_<?php echo self::PREFIX; ?>meta[0][display_name]" for="<?php echo self::PREFIX; ?>meta[0][display_name]" class="selectit">Name</label>
 			<input type="text" name="<?php echo self::PREFIX; ?>meta[0][display_name]" id="<?php echo self::PREFIX; ?>meta[0][display_name]" value="<?php echo esc_attr( $cc_author_meta[0]['display_name'] ); ?>" />
-	
-			<label for="<?php echo self::PREFIX; ?>meta[0][description]" class="selectit">Bio</label>
-			<?
+
+			<label for="<?php echo self::PREFIX; ?>meta[0][description]" class="selectit">Biographical Info</label>
+			<?php
 			// Render the editor for biographical info (editor content, editor ID, textarea name)
-			$this->editor( $cc_author_meta[0]['description'], self::PREFIX . 'meta_description', self::PREFIX . 'meta[0][description]' );
+			echo $this->editor( self::PREFIX . 'meta_description', self::PREFIX . 'meta[0][description]', $cc_author_meta[0]['description'] );
 			?>
 			<div class="<?php echo self::PREFIX; ?>meta_update_profile">
 				<input type="checkbox" name="<?php echo self::PREFIX; ?>meta[0][update_profile]" id="<?php echo self::PREFIX; ?>meta[0][update_profile]" value="Profile">Update author's default profile
-				<p class="description">Checking this will overwrite the author's site-wide user profile with the information you've entered.</p>
+				<p class="description">Checking this will update the author's site-wide user profile with the information you've entered.</p>
 			</div>
 		</div> <!-- .cc_author_metabox -->
 		<?php
 	} // End metabox()
-	
+
 	// Callback for AJAX call to change the post author
 	function change_postauthor_callback() {
 		global $wpdb; // Allow access to database
-		
+
 		$nonce = $_POST['nonce']; // Assign a local variable for nonce
-		
+
 		if ( ! wp_verify_nonce( $nonce, self::ID . '-edit-post-nonce' ) ) { // If the nonce doesn't check out, fail the request
 			exit( 'Your request could not be authenticated' ); // Error message for unauthenticated request
 		}
-		
+
 		if ( current_user_can( 'edit_others_posts' ) || current_user_can( 'edit_others_pages' ) ) { // Check for proper permissions before handling request
 			$author = $_POST['authorID']; // Assign local variable for submitted post author
 			$authordata = get_userdata( $author ); // Retrieve the selected user's data from their profile
-			
+
 			// Encode response as JSON
 			$authormeta = json_encode( array(
 				'display_name' => $authordata->display_name, // Display name from profile
 				'description' => $authordata->description, // Biographical info from profile
 			) );
-			
+
 			echo $authormeta; // Return the values retrieved from the database
 		}
-		
+
 		exit; // End response. Required for callback to return a proper result.
 	} // End change_postauthor_callback()
-	
+
 	// Save the information in the meta box
 	function save_meta( $post_id ) {
 		// Verify that values have been provided
@@ -330,10 +334,10 @@ class Admin extends Author {
 			if ( empty( $_POST[self::PREFIX . 'javascript'] ) ) {
 				// Retrieve the details of the post author
 				$postauthor = get_userdata( $_POST[self::PREFIX . 'postauthor'] );
-			
+
 				// Initialize main array
 				$author = array();
-					
+
 				// Nested array for author data
 				$author[0] = array(
 					'display_name' => $postauthor->display_name, // Set display name from post author's data
@@ -345,7 +349,7 @@ class Admin extends Author {
 				// Assign POST data to local variable
 				$author = $_POST[self::PREFIX . 'meta'];
 			}
-			
+
 			// Sanitize array values
 			foreach ( $author as $authormeta ) {
 				foreach ( $authormeta as $key => $meta ) {
@@ -354,7 +358,7 @@ class Admin extends Author {
 			}
 			// Save author metadata to post meta
 			update_post_meta( $post_id, '_' . self::PREFIX . 'meta', $author );
-			
+
 			// If the post author has been changed, update the post author
 			if ( ! empty( $_POST[self::PREFIX . 'postauthor'] ) && ( $_POST[self::PREFIX . 'postauthor'] != $_POST[self::PREFIX . 'currentpostauthor'] ) ) {
 				// Remove the 'save_post' hook before updating the post author to prevent an infinite loop
@@ -366,7 +370,7 @@ class Admin extends Author {
 				// Re-add the 'save_post' hook after the post author is updated
 				add_action( 'save_post', array( &$this, 'save_meta' ) );
 			}
-			
+
 			/* If 'Update Profile' is enabled, save the author info to the user profile of the author */
 			foreach ( $author as $authormeta ) {
 				foreach ( $authormeta as $key => $meta ) {
@@ -382,73 +386,81 @@ class Admin extends Author {
 			}
 		}
 	} // End save_meta()
-	/*
-	===== End Post/Page Editing =====
-	*/
-	
-	/*
-	===== WYSIWYG Editor =====
-	*/
-	// Initialize the editor
+	/* ===== End Post/Page Editing ===== */
+
+	/* ===== WYSIWYG Editor ===== */
+	/**
+	 * Rich editor initilization
+	 *
+	 * @return array $settings editor settings and configuration
+	 */
 	function editor_initialize() {
-		// Editor ID
-		$this->editorid = self::ID . '-user-description';
-		
-		// Editor settings
-		$this->editorsettings = array(
-			'media_buttons' => false, // Don't display media upload button
-			'teeny' => true, // Keep editor to minimal button options, instead of full editor
-			'textarea_rows' => 5, // Number of rows in editor
-			'tinymce' => array(
-				'toolbar1' => 'bold,italic,underline,strikethrough,link,unlink', // TinyMCE 4.0+: Only show the listed buttons in the editor
-				'theme_advanced_buttons1' => 'bold,italic,underline,strikethrough,link,unlink' // Legacy TinyMCE setting
+		$settings = array (
+			'id'		=> self::ID . '-user-description',
+			'config'	=> array(
+				'media_buttons' => false, // Don't display media upload button
+				'teeny' => true, // Keep editor to minimal button options, instead of full editor
+				'textarea_rows' => 5, // Number of rows in editor
+				'tinymce' => array(
+					'toolbar1' => 'bold,italic,underline,strikethrough,link,unlink', // TinyMCE 4.0+: Only show the listed buttons in the editor
+					'theme_advanced_buttons1' => 'bold,italic,underline,strikethrough,link,unlink' // Legacy TinyMCE setting
+				)
 			)
 		);
-	} // End editor_initialize()
-	
-	// Editor for posts and pages
-	function editor( $content, $editor_id, $textarea_name ) {
+
+		return $settings;
+	} // editor_initialize()
+
+	/**
+	 * Editor for posts and pages
+	 *
+	 * @param string $content the author biographical info
+	 * @param integer $editor_id the HTML ID for the editor
+	 * @param string $textarea_name the HTML name for the textarea
+	 */
+	function editor( $editor_id, $textarea_name, $content = null ) {
 		// Initialize the editor
-		$this->editor_initialize();
-		
+		$settings = $this->editor_initialize();
+
 		// If TinyMCE is available and the user can rich edit, use TinyMCE. Otherwise, use a standard textarea.
 		if ( function_exists( 'wp_editor' ) && user_can_richedit() ) {
-			// Filter the author description 
+			// Filter the author description
 			$content = apply_filters( 'the_content', $content );
-			
-			// Set local variable for editor settings, to allow us to modify the settings for this specific editor
-			$editorsettings = $this->editorsettings;
-			
+
 			// Set 'textarea_name' in the editor settings
-			$editorsettings['textarea_name'] = $textarea_name;
-			
+			$settings['config']['textarea_name'] = $textarea_name;
+
 			// Create the editor using the provided values
-			wp_editor( $content, $editor_id, $editorsettings );
+			wp_editor( $content, $editor_id, $settings['config'] );
 		}
 		// If TinyMCE can't be used, use a simple textarea
 		else {
 			echo '<textarea id="' . $editor_id . '" name="' . $textarea_name . '" rows="5" cols="50" required>' . esc_attr( $content ) . '</textarea>';
 		}
-	} // End editor()
-	
-	// Editor for user profile
+	} // editor()
+
+	/**
+	 * Editor for user profile
+	 *
+	 * @param object $user the current user data
+	 */
 	function editorprofile( $user ) {
 		// Check to make sure the user can use the rich editor
 		if ( user_can_richedit() ) {
 			// Initialize the editor
-			$this->editor_initialize();
+			$settings = $this->editor_initialize();
 			?>
 			<noscript>
-				You currently have JavaScript disabled, which is why you're seeing duplicate Biographical Info fields and no WYSIWYG. Please enable JavaScript.
+				You currently have JavaScript disabled, which is why you're seeing duplicate Biographical Info fields and no rich editor. Please enable JavaScript.
 			</noscript>
 			<table class="form-table">
 				<tr>
 					<th><label for="description">Biographical Info</label></th>
 					<td>
-						<?php 
+						<?php
 						$description = get_user_meta( $user->ID, 'description', true);
 						$description = apply_filters( 'the_content', $description );
-						wp_editor( $description, 'description', $this->editorsettings ); 
+						wp_editor( $description, 'description', $settings['config'] );
 						?>
 						<span class="description">Share a little biographical information to fill out your profile. This may be shown publicly.</span>
 					</td>
@@ -456,13 +468,13 @@ class Admin extends Author {
 			</table>
 		<?php
 		}
-	} // End editorprofile()
-	
+	} // editorprofile()
+
 	// Remove filters from biographical info
 	function editor_remove_filters() {
 		remove_all_filters( 'pre_user_description' );
-	} // End editor_remove_filters()
-	
+	} // editor_remove_filters()
+
 	// Load JavaScript for profile
 	function profilejs( $hook ) {
 		// Only load JS if editing a user
@@ -475,11 +487,9 @@ class Admin extends Author {
 				true // Whether to load script in footer
 			);
 		}
-	} // End profilejs()
-	/*
-	===== End WYSIWYG Editor =====
-	*/
-	
+	} // profilejs()
+	/* ===== End WYSIWYG Editor ===== */
+
 	/*
 	===== Admin initialization =====
 	*/
@@ -488,28 +498,28 @@ class Admin extends Author {
 		// Run plugin upgrade
 		$this->upgrade();
 	} // End admin_initialize()
-	
+
 	// Plugin upgrade
 	function upgrade() {
 		// Check whether the database-stored plugin version number is less than the current plugin version number, or whether there is no plugin version saved in the database
 		if ( ! empty( $this->options ) && version_compare( $this->options['dbversion'], self::VERSION, '<' ) ) {
 			// Set local variable for options
 			$options = $this->options;
-			
+
 			// Remove the option for toggling the WYSIWYG editor if it's present
 			if ( isset( $options['wysiwyg'] ) ) {
 				unset( $options['wysiwyg'] );
 			}
-			
+
 			/* Update the plugin version saved in the database (always the last step of the upgrade process) */
 			// Set the value of the plugin version
 			$options['dbversion'] = self::VERSION;
-				
+
 			// Save to the database
 			update_option( self::PREFIX . 'options', $options );
 			/* End update plugin version */
 		}
-		
+
 		/*
 		If the deprecated options entries are present, we need to retrieve those values and assign them to the new structure.
 		This upgrade process has to fall outside the standard upgrade version validation since the new options structure is not
@@ -519,17 +529,17 @@ class Admin extends Author {
 			// Retrieve the current options from the database
 			$postpage = get_option( 'cc_author_postpage' );
 			$adminoptions = get_option( 'cc_author_admin_options' );
-			
+
 			// Set up the new options structure with old values
 			$options = array (
 				'perpost' => $postpage['perpost'], // Save author info to each individual post, rather than pulling from global author data
 				'relnofollow' => $postpage['relnofollow'], // Add rel="nofollow" to links in bio entries
 				'dbversion' => self::VERSION // Save the current plugin version
 			);
-			
+
 			// Save options to the database
 			add_option( self::PREFIX . 'options', $options );
-			
+
 			// Delete the old options entries from the database
 			delete_option( 'cc_author_postpage' );
 			delete_option( 'cc_author_admin_options' );
@@ -538,7 +548,7 @@ class Admin extends Author {
 	/*
 	===== End Admin Initialization =====
 	*/
-	
+
 	/*
 	===== Plugin activation and deactivation methods =====
 	*/
@@ -548,17 +558,17 @@ class Admin extends Author {
 	 	if ( version_compare( get_bloginfo( 'version' ), self::WPVER, '<' ) ) {
 	 		wp_die( 'Your version of WordPress is too old to use this plugin. Please upgrade to the latest version of WordPress.' );
 	 	}
-	 	
+
 	 	// Set options for plugin
 		$options = array (
 			'perpost' => 'yes', // Save author info to each individual post, rather than pulling from global author data
 			'relnofollow' => 'yes', // Add rel="nofollow" to links in bio entries
 			'dbversion' => self::VERSION // Save the current plugin version
 		);
-		
+
 		add_option( self::PREFIX . 'options', $options ); // Save options to database
 	} // End activate()
-	 
+
 	// Plugin deactivation
 	public function deactivate() {
 		// Remove the plugin options from the database
