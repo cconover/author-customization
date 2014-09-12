@@ -223,10 +223,9 @@ class Admin extends Author {
 		wp_enqueue_script(
 			self::ID . '-edit-post', // Registered script handle
 			plugins_url( 'admin/assets/js/edit-post.js', $this->pluginfile ), // URL to script
-			array( // Script dependencies
-				'jquery'
-			),
-			self::VERSION // Plugin version
+			array( 'jquery' ),
+			self::VERSION, // Plugin version
+			true //Load in footer
 		);
 
 		// Localize the script for AJAX calls
@@ -234,7 +233,7 @@ class Admin extends Author {
 			self::ID . '-edit-post', // Name of script call being localized
 			self::PREFIX . 'edit_post', // AJAX object namespace, used to call values in the JS file
 			array(
-				'ajaxurl' => admin_url( 'admin-ajax.php' ), // URL for admin AJAX calls
+				'url' => admin_url( 'admin-ajax.php' ), // URL for admin AJAX calls
 				'nonce' => wp_create_nonce( self::ID . '-edit-post-nonce' ) // Nonce to authenticate request
 			)
 		);
@@ -482,7 +481,7 @@ class Admin extends Author {
 			wp_enqueue_script(
 				self::ID . '-edit-user', // Name of script in WordPress
 				plugins_url ( 'admin/assets/js/edit-user.js', $this->pluginfile ), // Location of script
-				'jquery', // Dependencies
+				array( 'jquery' ), // Dependencies
 				self::VERSION, // Use plugin version number
 				true // Whether to load script in footer
 			);
