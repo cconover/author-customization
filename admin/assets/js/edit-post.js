@@ -1,6 +1,6 @@
-( function ( $ ) {
-	// Show the meta box form (not shown by default; requires JavaScript for it to be visible)
+( function ( $ ) { // Register the $ symbol as shorthand for jQuery. WordPress does not support this shorthand by default.
 	$( function() {
+		// Show the meta box form (not shown by default; requires JavaScript for it to be visible)
 		$( "#cc_author_metabox" ).show();
 
 		// If the author dropdown value is changed, execute the script
